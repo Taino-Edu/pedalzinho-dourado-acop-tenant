@@ -19,7 +19,9 @@
   ];
 
   function authHeader() {
-    return { Authorization: 'Basic ' + btoa('admin:admin') };
+    // The browser reuses the credentials supplied by the server's Basic Auth
+    // challenge for same-origin API requests. Never ship credentials in JS.
+    return {};
   }
 
   function esc(s) {

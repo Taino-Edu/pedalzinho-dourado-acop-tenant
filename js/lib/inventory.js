@@ -13,7 +13,10 @@
   }
 })(typeof window !== 'undefined' ? window : undefined, function () {
   function formatNaira(amount) {
-    return '₦' + Number(amount).toLocaleString('en-NG');
+    if (typeof window !== 'undefined' && window.AutoBrand) {
+      return window.AutoBrand.formatCurrency(amount);
+    }
+    return 'R$ ' + Number(amount).toLocaleString('pt-BR');
   }
 
   function sortCars(cars, sortBy) {

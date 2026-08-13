@@ -10,9 +10,9 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  const existingLeads = await prisma.lead.count();
-  if (existingLeads > 0) {
-    console.log(`seed-production-once: database already has ${existingLeads} lead(s), skipping.`);
+  const existingDealerships = await prisma.dealership.count();
+  if (existingDealerships > 0) {
+    console.log(`seed-production-once: database already has ${existingDealerships} dealership(s), skipping.`);
     return;
   }
 
@@ -20,11 +20,22 @@ async function main() {
 
   const dealership = await prisma.dealership.create({
     data: {
-      name: 'AutoSuite Demo Dealership',
-      email: 'dealer@autosuite.local',
-      phone: '+234 800 123 4567',
-      address: '14 Aminu Kano Crescent, Wuse II, Abuja, Nigeria',
-      timezone: 'Africa/Lagos',
+      name: 'Sua Concession\u00e1ria',
+      email: 'contato@concessionaria.local',
+      phone: '+55 11 99999-9999',
+      address: 'S\u00e3o Paulo, SP',
+      timezone: 'America/Sao_Paulo',
+      settings: JSON.stringify({
+        brandName: 'Sua Concession\u00e1ria',
+        tagline: 'Seu pr\u00f3ximo carro come\u00e7a aqui.',
+        logoUrl: '',
+        primaryColor: '#2457d6',
+        accentColor: '#e58a1f',
+        whatsapp: '5511999999999',
+        instagram: '',
+        locale: 'pt-BR',
+        currency: 'BRL'
+      }),
     },
   });
 

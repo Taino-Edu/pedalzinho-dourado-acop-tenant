@@ -117,7 +117,7 @@
     try {
       const res = await fetch('/api/appointments', {
         signal: controller.signal,
-        headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+        headers: {}
       });
       clearTimeout(timeoutId);
       if (!res.ok) throw new Error('Request failed');
@@ -260,7 +260,7 @@
   async function promptNewAppointment() {
     let leads = [];
     try {
-      const res = await fetch('/api/leads', { headers: { 'Authorization': 'Basic ' + btoa('admin:admin') } });
+      const res = await fetch('/api/leads');
       const data = await res.json();
       leads = data.leads || [];
     } catch (err) {
@@ -312,7 +312,7 @@
         const dateTime = new Date(`${dateStr}T${timeStr}:00`).toISOString();
         const res = await fetch('/api/appointments', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ leadId, dateTime, type: overlay.querySelector('#naType').value })
         });
         if (!res.ok) throw new Error((await res.json()).error || 'Create failed');

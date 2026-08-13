@@ -2,6 +2,8 @@
   "framework": null,
   "outputDirectory": ".",
   "rewrites": [
+    { "source": "/api/branding", "destination": "/api/branding" },
+    { "source": "/api/catalog", "destination": "/api/catalog" },
     { "source": "/dashboard", "destination": "/api/dashboard" },
     { "source": "/api/leads", "destination": "/api/leads-handler" },
     { "source": "/api/leads/:id", "destination": "/api/leads-handler?id=:id" },

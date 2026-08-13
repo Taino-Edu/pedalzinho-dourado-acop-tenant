@@ -1,21 +1,24 @@
 {
-  "name": "autosuite",
+  "name": "pedalzinho-dourado-acop-tenant",
   "private": true,
   "version": "1.0.0",
-  "description": "AutoSuite dealership storefront + CRM API",
+  "description": "Plataforma white-label de vitrine e CRM para concessionárias",
   "scripts": {
-    "postinstall": "node scripts/prepare-prisma-schema.js && prisma generate",
+    "postinstall": "prisma generate",
     "dev": "node server.js",
     "db:seed": "node prisma/seed.js",
+    "db:deploy": "prisma migrate deploy",
+    "db:setup": "prisma migrate deploy && node prisma/seed-production-once.js",
     "db:reset": "prisma migrate reset --force",
-    "build": "prisma db push --skip-generate && node prisma/seed-production-once.js",
+    "build": "prisma generate",
+    "start": "node server.js",
     "test": "vitest run"
   },
   "dependencies": {
-    "@prisma/client": "^5.20.0"
+    "@prisma/client": "^5.20.0",
+    "prisma": "^5.20.0"
   },
   "devDependencies": {
-    "prisma": "^5.20.0",
     "vitest": "^2.1.0"
   }
 }

@@ -177,12 +177,11 @@
   // Fetch leads from API with timeout
   async function fetchLeads() {
     try {
-      const auth = btoa('admin:admin');
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for DB init
 
       const res = await fetch('/api/leads', {
-        headers: { 'Authorization': `Basic ${auth}` },
+        headers: {},
         signal: controller.signal
       });
       clearTimeout(timeoutId);
@@ -333,11 +332,9 @@
   // keyboard users have a non-drag way to change a lead's stage.
   async function moveLeadToStage(leadId, newStatus) {
     try {
-      const auth = btoa('admin:admin');
       const res = await fetch(`/api/leads/${leadId}`, {
         method: 'PATCH',
         headers: {
-          'Authorization': `Basic ${auth}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status: newStatus })

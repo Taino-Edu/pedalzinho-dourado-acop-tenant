@@ -13,11 +13,22 @@ async function main() {
   // Create dealership
   const dealership = await prisma.dealership.create({
     data: {
-      name: 'AutoSuite Demo Dealership',
-      email: 'dealer@autosuite.local',
-      phone: '+1 (555) 123-4567',
-      address: '123 Auto Drive, City, ST 12345',
-      timezone: 'America/New_York',
+      name: 'Sua Concessionária',
+      email: 'contato@concessionaria.local',
+      phone: '+55 11 99999-9999',
+      address: 'São Paulo, SP',
+      timezone: 'America/Sao_Paulo',
+      settings: JSON.stringify({
+        brandName: 'Sua Concessionária',
+        tagline: 'Seu próximo carro começa aqui.',
+        logoUrl: '',
+        primaryColor: '#2457d6',
+        accentColor: '#e58a1f',
+        whatsapp: '5511999999999',
+        instagram: '',
+        locale: 'pt-BR',
+        currency: 'BRL'
+      }),
     },
   });
 

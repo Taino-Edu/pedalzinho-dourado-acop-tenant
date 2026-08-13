@@ -1,8 +1,8 @@
-# AutoSuite — The Dealership Operating System
+# Pedalzinho Dourado — ACOP Tenant
 
 **One connected product.** Customers get a premium car-shopping experience. Dealers get the CRM, inventory, appointments, and analytics engine that runs the business behind it. When a visitor books a test drive on the storefront, the lead lands in the dealer's pipeline **in real time** — nothing is disconnected.
 
-**Live:** [dealerstack.vercel.app](https://dealerstack.vercel.app) · **Dealer dashboard:** [/pages/dashboard.html](https://dealerstack.vercel.app/pages/dashboard.html) · **Platform pitch:** [/pages/platform.html](https://dealerstack.vercel.app/pages/platform.html)
+Projeto técnico do produto white-label para concessionárias. A marca exibida no site é configurável por cliente no painel.
 
 **New to this repo?** Read [`docs/ONBOARDING.md`](docs/ONBOARDING.md) first — it's the current, accurate orientation. Historical sprint/phase logs live in [`docs/archive/`](docs/archive/) if you're curious how we got here, but they're not current state.
 
@@ -37,7 +37,7 @@ This is not a tutorial project. It's engineered the way client work ships:
 - **Accessibility is a build gate.** Every push runs per-page axe-core audits plus HTML validation in CI, across all 18 pages — WCAG failures fail the build. Every color pairing in the design system is contrast-verified (AA minimum, most exceed 7:1).
 - **A real design system.** OKLCH color tokens, spacing/type scales, and motion curves defined once in `css/style.css`/`css/dashboard.css` and consumed by every page — no one-off hex values, no drift between the storefront and the dealer-OS.
 - **Real data end to end.** Both dashboards show actual Postgres rows. The financing calculator computes real amortization against each car's actual price. Nothing a dealer or reviewer touches is faked.
-- **Deliberate architecture.** Hand-written HTML/CSS/JS for the storefront (fast, auditable, zero dependencies to rot) + Vercel serverless functions with Prisma/Postgres (Neon) for persistence, SQLite locally so contributors need zero setup. The dealer-OS is served from behind HTTP Basic Auth.
+- **Deliberate architecture.** Hand-written HTML/CSS/JS for the storefront (fast and auditable) + Node APIs with Prisma/PostgreSQL. Docker Compose starts the app and its isolated database with the same schema used in production. The dealer-OS is served behind HTTP Basic Auth configured only through environment variables.
 - **Real-time sync.** A single shared Server-Sent Events connection pushes lead/vehicle/appointment changes to every open dealer-OS tab — the CRM board, the dashboard KPIs, and the notification bell all update live, not on a timer.
 
 ## For dealers: the MVP today
@@ -53,6 +53,7 @@ This is not a tutorial project. It's engineered the way client work ships:
 | Appointments: week calendar, scheduling, status tracking | ✅ Live |
 | Analytics: sales funnel, inventory mix, lead sources | ✅ Live |
 | Customers, Staff Activity, Settings (notifications, team, dealership profile) | ✅ Live |
+| Self-service white-label: name, tagline, logo, colors, WhatsApp and Instagram | ✅ Live |
 | Command palette (⌘K), live notification bell, mobile bottom nav | ✅ Live |
 | Platform pitch: pricing tiers, testimonial, FAQ | ✅ Live |
 | VIN decode auto-fill, photo upload | 🔜 Needs a 3rd-party VIN/storage API |
@@ -84,7 +85,7 @@ The MVP follows the product design brief in [`docs/design-handoff/`](docs/design
 
 ## Stack
 
-`HTML/CSS/JS (storefront + dealer-OS)` · `Vercel Serverless Functions` · `Prisma` · `SQLite (local)` / `Postgres via Neon (production)` · `Server-Sent Events` · `Vitest` · `GitHub Actions (html-validate + axe-core)`
+`HTML/CSS/JS (storefront + dealer-OS)` · `Node.js` · `Prisma` · `PostgreSQL 16` · `Docker Compose` · `Server-Sent Events` · `Vitest`
 
 ```
 ├── index.html              Storefront homepage
@@ -107,8 +108,9 @@ The MVP follows the product design brief in [`docs/design-handoff/`](docs/design
 │                           function via vercel.json rewrites), analytics,
 │                           customers, team, dealership, finance, trade-ins,
 │                           dashboard
-├── prisma/                 Schema (SQLite locally, Postgres in prod — see
-│                           scripts/prepare-prisma-schema.js) + seed scripts
+├── prisma/                 PostgreSQL schema, migrations and seed scripts
+├── compose.yaml            App + PostgreSQL development/production stack
+├── Dockerfile              Node.js production image
 ├── docs/                   design-handoff/ (the 15-doc product design brief this
 │                           was built from), design-system.md, ONBOARDING.md,
 │                           archive/ (historical sprint/phase logs)
@@ -117,19 +119,15 @@ The MVP follows the product design brief in [`docs/design-handoff/`](docs/design
 
 ## Development
 
-No build step for the storefront — open the HTML files directly, or serve the
-repo root with any static server. The API (`api/`) needs a `DATABASE_URL`
-(see `.env.example`) — locally this points at a zero-setup SQLite file, so
-no database installation is required to get started.
+PostgreSQL is required in every environment. Copy `.env.example` to `.env`,
+replace both example passwords, then start the complete stack:
 
 ```
-npm install     # also runs `prisma generate`
-npm run dev     # starts the local server + API on http://localhost:3000
-npm test        # unit tests for js/lib/ (filtering, sorting, financing math)
-npm run db:seed # populate local SQLite with demo data
+docker compose up -d --build
+docker compose ps
 ```
 
-Production (Vercel) runs against a real Postgres database (Neon) — the
-datasource provider is patched from `sqlite` to `postgresql` at build time
-only, so the same schema file serves both environments without contributors
-needing Postgres running locally.
+For host-based development, start only `db`, set `DATABASE_URL` to PostgreSQL
+on `127.0.0.1:55432`, then run `npm install`, `npm run db:deploy`, and
+`npm run dev`. See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for domains,
+reverse proxy, separate client instances and backups.

@@ -15,20 +15,32 @@ const ASSET_BASE = window.ASSET_BASE || 'assets/web/';
 const { formatNaira, sortCars, filterCars, parseMileageKm } = window.AutoSuiteInventory;
 
 function imageUrl(fileName) {
+  if (/^(https?:)?\/\//.test(fileName) || fileName.startsWith('/')) return fileName;
   return ASSET_BASE + fileName;
 }
 
 async function fetchCars() {
-  // Preferred path: data/cars-data.js sets window.AUTOSUITE_CARS before this
-  // script runs. This works when the site is opened directly as a local file
-  // (file://), where fetch() is blocked by the browser for local JSON.
-  if (window.AUTOSUITE_CARS) return window.AUTOSUITE_CARS;
+  if (!window.__catalogPromise) {
+    window.__catalogPromise = (async () => {
+      if (window.location.protocol !== 'file:') {
+        try {
+          const response = await fetch('/api/catalog');
+          if (response.ok) {
+            const payload = await response.json();
+            if (Array.isArray(payload.cars)) return payload.cars;
+          }
+        } catch (error) {
+          console.warn('Catálogo online indisponível; usando dados locais.', error);
+        }
+      }
 
-  // Fallback: if the site is served over http(s) and cars-data.js wasn't
-  // included for some reason, fetch the JSON directly.
-  const res = await fetch(CARS_JSON_PATH);
-  if (!res.ok) throw new Error('Could not load inventory data');
-  return res.json();
+      if (window.AUTOSUITE_CARS) return window.AUTOSUITE_CARS;
+      const response = await fetch(CARS_JSON_PATH);
+      if (!response.ok) throw new Error('Could not load inventory data');
+      return response.json();
+    })();
+  }
+  return window.__catalogPromise;
 }
 
 function carDetailUrl(car) {
@@ -73,7 +85,8 @@ async function renderFeatured(selector) {
   if (!el) return;
   try {
     const cars = await fetchCars();
-    const featured = cars.filter((c) => c.featured).slice(0, 3);
+    const preferred = cars.filter((c) => c.featured);
+    const featured = [...preferred, ...cars.filter((c) => !c.featured)].slice(0, 3);
     el.innerHTML = featured.map(carCardHTML).join('');
   } catch (err) {
     el.innerHTML = `<p class="empty-state">Inventory is temporarily unavailable. Please try again shortly.</p>`;

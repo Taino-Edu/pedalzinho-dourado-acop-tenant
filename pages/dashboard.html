@@ -209,15 +209,13 @@
   // Fetch real data from API with timeout
   async function loadDashboard() {
     try {
-      const auth = btoa('admin:admin');
-      const authHeader = { Authorization: `Basic ${auth}` };
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for DB init
 
       const [leadsRes, vehiclesRes, appointmentsRes] = await Promise.all([
-        fetch('/api/leads', { headers: authHeader, signal: controller.signal }),
+        fetch('/api/leads', { signal: controller.signal }),
         fetch('/api/vehicles', { signal: controller.signal }),
-        fetch('/api/appointments', { headers: authHeader, signal: controller.signal })
+        fetch('/api/appointments', { signal: controller.signal })
       ]);
       clearTimeout(timeoutId);
 

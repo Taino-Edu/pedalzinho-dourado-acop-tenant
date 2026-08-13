@@ -6,6 +6,19 @@ shipped and when — for what's still ahead, see the MVP table in
 [`README.md`](README.md); this file doesn't duplicate it, so the two can't
 drift out of sync.
 
+## [Unreleased]
+
+### Changed
+- PostgreSQL 16 is now the only database in development and production.
+- Docker Compose provisions an isolated database and application service.
+- Dashboard credentials are no longer embedded in browser JavaScript.
+
+### Added
+- Self-service white-label settings for brand name, tagline, logo, colors,
+  WhatsApp, Instagram, Brazilian locale and BRL currency presentation.
+- Public, read-only branding API exposing only storefront-safe fields.
+- Deployment guide for reverse proxy, domains and one isolated stack per client.
+
 ## [1.0.0] — 2026-07-26
 
 The full connected MVP: a storefront and a dealer-OS running against one

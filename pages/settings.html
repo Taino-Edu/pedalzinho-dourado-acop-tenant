@@ -43,6 +43,7 @@
     <div class="is-8eb1c857">
       <div id="settingsTabs" class="is-c01bf156">
         <button type="button" class="settings-tab active is-7f96eb3e" data-tab="profile">Dealership Profile</button>
+        <button type="button" class="settings-tab is-6c897b40" data-tab="branding">Marca &amp; site</button>
         <button type="button" class="settings-tab is-6c897b40" data-tab="staff">Staff &amp; Roles</button>
         <button type="button" class="settings-tab is-6c897b40" data-tab="routing">Lead Routing</button>
         <button type="button" class="settings-tab is-6c897b40" data-tab="notifications">Notifications</button>
@@ -74,6 +75,45 @@
             </div>
             <div>
               <button type="button" onclick="saveDealership()" class="is-9bf70ab2">Save changes</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BRANDING -->
+        <div class="settings-panel is-224b51a7" data-panel="branding">
+          <div class="is-c1d2b310">Personalização do site</div>
+          <p class="is-93abb5fe">A concessionária pode alterar sua marca sem editar o código.</p>
+          <div class="is-269ea7a6">
+            <div>
+              <label for="fieldBrandName" class="is-204b9faf">Nome exibido</label>
+              <input id="fieldBrandName" type="text" maxlength="80" class="is-b94f2f17" placeholder="Minha Concessionária">
+            </div>
+            <div>
+              <label for="fieldTagline" class="is-204b9faf">Frase principal</label>
+              <input id="fieldTagline" type="text" maxlength="140" class="is-b94f2f17" placeholder="Seu próximo carro começa aqui.">
+            </div>
+            <div>
+              <label for="fieldLogoUrl" class="is-204b9faf">URL do logotipo</label>
+              <input id="fieldLogoUrl" type="url" class="is-b94f2f17" placeholder="https://.../logo.png">
+            </div>
+            <div>
+              <label for="fieldWhatsapp" class="is-204b9faf">WhatsApp com DDI</label>
+              <input id="fieldWhatsapp" type="tel" class="is-b94f2f17" placeholder="5511999999999">
+            </div>
+            <div>
+              <label for="fieldInstagram" class="is-204b9faf">Instagram</label>
+              <input id="fieldInstagram" type="text" class="is-b94f2f17" placeholder="@minhaloja">
+            </div>
+            <div style="display:flex;gap:18px;align-items:end;flex-wrap:wrap;">
+              <label for="fieldPrimaryColor" class="is-204b9faf">Cor principal<br><input id="fieldPrimaryColor" type="color" value="#2457d6" style="width:70px;height:44px;border:1px solid #d8dce5;border-radius:8px;padding:4px;background:#fff;"></label>
+              <label for="fieldAccentColor" class="is-204b9faf">Cor de destaque<br><input id="fieldAccentColor" type="color" value="#e58a1f" style="width:70px;height:44px;border:1px solid #d8dce5;border-radius:8px;padding:4px;background:#fff;"></label>
+            </div>
+            <div id="brandingPreview" style="padding:18px;border-radius:12px;background:#2457d6;color:#fff;">
+              <strong id="brandingPreviewName" style="font:700 20px 'Space Grotesk',sans-serif;">Minha Concessionária</strong>
+              <div id="brandingPreviewTagline" style="margin-top:4px;opacity:.88;">Seu próximo carro começa aqui.</div>
+            </div>
+            <div>
+              <button type="button" onclick="saveBranding()" class="is-9bf70ab2">Salvar e publicar</button>
             </div>
           </div>
         </div>
@@ -173,7 +213,7 @@
 
   async function fetchDealership() {
     try {
-      const res = await fetch('/api/dealership', { headers: { 'Authorization': 'Basic ' + btoa('admin:admin') } });
+      const res = await fetch('/api/dealership');
       if (!res.ok) throw new Error('Request failed');
       const data = await res.json();
       const d = data.dealership;
@@ -183,6 +223,14 @@
       document.getElementById('fieldAddress').value = d.address || '';
       document.getElementById('fieldRouting').value = d.leadRouting || 'round-robin';
       dealershipSettings = d.settings || {};
+      document.getElementById('fieldBrandName').value = dealershipSettings.brandName || d.name || '';
+      document.getElementById('fieldTagline').value = dealershipSettings.tagline || '';
+      document.getElementById('fieldLogoUrl').value = dealershipSettings.logoUrl || '';
+      document.getElementById('fieldWhatsapp').value = dealershipSettings.whatsapp || '';
+      document.getElementById('fieldInstagram').value = dealershipSettings.instagram || '';
+      document.getElementById('fieldPrimaryColor').value = dealershipSettings.primaryColor || '#2457d6';
+      document.getElementById('fieldAccentColor').value = dealershipSettings.accentColor || '#e58a1f';
+      updateBrandingPreview();
       document.querySelectorAll('#notifToggles input[type=checkbox]').forEach((box) => {
         box.checked = dealershipSettings[box.dataset.pref] !== false;
       });
@@ -195,7 +243,7 @@
     try {
       const res = await fetch('/api/dealership', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: document.getElementById('fieldName').value,
           email: document.getElementById('fieldEmail').value,
@@ -211,11 +259,47 @@
     }
   }
 
+  function updateBrandingPreview() {
+    const name = document.getElementById('fieldBrandName').value || 'Minha Concessionária';
+    const tagline = document.getElementById('fieldTagline').value || 'Seu próximo carro começa aqui.';
+    const primary = document.getElementById('fieldPrimaryColor').value || '#2457d6';
+    document.getElementById('brandingPreviewName').textContent = name;
+    document.getElementById('brandingPreviewTagline').textContent = tagline;
+    document.getElementById('brandingPreview').style.background = primary;
+  }
+
+  async function saveBranding() {
+    const settings = {
+      brandName: document.getElementById('fieldBrandName').value,
+      tagline: document.getElementById('fieldTagline').value,
+      logoUrl: document.getElementById('fieldLogoUrl').value,
+      whatsapp: document.getElementById('fieldWhatsapp').value,
+      instagram: document.getElementById('fieldInstagram').value,
+      primaryColor: document.getElementById('fieldPrimaryColor').value,
+      accentColor: document.getElementById('fieldAccentColor').value,
+      locale: 'pt-BR',
+      currency: 'BRL'
+    };
+    try {
+      const res = await fetch('/api/dealership', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: settings.brandName, settings })
+      });
+      if (!res.ok) throw new Error((await res.json()).error || 'Falha ao salvar');
+      dealershipSettings = { ...dealershipSettings, ...settings };
+      updateBrandingPreview();
+      DosShell.toast('Marca publicada com sucesso');
+    } catch (err) {
+      DosShell.toast('Não foi possível publicar: ' + err.message, 'error');
+    }
+  }
+
   async function saveNotificationPref(key, value) {
     try {
       const res = await fetch('/api/dealership', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ settings: { [key]: value } })
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Save failed');
@@ -234,7 +318,7 @@
   async function fetchTeamRoster() {
     const roster = document.getElementById('teamRoster');
     try {
-      const res = await fetch('/api/team', { headers: { 'Authorization': 'Basic ' + btoa('admin:admin') } });
+      const res = await fetch('/api/team');
       if (!res.ok) throw new Error('Request failed');
       const data = await res.json();
       const team = data.team || [];
@@ -257,6 +341,9 @@
 
   initTabs();
   initNotifToggles();
+  ['fieldBrandName', 'fieldTagline', 'fieldPrimaryColor'].forEach((id) => {
+    document.getElementById(id).addEventListener('input', updateBrandingPreview);
+  });
   fetchDealership();
   fetchTeamRoster();
 </script>

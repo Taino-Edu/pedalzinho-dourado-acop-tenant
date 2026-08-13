@@ -51,8 +51,8 @@ feature needs to be scoped tighter before you start.
 The MVP is live and functional, not a mockup. Test-drive booking, the CRM
 pipeline (7-stage Kanban + table view), inventory management, appointments,
 analytics, round-robin lead assignment, customer records, staff activity,
-settings — all of it runs against a real database (Postgres in production,
-SQLite locally), not fixtures. The full breakdown of what's live versus
+settings — all of it runs against PostgreSQL locally and in production,
+not fixtures. The full breakdown of what's live versus
 what's intentionally deferred is the MVP table in `README.md` — don't
 duplicate it here, it'll just drift out of sync. The short version: what's
 deferred is deferred because it needs a real third-party vendor account

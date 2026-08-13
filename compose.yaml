@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-autosuite}
+      POSTGRES_USER: ${POSTGRES_USER:-autosuite}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-database-password}
+    volumes:
+      - autosuite_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-55432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-autosuite} -d ${POSTGRES_DB:-autosuite}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-autosuite}:${POSTGRES_PASSWORD:-change-this-database-password}@db:5432/${POSTGRES_DB:-autosuite}?schema=public
+      DASHBOARD_USER: ${DASHBOARD_USER:-dealer}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:-change-this-dashboard-password}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+
+volumes:
+  autosuite_postgres_data:

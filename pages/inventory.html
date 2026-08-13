@@ -326,7 +326,7 @@
         await Promise.all([...selectedIds].map(id =>
           fetch(`/api/vehicles/${id}`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status })
           })
         ));
@@ -376,7 +376,7 @@
     try {
       const res = await fetch(`/api/vehicles/${quickEditId}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           price: Number(document.getElementById('qePrice').value),
           status: document.getElementById('qeStatus').value
@@ -421,7 +421,7 @@
         if (!make || !model) throw new Error('Make and model are required');
         const res = await fetch('/api/vehicles', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             vin: overlay.querySelector('#avVin').value.trim(),
             make, model,

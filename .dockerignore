@@ -1,0 +1,9 @@
+.git
+.github
+.claude
+node_modules
+.env
+.env.*
+prisma/*.db
+docs/archive
+npm-debug.log*

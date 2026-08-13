@@ -73,7 +73,7 @@
     try {
       const res = await fetch('/api/team', {
         signal: controller.signal,
-        headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+        headers: {}
       });
       clearTimeout(timeoutId);
       if (!res.ok) throw new Error('Request failed');

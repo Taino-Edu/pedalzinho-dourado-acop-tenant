@@ -9,12 +9,12 @@ const cars = [
 ];
 
 describe('formatNaira', () => {
-  it('prefixes the naira sign and groups thousands', () => {
-    expect(formatNaira(52000000)).toBe('₦52,000,000');
+  it('formats the server-side fallback as Brazilian real', () => {
+    expect(formatNaira(52000000)).toBe('R$ 52.000.000');
   });
 
   it('handles zero', () => {
-    expect(formatNaira(0)).toBe('₦0');
+    expect(formatNaira(0)).toBe('R$ 0');
   });
 });
 

@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const { emitter } = require('./api/_lib/events');
+const { checkAuth } = require('./api/_lib/auth');
 
 // Simulated API handlers (normally Vercel functions). leads/appointments/
 // vehicles each merge their bare-collection and by-id routes into a single
@@ -20,6 +21,8 @@ const { emitter } = require('./api/_lib/events');
 // than relying on Vercel bracket-folder conventions, to stay under the
 // Hobby plan's serverless function count limit.
 const handlers = {
+  branding: require('./api/branding.js'),
+  catalog: require('./api/catalog.js'),
   leads: require('./api/leads-handler.js'),
   dashboard: require('./api/dashboard.js'),
   vehicles: require('./api/vehicles-handler.js'),
@@ -37,7 +40,26 @@ const handlers = {
 const idRewriteCollections = new Set(['leads', 'vehicles', 'appointments']);
 
 const PORT = process.env.PORT || 3000;
-const HOST = 'localhost';
+const HOST = process.env.HOST || '0.0.0.0';
+
+const protectedDashboardPages = new Set([
+  '/pages/dashboard.html',
+  '/pages/dashboard',
+  '/pages/crm.html',
+  '/pages/crm',
+  '/pages/inventory.html',
+  '/pages/inventory',
+  '/pages/appointments.html',
+  '/pages/appointments',
+  '/pages/customers.html',
+  '/pages/customers',
+  '/pages/analytics.html',
+  '/pages/analytics',
+  '/pages/staff-activity.html',
+  '/pages/staff-activity',
+  '/pages/settings.html',
+  '/pages/settings'
+]);
 
 // MIME types
 const mimeTypes = {
@@ -60,6 +82,15 @@ function serveStaticFile(filePath, res) {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/html' });
       res.end('<h1>404 Not Found</h1>');
+      return;
+    }
+    if (path.extname(filePath) === '.html') {
+      const html = data.toString('utf8').replace(
+        '</head>',
+        '  <script src="/js/branding.js" defer></script>\n</head>'
+      );
+      res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
+      res.end(html);
       return;
     }
     res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
@@ -85,6 +116,15 @@ const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   let pathname = parsedUrl.pathname;
 
+  if (protectedDashboardPages.has(pathname) && !checkAuth(req)) {
+    res.writeHead(401, {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'WWW-Authenticate': 'Basic realm="Dealer Dashboard"'
+    });
+    res.end('Authentication required');
+    return;
+  }
+
   // Set CORS headers for API
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
@@ -99,6 +139,14 @@ const server = http.createServer((req, res) => {
   // Server-Sent Events stream: a long-lived connection, so it bypasses the
   // one-shot mock req/res dispatch used for the rest of /api/*.
   if (pathname === '/api/events') {
+    if (!checkAuth(req)) {
+      res.writeHead(401, {
+        'Content-Type': 'application/json',
+        'WWW-Authenticate': 'Basic realm="Dealer Dashboard"'
+      });
+      res.end(JSON.stringify({ error: 'Unauthorized' }));
+      return;
+    }
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
@@ -256,7 +304,7 @@ server.listen(PORT, HOST, () => {
 ║  Dashboard: http://${HOST}:${PORT}/pages/dashboard.html ║
 ║  CRM:       http://${HOST}:${PORT}/pages/crm.html    ║
 ║                                        ║
-║  Auth: admin / admin                  ║
+║  Auth: configured by environment     ║
 ║                                        ║
 ║  Press Ctrl+C to stop                 ║
 ║                                        ║

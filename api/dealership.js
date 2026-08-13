@@ -3,6 +3,29 @@ const { requireAuth } = require('./_lib/auth');
 const { broadcast } = require('./_lib/events');
 
 const VALID_ROUTING = ['round-robin', 'territory', 'skill-based'];
+const HEX_COLOR = /^#[0-9a-f]{6}$/i;
+const BRANDING_FIELDS = new Set([
+  'brandName', 'tagline', 'logoUrl', 'primaryColor', 'accentColor',
+  'whatsapp', 'instagram', 'locale', 'currency'
+]);
+
+function sanitizeSettings(settings) {
+  const sanitized = {};
+  for (const [key, value] of Object.entries(settings)) {
+    if (!BRANDING_FIELDS.has(key)) {
+      sanitized[key] = value;
+      continue;
+    }
+    if (typeof value !== 'string') continue;
+    const clean = value.trim().slice(0, 300);
+    if ((key === 'primaryColor' || key === 'accentColor') && !HEX_COLOR.test(clean)) continue;
+    if (key === 'logoUrl' && clean && !/^(https?:\/\/|\/)/i.test(clean)) continue;
+    if (key === 'currency' && clean !== 'BRL') continue;
+    if (key === 'locale' && clean !== 'pt-BR') continue;
+    sanitized[key] = clean;
+  }
+  return sanitized;
+}
 
 module.exports = async (req, res) => {
   if (!requireAuth(req, res)) return;
@@ -34,7 +57,7 @@ module.exports = async (req, res) => {
           return res.status(400).json({ error: 'Invalid settings' });
         }
         const existing = JSON.parse(dealership.settings || '{}');
-        data.settings = JSON.stringify({ ...existing, ...settings });
+        data.settings = JSON.stringify({ ...existing, ...sanitizeSettings(settings) });
       }
       if (Object.keys(data).length === 0) {
         return res.status(400).json({ error: 'No valid fields to update' });

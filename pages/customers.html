@@ -80,7 +80,7 @@
     try {
       const res = await fetch('/api/customers', {
         signal: controller.signal,
-        headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+        headers: {}
       });
       clearTimeout(timeoutId);
       if (!res.ok) throw new Error('Request failed');
@@ -150,7 +150,7 @@
         if (!name || !email) throw new Error('Name and email are required');
         const res = await fetch('/api/customers', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name, email,
             phone: overlay.querySelector('#acPhone').value.trim() || undefined,

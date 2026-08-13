@@ -14,6 +14,7 @@ module.exports = async (req, res) => {
   try {
     if (!id) {
       if (req.method === 'GET') {
+        if (!requireAuth(req, res)) return;
         const { status } = req.query || {};
         const where = status && VALID_STATUSES.includes(status) ? { status } : {};
         const vehicles = await prisma.vehicle.findMany({ where, orderBy: { createdAt: 'desc' } });
