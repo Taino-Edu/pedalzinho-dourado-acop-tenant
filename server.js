@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const { emitter } = require('./api/_lib/events');
-const { checkAuth } = require('./api/_lib/auth');
+const { checkAuth, createSessionCookie } = require('./api/_lib/auth');
 
 // Simulated API handlers (normally Vercel functions). leads/appointments/
 // vehicles each merge their bare-collection and by-id routes into a single
@@ -61,6 +61,23 @@ const protectedDashboardPages = new Set([
   '/pages/settings'
 ]);
 
+function safeJsonForHtml(value) {
+  return JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+}
+
+async function dashboardBootstrap() {
+  const { prisma } = require('./api/_lib/db');
+  const [leads, vehicles, appointments, dealership] = await Promise.all([
+    prisma.lead.findMany({ orderBy: { createdAt: 'desc' }, include: { assignedTo: true } }),
+    prisma.vehicle.findMany({ orderBy: { createdAt: 'desc' } }),
+    prisma.appointment.findMany({ orderBy: { dateTime: 'asc' }, include: { lead: true, vehicle: true } }),
+    prisma.dealership.findFirst({ select: { name: true, settings: true } }),
+  ]);
+  let settings = {};
+  try { settings = JSON.parse(dealership?.settings || '{}'); } catch {}
+  return { leads, vehicles, appointments, branding: { ...settings, brandName: settings.brandName || dealership?.name || 'Sua Concessionária' } };
+}
+
 // MIME types
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -77,7 +94,7 @@ function getMimeType(filePath) {
   return mimeTypes[path.extname(filePath)] || 'application/octet-stream';
 }
 
-function serveStaticFile(filePath, res) {
+function serveStaticFile(filePath, res, options = {}) {
   fs.readFile(filePath, (err, data) => {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/html' });
@@ -85,10 +102,16 @@ function serveStaticFile(filePath, res) {
       return;
     }
     if (path.extname(filePath) === '.html') {
-      const html = data.toString('utf8').replace(
+      let html = data.toString('utf8').replace(
         '</head>',
         '  <script src="/js/branding.js" defer></script>\n</head>'
       );
+      if (options.bootstrap) {
+        html = html.replace(
+          'window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {} };',
+          `window.DEALER_BOOTSTRAP = ${safeJsonForHtml(options.bootstrap)};`
+        );
+      }
       res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
       res.end(html);
       return;
@@ -116,13 +139,17 @@ const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   let pathname = parsedUrl.pathname;
 
-  if (protectedDashboardPages.has(pathname) && !checkAuth(req)) {
-    res.writeHead(401, {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'WWW-Authenticate': 'Basic realm="Dealer Dashboard"'
-    });
-    res.end('Authentication required');
-    return;
+  if (protectedDashboardPages.has(pathname)) {
+    if (!checkAuth(req)) {
+      res.writeHead(401, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'WWW-Authenticate': 'Basic realm="Dealer Dashboard"'
+      });
+      res.end('Authentication required');
+      return;
+    }
+    const sessionCookie = createSessionCookie(req);
+    if (sessionCookie) res.setHeader('Set-Cookie', sessionCookie);
   }
 
   // Set CORS headers for API
@@ -284,7 +311,11 @@ const server = http.createServer((req, res) => {
           serveStaticFile(fullPath, res);
         });
       } else {
-        serveStaticFile(fullPath, res);
+        if (pathname === '/pages/dashboard.html' || pathname === '/pages/dashboard') {
+          dashboardBootstrap().then((bootstrap) => serveStaticFile(fullPath, res, { bootstrap })).catch(() => serveStaticFile(fullPath, res));
+        } else {
+          serveStaticFile(fullPath, res);
+        }
       }
     });
   });

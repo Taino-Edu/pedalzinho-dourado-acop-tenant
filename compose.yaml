@@ -29,6 +29,7 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-autosuite}:${POSTGRES_PASSWORD:-change-this-database-password}@db:5432/${POSTGRES_DB:-autosuite}?schema=public
       DASHBOARD_USER: ${DASHBOARD_USER:-dealer}
       DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:-change-this-dashboard-password}
+      DASHBOARD_SESSION_SECRET: ${DASHBOARD_SESSION_SECRET:-change-this-session-secret}
     ports:
       - "${APP_PORT:-3000}:3000"
 
