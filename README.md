@@ -4,6 +4,12 @@
 
 Projeto técnico do produto white-label para concessionárias. A marca exibida no site é configurável por cliente no painel.
 
+## Edição comunitária e atribuição
+
+Este repositório é a edição pública, open source e single-tenant do projeto. Ele pode ser usado, estudado, modificado e redistribuído nos termos da licença MIT incluída no repositório.
+
+O trabalho começou a partir do projeto open source [AutoSuite, de eltsworkdesk](https://github.com/eltsworkdesk/autosuite). Mantemos essa atribuição e a licença original. Recursos empresariais específicos, integrações internas e a arquitetura multi-tenant da 3esysten são desenvolvidos separadamente para manter clara a fronteira entre a base comunitária e o produto comercial.
+
 **New to this repo?** Read [`docs/ONBOARDING.md`](docs/ONBOARDING.md) first — it's the current, accurate orientation. Historical sprint/phase logs live in [`docs/archive/`](docs/archive/) if you're curious how we got here, but they're not current state.
 
 ![AutoSuite storefront homepage](docs/screenshots/home.png)
