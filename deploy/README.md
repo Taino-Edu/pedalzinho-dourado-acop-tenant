@@ -63,6 +63,13 @@ isso deve ser uma mudança separada, testada para não interromper o ERP atual.
 Antes de ativar um novo cliente, confirme que a porta escolhida está livre e
 que não conflita com nenhuma instalação do multi-tenant.
 
+## Demonstração da 3esysten
+
+No servidor atual, `install-demo.sh` publica `autos.3esysten.com.br`, gera as
+senhas localmente e grava apenas duas cópias protegidas em `/root`. O script
+valida a aplicação e o Nginx antes de recarregar o proxy e não abre portas
+novas no firewall.
+
 ## Backup
 
 ```sh
