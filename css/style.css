@@ -341,6 +341,13 @@ button {
   color: var(--brand-blue-light);
 }
 
+.nav-icon-link[href$="compare.html"] {
+  color: #fff;
+  background: #24324a;
+  border-radius: var(--radius-sm);
+  padding-inline: 0.65rem;
+}
+
 .nav-backlink {
   display: inline-flex;
   align-items: center;

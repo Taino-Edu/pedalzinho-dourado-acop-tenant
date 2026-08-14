@@ -110,8 +110,8 @@ button, input { font: inherit; }
 .settings-sidebar nav a .material-symbols-rounded,
 .settings-sidebar-foot a .material-symbols-rounded { color: #8790a4; }
 .settings-sidebar nav a:hover,
-.settings-sidebar nav a.active { background: var(--octus-blue-soft); color: var(--octus-blue-strong); }
-.settings-sidebar nav a.active .material-symbols-rounded { color: var(--octus-blue-strong); }
+.settings-sidebar nav a.active { background: var(--octus-blue-soft); color: #064f6e; }
+.settings-sidebar nav a.active .material-symbols-rounded { color: #064f6e; }
 
 .settings-sidebar-foot {
   margin-top: auto;
