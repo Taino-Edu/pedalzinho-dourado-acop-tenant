@@ -1,5 +1,8 @@
 /* CRM-specific styles */
 
+.new-lead-button { background: #fff; }
+.lead-assignee-select { max-width: 170px; }
+
 .dos-tab {
   transition: all 0.2s ease;
 }

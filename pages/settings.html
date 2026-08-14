@@ -12,7 +12,7 @@
 </head>
 <body class="settings-body">
 <div class="settings-shell">
-  <aside class="settings-sidebar">
+  <aside class="settings-sidebar" aria-label="Menu de configurações">
     <a class="settings-brand" href="dashboard.html" aria-label="3esysten Auto — visão geral">
       <span class="settings-brand-mark dos-brand-mark"><span class="material-symbols-rounded">storefront</span></span>
       <span><strong>3esysten Auto</strong><small>ADMIN</small></span>
@@ -99,11 +99,11 @@
               </div>
               <label>WhatsApp com DDI<input id="fieldWhatsapp" type="tel" inputmode="numeric" placeholder="5511999999999"><small>Somente números, incluindo 55 e DDD.</small></label>
               <label>Instagram<input id="fieldInstagram" type="text" placeholder="@minhaloja"></label>
-              <label class="color-field">Cor principal<span><input id="fieldPrimaryColor" type="color" value="#2169f3"><output id="primaryColorValue">#2169F3</output></span></label>
-              <label class="color-field">Cor de destaque<span><input id="fieldAccentColor" type="color" value="#3ed5c5"><output id="accentColorValue">#3ED5C5</output></span></label>
+              <div class="color-field"><label for="fieldPrimaryColor">Cor principal</label><span><input id="fieldPrimaryColor" type="color" value="#2169f3"><output id="primaryColorValue" for="fieldPrimaryColor">#2169F3</output></span></div>
+              <div class="color-field"><label for="fieldAccentColor">Cor de destaque</label><span><input id="fieldAccentColor" type="color" value="#3ed5c5"><output id="accentColorValue" for="fieldAccentColor">#3ED5C5</output></span></div>
               <div class="form-actions full"><button class="settings-primary" type="submit">Salvar e publicar</button></div>
             </form>
-            <aside class="branding-preview-card">
+            <aside class="branding-preview-card" aria-label="Prévia da identidade visual">
               <span class="settings-eyebrow">PRÉVIA DA MARCA</span>
               <div id="brandingPreview" class="branding-preview">
                 <div id="brandingPreviewLogo" class="branding-preview-logo"></div>
@@ -118,7 +118,7 @@
 
         <section class="settings-panel" data-panel="team" hidden>
           <div class="settings-heading"><div><span class="settings-eyebrow">ATENDIMENTO E VENDAS</span><h2>Funcionários e comissões</h2><p>Cadastre a equipe, distribua os leads e acompanhe a comissão estimada das vendas.</p></div><button id="addTeamMember" class="settings-primary" type="button"><span class="material-symbols-rounded">person_add</span>Adicionar funcionário</button></div>
-          <div class="team-summary" aria-label="Resumo da equipe">
+          <div class="team-summary" role="group" aria-label="Resumo da equipe">
             <article><small>Funcionários ativos</small><strong id="teamActiveCount">0</strong></article>
             <article><small>Leads em atendimento</small><strong id="teamOpenLeads">0</strong></article>
             <article><small>Vendas atribuídas</small><strong id="teamSoldCount">0</strong></article>

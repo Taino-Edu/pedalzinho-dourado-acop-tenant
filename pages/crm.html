@@ -56,7 +56,7 @@
         <button type="button" class="dos-tab is-a6f24b44" data-view="detail">Detalhes do lead</button>
       </div>
       <div class="is-5d07dfa7">
-        <button type="button" id="newLeadBtn" class="is-105a0715" style="background:#fff">+ Novo lead</button>
+        <button type="button" id="newLeadBtn" class="is-105a0715 new-lead-button">+ Novo lead</button>
         <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
     </div>
@@ -125,7 +125,7 @@
             <div class="is-93c47945">Detalhes</div>
             <div class="is-7906cfd0">
               <div class="is-58e548bd"><span class="is-41ab4fe8">Origem</span><span id="detailSource">Pedido de test-drive</span></div>
-              <div class="is-58e548bd"><label class="is-41ab4fe8" for="detailAssigned">Responsável</label><select id="detailAssigned" class="dos-field-input" style="max-width:170px" onchange="assignLead(selectedLeadId, this.value)"><option value="">Sem responsável</option></select></div>
+              <div class="is-58e548bd"><label class="is-41ab4fe8" for="detailAssigned">Responsável</label><select id="detailAssigned" class="dos-field-input lead-assignee-select" onchange="assignLead(selectedLeadId, this.value)"><option value="">Sem responsável</option></select></div>
               <div class="is-58e548bd"><span class="is-41ab4fe8">Prioridade</span><span id="detailPriority" class="is-1a2dfef6">Alta</span></div>
               <div class="is-58e548bd"><span class="is-41ab4fe8">Criado em</span><span id="detailCreated">9 jul. 2026</span></div>
             </div>
