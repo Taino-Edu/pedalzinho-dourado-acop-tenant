@@ -47,17 +47,17 @@
           <div id="statTotal" class="is-28765d2d">-</div>
         </div>
         <div class="is-bc958880">
-          <div class="is-0e874e4b">With Purchase History</div>
+          <div class="is-0e874e4b">Já compraram</div>
           <div id="statPurchased" class="is-28765d2d">-</div>
         </div>
         <div class="is-bc958880">
-          <div class="is-0e874e4b">Referred</div>
+          <div class="is-0e874e4b">Vieram por indicação</div>
           <div id="statReferred" class="is-28765d2d">-</div>
         </div>
       </div>
 
       <div class="is-3153fb4e">
-        <button type="button" onclick="promptAddCustomer()" class="is-199df281">+ Add customer</button>
+        <button type="button" onclick="promptAddCustomer()" class="is-199df281">+ Adicionar cliente</button>
       </div>
 
       <div class="is-3c773fe7">
@@ -123,8 +123,8 @@
 
   async function promptAddCustomer() {
     const result = await DosShell.openModal({
-      title: 'Add customer',
-      confirmLabel: 'Add customer',
+      title: 'Adicionar cliente',
+      confirmLabel: 'Salvar cliente',
       focusSelector: '#acName',
       bodyHtml: `
         <div style="margin-bottom: 14px;">
@@ -132,7 +132,7 @@
           <input id="acName" type="text" class="dos-field-input">
         </div>
         <div style="margin-bottom: 14px;">
-          <label for="acEmail" class="dos-field-label">Email</label>
+          <label for="acEmail" class="dos-field-label">E-mail</label>
           <input id="acEmail" type="email" class="dos-field-input">
         </div>
         <div style="margin-bottom: 14px;">
@@ -140,14 +140,14 @@
           <input id="acPhone" type="text" class="dos-field-input">
         </div>
         <div>
-          <label for="acReferral" class="dos-field-label">Referral code (optional)</label>
+          <label for="acReferral" class="dos-field-label">Código de indicação (opcional)</label>
           <input id="acReferral" type="text" class="dos-field-input">
         </div>
       `,
       onConfirm: async (overlay) => {
         const name = overlay.querySelector('#acName').value.trim();
         const email = overlay.querySelector('#acEmail').value.trim();
-        if (!name || !email) throw new Error('Name and email are required');
+        if (!name || !email) throw new Error('Informe nome e e-mail.');
         const res = await fetch('/api/customers', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -157,12 +157,12 @@
             referralCode: overlay.querySelector('#acReferral').value.trim() || undefined
           })
         });
-        if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+        if (!res.ok) throw new Error((await res.json()).error || 'Não foi possível cadastrar o cliente.');
         return true;
       }
     });
     if (!result) return;
-    DosShell.toast('Customer added');
+    DosShell.toast('Cliente adicionado.');
     await fetchCustomers();
   }
 

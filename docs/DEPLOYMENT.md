@@ -43,11 +43,12 @@ regras públicas no firewall. O PostgreSQL nunca entra na rede do proxy.
 ## Atualização
 
 ```sh
-git pull
-docker compose -p cliente_slug --env-file .env up -d --build
+bash /opt/concessionarias/autos/deploy/update.sh
 ```
 
-As migrações Prisma são aplicadas automaticamente na inicialização. O seed só
+O script baixa a branch configurada, reconstrói apenas a stack da concessionária,
+verifica a saúde da aplicação e valida o Nginx antes de recarregá-lo. As
+migrações Prisma são aplicadas automaticamente na inicialização. O seed só
 é executado quando ainda não existe nenhuma concessionária no banco.
 
 ## Backup PostgreSQL

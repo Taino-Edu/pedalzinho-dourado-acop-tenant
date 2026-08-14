@@ -1,351 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configurações | Gestão da concessionária</title>
+  <title>Configurações | 3esysten Auto</title>
   <meta name="robots" content="noindex, nofollow">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
-  <link rel="stylesheet" href="../css/dos-inline.css">
+  <link rel="stylesheet" href="../css/settings.css?v=1">
 </head>
-<body class="dos-body">
-<div class="dos-shell">
-  <aside class="dos-sidebar">
-    <div class="dos-brand is-3b2d2e52">
-      <div class="is-97083f3d"></div>
-      <div class="is-dc3e742f">AutoSuite</div>
-    </div>
-    <div data-dos-search class="is-4330c69b">
-      <span>⌘K Buscar em tudo</span>
-    </div>
-    <nav class="dos-nav" aria-label="Gestão da concessionária">
-      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Visão geral</a>
-      <a href="crm.html" class="dos-nav-item is-3fa6ef03">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Estoque</a>
-      <a href="appointments.html" class="dos-nav-item is-3fa6ef03">◔ Agenda</a>
-      <a href="customers.html" class="dos-nav-item is-3fa6ef03">✎ Clientes</a>
-      <a href="analytics.html" class="dos-nav-item is-3fa6ef03">▲ Relatórios</a>
-      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Atividade da equipe</a>
+<body class="settings-body">
+<div class="settings-shell">
+  <aside class="settings-sidebar">
+    <a class="settings-brand" href="dashboard.html" aria-label="3esysten Auto — visão geral">
+      <span class="settings-brand-mark dos-brand-mark"><span class="material-symbols-rounded">storefront</span></span>
+      <span><strong>3esysten Auto</strong><small>ADMIN</small></span>
+    </a>
+    <button id="settingsCollapse" class="settings-collapse" type="button" aria-label="Recolher menu" aria-expanded="true"><span class="material-symbols-rounded">chevron_left</span></button>
+    <nav aria-label="Gestão da concessionária">
+      <span class="settings-nav-label">OPERACIONAL</span>
+      <a href="dashboard.html"><span class="material-symbols-rounded">space_dashboard</span>Painel geral</a>
+      <a href="crm.html"><span class="material-symbols-rounded">groups</span>Leads</a>
+      <a href="inventory.html"><span class="material-symbols-rounded">directions_car</span>Estoque</a>
+      <a href="appointments.html"><span class="material-symbols-rounded">calendar_month</span>Agenda</a>
+      <span class="settings-nav-label">ADMINISTRAÇÃO</span>
+      <a href="customers.html"><span class="material-symbols-rounded">person</span>Clientes</a>
+      <a href="settings.html#team"><span class="material-symbols-rounded">manage_accounts</span>Equipe e acessos</a>
+      <a class="active" href="settings.html"><span class="material-symbols-rounded">palette</span>Personalizar site</a>
+      <span class="settings-nav-label">MÓDULOS</span>
+      <a href="financing-calculator.html"><span class="material-symbols-rounded">calculate</span>Financiamento</a>
+      <a href="analytics.html"><span class="material-symbols-rounded">monitoring</span>Relatórios</a>
     </nav>
-    <div class="is-df55b60c">
-      <a href="settings.html" class="dos-nav-item active is-1cd5d92b">⚙ Configurações</a>
+    <div class="settings-sidebar-foot">
+      <div class="settings-user"><span class="material-symbols-rounded">person</span><span><strong>Administrador da loja</strong><small>Admin</small></span></div>
+      <a href="../index.html" target="_blank"><span class="material-symbols-rounded">storefront</span>Ver loja</a>
+      <a href="../index.html"><span class="material-symbols-rounded">logout</span>Sair</a>
     </div>
   </aside>
-  <main class="is-cc38790d">
-    <div class="is-aa8ddd09">
-      <h1 class="is-6f08c733">Configurações</h1>
-      <div class="is-dc310e06">
-        <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
+  <button id="settingsScrim" class="settings-scrim" type="button" aria-label="Fechar menu"></button>
+
+  <main class="settings-main">
+    <header class="settings-topbar">
+      <button id="settingsMenu" class="settings-menu" type="button" aria-label="Abrir menu"><span class="material-symbols-rounded">menu</span></button>
+      <div class="settings-title"><span class="material-symbols-rounded">palette</span><div><h1>Personalizar site</h1><p>Configurações da vitrine da concessionária</p></div></div>
+      <div class="settings-top-actions">
+        <span class="settings-online"><i></i>Site online</span>
+        <a class="settings-site-link" href="../index.html" target="_blank"><span class="material-symbols-rounded">storefront</span>Ver vitrine</a>
+        <button class="settings-refresh" type="button" onclick="location.reload()" aria-label="Atualizar"><span class="material-symbols-rounded">refresh</span></button>
       </div>
-    </div>
-    <div class="is-8eb1c857">
-      <div id="settingsTabs" class="is-c01bf156">
-        <button type="button" class="settings-tab active is-7f96eb3e" data-tab="profile">Perfil da concessionária</button>
-        <button type="button" class="settings-tab is-6c897b40" data-tab="branding">Marca e site</button>
-        <button type="button" class="settings-tab is-6c897b40" data-tab="staff">Staff &amp; Roles</button>
-        <button type="button" class="settings-tab is-6c897b40" data-tab="routing">Lead Routing</button>
-        <button type="button" class="settings-tab is-6c897b40" data-tab="notifications">Notifications</button>
-        <button type="button" class="settings-tab is-6c897b40" data-tab="billing">Billing &amp; Plan</button>
-        <button type="button" class="settings-tab is-6c897b40" data-tab="integrations">Integrations</button>
+    </header>
+
+    <section class="settings-workspace">
+      <nav class="settings-tabs" id="settingsTabs" aria-label="Seções das configurações">
+        <button type="button" class="settings-tab active" data-tab="start"><span class="material-symbols-rounded">rocket_launch</span><span>Primeiros passos<small>Coloque sua loja no ar</small></span></button>
+        <button type="button" class="settings-tab" data-tab="profile"><span class="material-symbols-rounded">storefront</span><span>Dados da loja<small>Contato e endereço</small></span></button>
+        <button type="button" class="settings-tab" data-tab="branding"><span class="material-symbols-rounded">palette</span><span>Marca e site<small>Logo, cores e canais</small></span></button>
+        <button type="button" class="settings-tab" data-tab="team"><span class="material-symbols-rounded">badge</span><span>Equipe<small>Quem atende seus leads</small></span></button>
+      </nav>
+
+      <div class="settings-content">
+        <section class="settings-panel active" data-panel="start">
+          <div class="settings-heading"><div><span class="settings-eyebrow">COMECE POR AQUI</span><h2>Prepare sua vitrine em poucos minutos</h2><p>Sem configurações técnicas e sem integrações de fachada.</p></div><strong id="setupProgress">0%</strong></div>
+          <div class="setup-progress"><i id="setupProgressBar"></i></div>
+          <div class="setup-list">
+            <button type="button" data-go-tab="profile" data-check="profile"><span class="setup-number">1</span><span><strong>Complete os dados da loja</strong><small>Nome, telefone, e-mail e endereço exibidos ao cliente.</small></span><i class="material-symbols-rounded">arrow_forward</i></button>
+            <button type="button" data-go-tab="branding" data-check="branding"><span class="setup-number">2</span><span><strong>Aplique sua identidade</strong><small>Envie o logo, escolha as cores e confira a prévia.</small></span><i class="material-symbols-rounded">arrow_forward</i></button>
+            <a href="inventory.html" data-check="inventory"><span class="setup-number">3</span><span><strong>Cadastre o primeiro veículo</strong><small>Inclua preço, ficha e fotos prontas para a vitrine.</small></span><i class="material-symbols-rounded">arrow_forward</i></a>
+            <a href="../index.html" target="_blank"><span class="setup-number">4</span><span><strong>Revise e publique</strong><small>Abra o site como cliente antes de divulgar o domínio.</small></span><i class="material-symbols-rounded">open_in_new</i></a>
+          </div>
+          <div class="settings-info"><span class="material-symbols-rounded">notifications_active</span><div><strong>Notificações do painel já estão ativas</strong><p>Novos leads, mudanças no estoque e agenda aparecem no sino. E-mail e SMS só serão oferecidos quando houver um provedor realmente conectado.</p></div></div>
+        </section>
+
+        <section class="settings-panel" data-panel="profile" hidden>
+          <div class="settings-heading"><div><span class="settings-eyebrow">DADOS DA OPERAÇÃO</span><h2>Dados da loja</h2><p>Essas informações aparecem nos contatos e ajudam o cliente a encontrar você.</p></div></div>
+          <form id="profileForm" class="settings-card settings-form">
+            <label class="full">Nome da concessionária<input id="fieldName" type="text" maxlength="100" required placeholder="Ex.: Pedalzinho Dourado Veículos"></label>
+            <label>E-mail de atendimento<input id="fieldEmail" type="email" required placeholder="vendas@sualoja.com.br"></label>
+            <label>Telefone<input id="fieldPhone" type="tel" placeholder="(11) 4000-0000"></label>
+            <label class="full">Endereço<input id="fieldAddress" type="text" placeholder="Rua, número, bairro, cidade e UF"></label>
+            <div class="form-actions full"><button class="settings-primary" type="submit">Salvar dados da loja</button></div>
+          </form>
+        </section>
+
+        <section class="settings-panel" data-panel="branding" hidden>
+          <div class="settings-heading"><div><span class="settings-eyebrow">IDENTIDADE VISUAL</span><h2>Marca e site</h2><p>Personalize a vitrine sem editar código nem depender de hospedagem externa.</p></div><div class="config-actions"><button id="exportBranding" type="button"><span class="material-symbols-rounded">download</span>Exportar</button><label><span class="material-symbols-rounded">upload_file</span>Importar<input id="importBranding" type="file" accept="application/json" hidden></label></div></div>
+          <div class="branding-grid">
+            <form id="brandingForm" class="settings-card settings-form">
+              <label class="full">Nome exibido<input id="fieldBrandName" type="text" maxlength="80" required placeholder="Minha Concessionária"></label>
+              <label class="full">Frase principal<input id="fieldTagline" type="text" maxlength="140" placeholder="Seu próximo carro começa aqui."></label>
+              <div class="logo-uploader full">
+                <div class="logo-copy"><strong>Logotipo da loja</strong><p>PNG ou WebP com fundo transparente. Recomendado: <b>800 × 240 px</b>, proporção horizontal, até 4 MB.</p></div>
+                <div class="logo-row">
+                  <div id="logoPreview" class="logo-preview"><span class="material-symbols-rounded">image</span><small>Nenhum logo enviado</small></div>
+                  <div><label class="upload-button">Escolher arquivo<input id="fieldLogoFile" type="file" accept="image/png,image/jpeg,image/webp" hidden></label><button id="removeLogo" class="text-button" type="button">Remover logo</button></div>
+                </div>
+                <input id="fieldLogoUrl" type="hidden">
+              </div>
+              <label>WhatsApp com DDI<input id="fieldWhatsapp" type="tel" inputmode="numeric" placeholder="5511999999999"><small>Somente números, incluindo 55 e DDD.</small></label>
+              <label>Instagram<input id="fieldInstagram" type="text" placeholder="@minhaloja"></label>
+              <label class="color-field">Cor principal<span><input id="fieldPrimaryColor" type="color" value="#2169f3"><output id="primaryColorValue">#2169F3</output></span></label>
+              <label class="color-field">Cor de destaque<span><input id="fieldAccentColor" type="color" value="#3ed5c5"><output id="accentColorValue">#3ED5C5</output></span></label>
+              <div class="form-actions full"><button class="settings-primary" type="submit">Salvar e publicar</button></div>
+            </form>
+            <aside class="branding-preview-card">
+              <span class="settings-eyebrow">PRÉVIA DA MARCA</span>
+              <div id="brandingPreview" class="branding-preview">
+                <div id="brandingPreviewLogo" class="branding-preview-logo"></div>
+                <strong id="brandingPreviewName">Minha Concessionária</strong>
+                <p id="brandingPreviewTagline">Seu próximo carro começa aqui.</p>
+                <button type="button">Ver veículos</button>
+              </div>
+              <div class="image-guide"><strong>Fotos dos veículos</strong><ul><li>Formato horizontal 4:3</li><li>Recomendado: 1600 × 1200 px</li><li>Use a primeira foto como capa</li><li>Evite texto, molduras e marcas-d'água</li><li>Até 5 fotos JPG, PNG ou WebP</li></ul><a href="inventory.html">Ir para o estoque <span class="material-symbols-rounded">arrow_forward</span></a></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="settings-panel" data-panel="team" hidden>
+          <div class="settings-heading"><div><span class="settings-eyebrow">ATENDIMENTO E VENDAS</span><h2>Funcionários e comissões</h2><p>Cadastre a equipe, distribua os leads e acompanhe a comissão estimada das vendas.</p></div><button id="addTeamMember" class="settings-primary" type="button"><span class="material-symbols-rounded">person_add</span>Adicionar funcionário</button></div>
+          <div class="team-summary" aria-label="Resumo da equipe">
+            <article><small>Funcionários ativos</small><strong id="teamActiveCount">0</strong></article>
+            <article><small>Leads em atendimento</small><strong id="teamOpenLeads">0</strong></article>
+            <article><small>Vendas atribuídas</small><strong id="teamSoldCount">0</strong></article>
+            <article><small>Comissão estimada</small><strong id="teamCommissionTotal">R$ 0,00</strong></article>
+          </div>
+          <div id="teamRoster" class="settings-card team-roster"><p>Carregando equipe…</p></div>
+          <div class="settings-info"><span class="material-symbols-rounded">payments</span><div><strong>Como a comissão é calculada</strong><p>Valor do veículo vendido × percentual do vendedor. É uma previsão operacional; estornos, bônus e regras da folha continuam sendo conferidos pelo financeiro.</p></div></div>
+        </section>
       </div>
-
-      <div class="is-7f5fc7ab">
-
-        <!-- DEALERSHIP PROFILE -->
-        <div class="settings-panel" data-panel="profile">
-          <div class="is-c1d2b310">Perfil da concessionária</div>
-          <div class="is-269ea7a6">
-            <div>
-              <label for="fieldName" class="is-204b9faf">Nome</label>
-              <input id="fieldName" type="text" class="is-b94f2f17">
-            </div>
-            <div>
-              <label for="fieldEmail" class="is-204b9faf">Support email</label>
-              <input id="fieldEmail" type="email" class="is-b94f2f17">
-            </div>
-            <div>
-              <label for="fieldPhone" class="is-204b9faf">Support phone</label>
-              <input id="fieldPhone" type="text" class="is-b94f2f17">
-            </div>
-            <div>
-              <label for="fieldAddress" class="is-204b9faf">Endereço</label>
-              <input id="fieldAddress" type="text" class="is-b94f2f17">
-            </div>
-            <div>
-              <button type="button" onclick="saveDealership()" class="is-9bf70ab2">Salvar alterações</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- BRANDING -->
-        <div class="settings-panel is-224b51a7" data-panel="branding">
-          <div class="is-c1d2b310">Personalização do site</div>
-          <p class="is-93abb5fe">A concessionária pode alterar sua marca sem editar o código.</p>
-          <div class="is-269ea7a6">
-            <div>
-              <label for="fieldBrandName" class="is-204b9faf">Nome exibido</label>
-              <input id="fieldBrandName" type="text" maxlength="80" class="is-b94f2f17" placeholder="Minha Concessionária">
-            </div>
-            <div>
-              <label for="fieldTagline" class="is-204b9faf">Frase principal</label>
-              <input id="fieldTagline" type="text" maxlength="140" class="is-b94f2f17" placeholder="Seu próximo carro começa aqui.">
-            </div>
-            <div>
-              <label for="fieldLogoUrl" class="is-204b9faf">URL do logotipo</label>
-              <input id="fieldLogoUrl" type="url" class="is-b94f2f17" placeholder="https://.../logo.png">
-            </div>
-            <div>
-              <label for="fieldWhatsapp" class="is-204b9faf">WhatsApp com DDI</label>
-              <input id="fieldWhatsapp" type="tel" class="is-b94f2f17" placeholder="5511999999999">
-            </div>
-            <div>
-              <label for="fieldInstagram" class="is-204b9faf">Instagram</label>
-              <input id="fieldInstagram" type="text" class="is-b94f2f17" placeholder="@minhaloja">
-            </div>
-            <div style="display:flex;gap:18px;align-items:end;flex-wrap:wrap;">
-              <label for="fieldPrimaryColor" class="is-204b9faf">Cor principal<br><input id="fieldPrimaryColor" type="color" value="#2457d6" style="width:70px;height:44px;border:1px solid #d8dce5;border-radius:8px;padding:4px;background:#fff;"></label>
-              <label for="fieldAccentColor" class="is-204b9faf">Cor de destaque<br><input id="fieldAccentColor" type="color" value="#e58a1f" style="width:70px;height:44px;border:1px solid #d8dce5;border-radius:8px;padding:4px;background:#fff;"></label>
-            </div>
-            <div id="brandingPreview" style="padding:18px;border-radius:12px;background:#2457d6;color:#fff;">
-              <strong id="brandingPreviewName" style="font:700 20px 'Space Grotesk',sans-serif;">Minha Concessionária</strong>
-              <div id="brandingPreviewTagline" style="margin-top:4px;opacity:.88;">Seu próximo carro começa aqui.</div>
-            </div>
-            <div>
-              <button type="button" onclick="saveBranding()" class="is-9bf70ab2">Salvar e publicar</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- STAFF & ROLES -->
-        <div class="settings-panel is-224b51a7" data-panel="staff">
-          <div class="is-c1d2b310">Staff &amp; Roles</div>
-          <div id="teamRoster" class="is-e4b1745b"></div>
-        </div>
-
-        <!-- LEAD ROUTING -->
-        <div class="settings-panel is-224b51a7" data-panel="routing">
-          <div class="is-c1d2b310">Lead Routing</div>
-          <p class="is-93abb5fe">How new leads get assigned to your sales team.</p>
-          <div>
-            <label for="fieldRouting" class="is-204b9faf">Routing rule</label>
-            <select id="fieldRouting" class="is-4379c343">
-              <option value="round-robin">Round robin</option>
-              <option value="territory">Territory-based</option>
-              <option value="skill-based">Skill-based</option>
-            </select>
-            <button type="button" onclick="saveDealership()" class="is-9bf70ab2">Salvar alterações</button>
-          </div>
-        </div>
-
-        <!-- NOTIFICATIONS -->
-        <div class="settings-panel is-224b51a7" data-panel="notifications">
-          <div class="is-c1d2b310">Notifications</div>
-          <div id="notifToggles" class="is-6f5d2326">
-            <label class="is-3184c48a">
-              <span class="is-3f546018">Email me new lead alerts</span>
-              <input type="checkbox" data-pref="emailNewLead" class="is-8b171db9">
-            </label>
-            <label class="is-3184c48a">
-              <span class="is-3f546018">SMS test-drive reminders</span>
-              <input type="checkbox" data-pref="smsReminders" class="is-8b171db9">
-            </label>
-            <label class="is-3184c48a">
-              <span class="is-3f546018">Weekly performance digest</span>
-              <input type="checkbox" data-pref="weeklyDigest" class="is-8b171db9">
-            </label>
-          </div>
-        </div>
-
-        <!-- BILLING & PLAN -->
-        <div class="settings-panel is-224b51a7" data-panel="billing">
-          <div class="is-c1d2b310">Billing &amp; Plan</div>
-          <div class="is-b5760063">
-            <div class="is-ea315dc0">Current plan</div>
-            <div class="is-ebb50406">Growth — $899/mo</div>
-            <div class="is-3e51ffac">Up to 3 rooftops, unlimited vehicles</div>
-          </div>
-          <p class="is-bb8fac20">Billing management is not part of this demo build.</p>
-        </div>
-
-        <!-- INTEGRATIONS -->
-        <div class="settings-panel is-224b51a7" data-panel="integrations">
-          <div class="is-c1d2b310">Integrations</div>
-          <div class="is-e4b1745b">
-            <div class="is-80e5cc74">
-              <span class="is-d9977873">Legacy DMS sync</span>
-              <span class="is-a3a3b712">Coming soon</span>
-            </div>
-            <div class="is-80e5cc74">
-              <span class="is-d9977873">Zapier</span>
-              <span class="is-a3a3b712">Coming soon</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
+    </section>
   </main>
 </div>
-<script src="../js/dos-shell.js"></script>
-<script>
-  let dealershipSettings = {};
-
-  function initTabs() {
-    document.querySelectorAll('.settings-tab').forEach((tab) => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.settings-tab').forEach((t) => {
-          t.classList.remove('active');
-          t.style.background = 'none';
-          t.style.color = 'oklch(45% 0.01 260)';
-        });
-        tab.classList.add('active');
-        tab.style.background = 'oklch(95% 0.02 260)';
-        tab.style.color = 'oklch(30% 0.01 260)';
-
-        document.querySelectorAll('.settings-panel').forEach((p) => {
-          p.style.display = p.dataset.panel === tab.dataset.tab ? 'block' : 'none';
-        });
-      });
-    });
-  }
-
-  async function fetchDealership() {
-    try {
-      const res = await fetch('/api/dealership');
-      if (!res.ok) throw new Error('Request failed');
-      const data = await res.json();
-      const d = data.dealership;
-      document.getElementById('fieldName').value = d.name || '';
-      document.getElementById('fieldEmail').value = d.email || '';
-      document.getElementById('fieldPhone').value = d.phone || '';
-      document.getElementById('fieldAddress').value = d.address || '';
-      document.getElementById('fieldRouting').value = d.leadRouting || 'round-robin';
-      dealershipSettings = d.settings || {};
-      document.getElementById('fieldBrandName').value = dealershipSettings.brandName || d.name || '';
-      document.getElementById('fieldTagline').value = dealershipSettings.tagline || '';
-      document.getElementById('fieldLogoUrl').value = dealershipSettings.logoUrl || '';
-      document.getElementById('fieldWhatsapp').value = dealershipSettings.whatsapp || '';
-      document.getElementById('fieldInstagram').value = dealershipSettings.instagram || '';
-      document.getElementById('fieldPrimaryColor').value = dealershipSettings.primaryColor || '#2457d6';
-      document.getElementById('fieldAccentColor').value = dealershipSettings.accentColor || '#e58a1f';
-      updateBrandingPreview();
-      document.querySelectorAll('#notifToggles input[type=checkbox]').forEach((box) => {
-        box.checked = dealershipSettings[box.dataset.pref] !== false;
-      });
-    } catch (err) {
-      console.warn('Dealership API unavailable:', err.message);
-    }
-  }
-
-  async function saveDealership() {
-    try {
-      const res = await fetch('/api/dealership', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: document.getElementById('fieldName').value,
-          email: document.getElementById('fieldEmail').value,
-          phone: document.getElementById('fieldPhone').value,
-          address: document.getElementById('fieldAddress').value,
-          leadRouting: document.getElementById('fieldRouting').value,
-        })
-      });
-      if (!res.ok) throw new Error((await res.json()).error || 'Save failed');
-      DosShell.toast('Saved successfully');
-    } catch (err) {
-      DosShell.toast('Could not save: ' + err.message, 'error');
-    }
-  }
-
-  function updateBrandingPreview() {
-    const name = document.getElementById('fieldBrandName').value || 'Minha Concessionária';
-    const tagline = document.getElementById('fieldTagline').value || 'Seu próximo carro começa aqui.';
-    const primary = document.getElementById('fieldPrimaryColor').value || '#2457d6';
-    document.getElementById('brandingPreviewName').textContent = name;
-    document.getElementById('brandingPreviewTagline').textContent = tagline;
-    document.getElementById('brandingPreview').style.background = primary;
-  }
-
-  async function saveBranding() {
-    const settings = {
-      brandName: document.getElementById('fieldBrandName').value,
-      tagline: document.getElementById('fieldTagline').value,
-      logoUrl: document.getElementById('fieldLogoUrl').value,
-      whatsapp: document.getElementById('fieldWhatsapp').value,
-      instagram: document.getElementById('fieldInstagram').value,
-      primaryColor: document.getElementById('fieldPrimaryColor').value,
-      accentColor: document.getElementById('fieldAccentColor').value,
-      locale: 'pt-BR',
-      currency: 'BRL'
-    };
-    try {
-      const res = await fetch('/api/dealership', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: settings.brandName, settings })
-      });
-      if (!res.ok) throw new Error((await res.json()).error || 'Falha ao salvar');
-      dealershipSettings = { ...dealershipSettings, ...settings };
-      updateBrandingPreview();
-      DosShell.toast('Make publicada com sucesso');
-    } catch (err) {
-      DosShell.toast('Não foi possível publicar: ' + err.message, 'error');
-    }
-  }
-
-  async function saveNotificationPref(key, value) {
-    try {
-      const res = await fetch('/api/dealership', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ settings: { [key]: value } })
-      });
-      if (!res.ok) throw new Error((await res.json()).error || 'Save failed');
-      DosShell.toast('Preference saved');
-    } catch (err) {
-      DosShell.toast('Could not save preference: ' + err.message, 'error');
-    }
-  }
-
-  function initNotifToggles() {
-    document.querySelectorAll('#notifToggles input[type=checkbox]').forEach((box) => {
-      box.addEventListener('change', () => saveNotificationPref(box.dataset.pref, box.checked));
-    });
-  }
-
-  async function fetchTeamRoster() {
-    const roster = document.getElementById('teamRoster');
-    try {
-      const res = await fetch('/api/team');
-      if (!res.ok) throw new Error('Request failed');
-      const data = await res.json();
-      const team = data.team || [];
-      roster.innerHTML = team.length === 0
-        ? '<div class="is-bc4d4839">No team members yet</div>'
-        : team.map(m => `
-            <div class="is-3d25ce3b">
-              <div class="is-d4cbd094"></div>
-              <div class="is-49cdf874">
-                <div class="is-8fc07565">${m.name}</div>
-                <div class="is-41b12b7b">${m.email} · ${m.role}</div>
-              </div>
-              <span style="font: 500 11px; padding: 3px 8px; border-radius: 999px; background: ${m.active ? 'oklch(90% 0.1 145)' : 'oklch(92% 0.005 260)'}; color: ${m.active ? 'oklch(30% 0.08 145)' : 'oklch(50% 0.01 260)'};">${m.active ? 'Active' : 'Inactive'}</span>
-            </div>
-          `).join('');
-    } catch (err) {
-      roster.innerHTML = '<div class="is-bc4d4839">Could not load team roster</div>';
-    }
-  }
-
-  initTabs();
-  initNotifToggles();
-  ['fieldBrandName', 'fieldTagline', 'fieldPrimaryColor'].forEach((id) => {
-    document.getElementById(id).addEventListener('input', updateBrandingPreview);
-  });
-  fetchDealership();
-  fetchTeamRoster();
-</script>
+<script src="../js/dos-shell.js?v=4"></script>
+<script src="../js/settings.js?v=1"></script>
 </body>
 </html>

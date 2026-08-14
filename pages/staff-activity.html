@@ -43,22 +43,22 @@
     <div class="is-80ba7097">
       <div class="is-b899bea0">
         <div class="is-bc958880">
-          <div class="is-0e874e4b">Active Reps</div>
+          <div class="is-0e874e4b">Funcionários ativos</div>
           <div id="statActiveReps" class="is-28765d2d">-</div>
         </div>
         <div class="is-bc958880">
-          <div class="is-0e874e4b">Leads Assigned</div>
+          <div class="is-0e874e4b">Leads atribuídos</div>
           <div id="statAssigned" class="is-28765d2d">-</div>
         </div>
         <div class="is-bc958880">
-          <div class="is-0e874e4b">Deals Closed</div>
+          <div class="is-0e874e4b">Vendas e comissão</div>
           <div id="statVendido" class="is-28765d2d">-</div>
         </div>
       </div>
 
       <div class="is-3c773fe7">
         <div class="is-23f5dd9b">
-          <div>Rep</div><div>Email</div><div>Role</div><div>Assigned</div><div>Open</div><div>Vendido</div>
+          <div>Funcionário</div><div>E-mail</div><div>Função</div><div>Atribuídos</div><div>Em aberto</div><div>Vendas / comissão</div>
         </div>
         <div id="teamList"></div>
       </div>
@@ -88,11 +88,13 @@
   function renderTeam(team) {
     document.getElementById('statActiveReps').textContent = team.filter(m => m.active).length;
     document.getElementById('statAssigned').textContent = team.reduce((sum, m) => sum + m.assignedLeadCount, 0);
-    document.getElementById('statVendido').textContent = team.reduce((sum, m) => sum + m.soldCount, 0);
+    const sold = team.reduce((sum, m) => sum + m.soldCount, 0);
+    const commission = team.reduce((sum, m) => sum + m.commissionCents, 0);
+    document.getElementById('statVendido').textContent = `${sold} · ${money(commission)}`;
 
     const list = document.getElementById('teamList');
     if (team.length === 0) {
-      list.innerHTML = '<div class="is-69c2f96a">No team members yet</div>';
+      list.innerHTML = '<div class="is-69c2f96a">Nenhum funcionário cadastrado</div>';
       return;
     }
 
@@ -103,12 +105,20 @@
           ${m.name}
         </div>
         <div class="is-024dc74f">${m.email}</div>
-        <div class="is-350ccc93">${m.role}</div>
+        <div class="is-350ccc93">${roleLabel(m.role)}</div>
         <div>${m.assignedLeadCount}</div>
         <div>${m.openCount}</div>
-        <div>${m.soldCount}</div>
+        <div>${m.soldCount} · ${money(m.commissionCents)}</div>
       </div>
     `).join('');
+  }
+
+  function money(cents) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(cents || 0) / 100);
+  }
+
+  function roleLabel(role) {
+    return ({ owner: 'Proprietário', manager: 'Gerente', sales: 'Vendedor', bdc: 'Pré-vendas' }[role] || role);
   }
 
   fetchTeam();

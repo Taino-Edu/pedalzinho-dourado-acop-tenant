@@ -3,6 +3,7 @@ const { requireAuth } = require('./_lib/auth');
 const { broadcast } = require('./_lib/events');
 
 const VALID_STATUSES = ['draft', 'active', 'featured', 'sold'];
+const VALID_LOCATIONS = ['patio', 'garagem', 'showroom', 'oficina', 'terceiros'];
 const MAX_IMAGES = 5;
 const MAX_IMAGE_LENGTH = 2_000_000;
 
@@ -34,7 +35,7 @@ module.exports = async (req, res) => {
 
       if (req.method === 'POST') {
         if (!requireAuth(req, res)) return;
-        const { vin, make, model, year, price, mileage, color, body, engine, transmission, drivetrain, mpg, images, status, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
+        const { vin, make, model, year, price, mileage, color, body, engine, transmission, drivetrain, mpg, images, status, location, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
 
         if (!vin || !make || !model || !year || !price) {
           return res.status(400).json({ error: 'Missing required fields: vin, make, model, year, price' });
@@ -59,6 +60,7 @@ module.exports = async (req, res) => {
             mpg: mpg ? parseFloat(mpg) : null,
             images: JSON.stringify(sanitizedImages),
             status: VALID_STATUSES.includes(status) ? status : 'active',
+            location: VALID_LOCATIONS.includes(location) ? location : 'patio',
             fipeCode: fipeCode || null,
             fipePrice: fipePrice ? parseInt(fipePrice) : null,
             fipeModel: fipeModel || null,
@@ -77,7 +79,7 @@ module.exports = async (req, res) => {
     if (!requireAuth(req, res)) return;
 
     if (req.method === 'PATCH') {
-      const { price, mileage, status, color, dealerNotes, history, images, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
+      const { price, mileage, status, location, color, dealerNotes, history, images, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
       const data = {};
 
       if (price !== undefined) data.price = parseInt(price);
@@ -97,6 +99,10 @@ module.exports = async (req, res) => {
       if (status !== undefined) {
         if (!VALID_STATUSES.includes(status)) return res.status(400).json({ error: 'Invalid status' });
         data.status = status;
+      }
+      if (location !== undefined) {
+        if (!VALID_LOCATIONS.includes(location)) return res.status(400).json({ error: 'Localização inválida' });
+        data.location = location;
       }
       if (Object.keys(data).length === 0) {
         return res.status(400).json({ error: 'No valid fields to update' });

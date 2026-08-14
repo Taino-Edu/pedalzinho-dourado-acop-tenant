@@ -17,12 +17,18 @@ function sanitizeSettings(settings) {
       continue;
     }
     if (typeof value !== 'string') continue;
-    const clean = value.trim().slice(0, 300);
-    if ((key === 'primaryColor' || key === 'accentColor') && !HEX_COLOR.test(clean)) continue;
-    if (key === 'logoUrl' && clean && !/^(https?:\/\/|\/)/i.test(clean)) continue;
-    if (key === 'currency' && clean !== 'BRL') continue;
-    if (key === 'locale' && clean !== 'pt-BR') continue;
-    sanitized[key] = clean;
+    const clean = value.trim();
+    if (key === 'logoUrl') {
+      if (clean.length > 1_500_000) continue;
+      if (clean && !/^(data:image\/(png|jpeg|webp);base64,|https?:\/\/|\/)/i.test(clean)) continue;
+      sanitized[key] = clean;
+      continue;
+    }
+    const shortValue = clean.slice(0, 300);
+    if ((key === 'primaryColor' || key === 'accentColor') && !HEX_COLOR.test(shortValue)) continue;
+    if (key === 'currency' && shortValue !== 'BRL') continue;
+    if (key === 'locale' && shortValue !== 'pt-BR') continue;
+    sanitized[key] = shortValue;
   }
   return sanitized;
 }

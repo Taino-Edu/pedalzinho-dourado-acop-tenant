@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,12 +51,12 @@
     <div class="is-aa8ddd09">
       <h1 class="is-6f08c733">Leads</h1>
       <div class="is-a8e69e4e">
-        <button type="button" class="dos-tab active is-1bf973c9" data-view="board">Board</button>
-        <button type="button" class="dos-tab is-a6f24b44" data-view="table">Table</button>
-        <button type="button" class="dos-tab is-a6f24b44" data-view="detail">Lead Detail</button>
+        <button type="button" class="dos-tab active is-1bf973c9" data-view="board">Funil</button>
+        <button type="button" class="dos-tab is-a6f24b44" data-view="table">Lista</button>
+        <button type="button" class="dos-tab is-a6f24b44" data-view="detail">Detalhes do lead</button>
       </div>
       <div class="is-5d07dfa7">
-        <div class="is-105a0715">+ Novo lead</div>
+        <button type="button" id="newLeadBtn" class="is-105a0715" style="background:#fff">+ Novo lead</button>
         <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
     </div>
@@ -77,10 +77,10 @@
           <div class="is-e11beb8f">
             <div>Cliente</div>
             <div>Veículo</div>
-            <div>Source</div>
+            <div>Origem</div>
             <div>Situação</div>
-            <div>Priority</div>
-            <div>Assigned</div>
+            <div>Prioridade</div>
+            <div>Responsável</div>
           </div>
           <div id="tableBody">
             <!-- Rows will be populated by JS -->
@@ -97,22 +97,22 @@
               <div id="detailName" class="is-ebb50406">Maya Torres</div>
               <div id="detailContact" class="is-fef4eb97">maya.torres@email.com · (312) 555-0148</div>
             </div>
-            <div id="detailStatus" class="is-c296973d">Negotiating</div>
+            <div id="detailStatus" class="is-c296973d">Em negociação</div>
           </div>
 
           <div class="is-86b626dd">
-            <div class="is-6a600615">Interested In</div>
+            <div class="is-6a600615">Veículo de interesse</div>
             <div class="is-8512dd41">
               <div class="is-fa49d00a"></div>
               <div>
                 <div id="detailVehicle" class="is-85b20de1">2024 BMW X6 xDrive40i</div>
-                <div id="detailVehiclePrice" class="is-41b12b7b">$68,900 · 12.4k mi</div>
+                <div id="detailVehiclePrice" class="is-41b12b7b">Preço e quilometragem não informados</div>
               </div>
             </div>
           </div>
 
           <div class="is-25e4476e">
-            <div class="is-1a01a2e9">Activity Timeline</div>
+            <div class="is-1a01a2e9">Histórico do atendimento</div>
             <div id="detailTimeline" class="is-269ea7a6">
               <!-- Timeline items will be populated by JS -->
             </div>
@@ -122,31 +122,31 @@
         <!-- SIDE PANEL -->
         <div class="is-6a4f6b63">
           <div class="is-04846003">
-            <div class="is-93c47945">Details</div>
+            <div class="is-93c47945">Detalhes</div>
             <div class="is-7906cfd0">
-              <div class="is-58e548bd"><span class="is-41ab4fe8">Origem</span><span id="detailSource">Site — test-drive</span></div>
-              <div class="is-58e548bd"><span class="is-41ab4fe8">Assigned to</span><span id="detailAssigned">Derek Owusu</span></div>
-              <div class="is-58e548bd"><span class="is-41ab4fe8">Priority</span><span id="detailPriority" class="is-1a2dfef6">High</span></div>
-              <div class="is-58e548bd"><span class="is-41ab4fe8">Created</span><span id="detailCreated">Jul 9, 2026</span></div>
+              <div class="is-58e548bd"><span class="is-41ab4fe8">Origem</span><span id="detailSource">Pedido de test-drive</span></div>
+              <div class="is-58e548bd"><label class="is-41ab4fe8" for="detailAssigned">Responsável</label><select id="detailAssigned" class="dos-field-input" style="max-width:170px" onchange="assignLead(selectedLeadId, this.value)"><option value="">Sem responsável</option></select></div>
+              <div class="is-58e548bd"><span class="is-41ab4fe8">Prioridade</span><span id="detailPriority" class="is-1a2dfef6">Alta</span></div>
+              <div class="is-58e548bd"><span class="is-41ab4fe8">Criado em</span><span id="detailCreated">9 jul. 2026</span></div>
             </div>
           </div>
 
           <div class="is-04846003">
-            <div class="is-93c47945">Tags</div>
+            <div class="is-93c47945">Etiquetas</div>
             <div id="detailTags" class="is-e8afafb1">
               <!-- Tags will be populated by JS -->
             </div>
           </div>
 
           <div class="is-04846003">
-            <div class="is-93c47945">Tasks</div>
+            <div class="is-93c47945">Tarefas</div>
             <div id="detailTasks" class="is-9e74eefb">
               <!-- Tasks will be populated by JS -->
             </div>
           </div>
 
           <div class="is-04846003">
-            <div class="is-93c47945">Documents</div>
+            <div class="is-93c47945">Documentos</div>
             <div id="detailDocuments" class="is-02513184">
               <!-- Documents will be populated by JS -->
             </div>
@@ -161,18 +161,20 @@
 <script src="../js/dos-shell.js"></script>
 <script>
   const STAGES = [
-    { name: 'New', dbName: 'NEW', color: 'oklch(45% 0.16 260)' },
-    { name: 'Contacted', dbName: 'CONTACTED', color: 'oklch(50% 0.1 220)' },
-    { name: 'Qualified', dbName: 'QUALIFIED', color: 'oklch(55% 0.1 190)' },
-    { name: 'Appt. Scheduled', dbName: 'APPT_SCHEDULED', color: 'oklch(60% 0.12 155)' },
-    { name: 'Negotiating', dbName: 'NEGOTIATING', color: 'oklch(65% 0.14 55)' },
+    { name: 'Novo', dbName: 'NEW', color: 'oklch(45% 0.16 260)' },
+    { name: 'Contatado', dbName: 'CONTACTED', color: 'oklch(50% 0.1 220)' },
+    { name: 'Qualificado', dbName: 'QUALIFIED', color: 'oklch(55% 0.1 190)' },
+    { name: 'Visita agendada', dbName: 'APPT_SCHEDULED', color: 'oklch(60% 0.12 155)' },
+    { name: 'Em negociação', dbName: 'NEGOTIATING', color: 'oklch(65% 0.14 55)' },
     { name: 'Vendido', dbName: 'SOLD', color: 'oklch(60% 0.14 145)' },
-    { name: 'Lost', dbName: 'LOST', color: 'oklch(60% 0.01 260)' }
+    { name: 'Perdido', dbName: 'LOST', color: 'oklch(60% 0.01 260)' }
   ];
 
   let currentView = 'board';
   let leads = [];
   let selectedLeadId = null;
+  let teamMembers = [];
+  let inventoryVehicles = [];
 
   // Fetch leads from API with timeout
   async function fetchLeads() {
@@ -180,15 +182,18 @@
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for DB init
 
-      const res = await fetch('/api/leads', {
-        headers: {},
-        signal: controller.signal
-      });
+      const [res, teamRes, vehiclesRes] = await Promise.all([
+        fetch('/api/leads', { headers: {}, signal: controller.signal }),
+        fetch('/api/team', { headers: {}, signal: controller.signal }),
+        fetch('/api/vehicles', { headers: {}, signal: controller.signal })
+      ]);
       clearTimeout(timeoutId);
 
-      if (!res.ok) throw new Error('Failed to fetch leads');
-      const data = await res.json();
+      if (!res.ok || !teamRes.ok || !vehiclesRes.ok) throw new Error('Não foi possível carregar a operação comercial.');
+      const [data, teamData, vehicleData] = await Promise.all([res.json(), teamRes.json(), vehiclesRes.json()]);
       leads = data.leads || [];
+      teamMembers = (teamData.team || []).filter((member) => member.active);
+      inventoryVehicles = (vehicleData.vehicles || []).filter((vehicle) => vehicle.status !== 'sold');
       console.log('CRM: Fetched ' + leads.length + ' leads, currentView=' + currentView);
       render();
     } catch (err) {
@@ -221,8 +226,28 @@
     return lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)';
   }
 
+  function statusLabel(status) {
+    return ({ NEW: 'Novo', CONTACTED: 'Contatado', QUALIFIED: 'Qualificado', APPT_SCHEDULED: 'Visita agendada', NEGOTIATING: 'Em negociação', SOLD: 'Vendido', LOST: 'Perdido' }[String(status || 'NEW').toUpperCase()] || status);
+  }
+
+  function priorityLabel(priority) {
+    return ({ Low: 'Baixa', Medium: 'Média', Normal: 'Normal', High: 'Alta' }[priority] || priority || 'Normal');
+  }
+
+  function sourceLabel(source) {
+    return ({ 'test-drive-modal': 'Pedido de test-drive', 'trade-in-estimator': 'Avaliação de troca', 'financing-calculator': 'Simulação de financiamento', manual: 'Cadastro manual', website: 'Site', 'phone-call': 'Ligação' }[source] || source || 'Site');
+  }
+
+  function roleLabel(role) {
+    return ({ owner: 'Proprietário', manager: 'Gerente', sales: 'Vendedor', bdc: 'Pré-vendas' }[role] || role);
+  }
+
+  function memberOptions(selectedId) {
+    return `<option value="">Sem responsável</option>` + teamMembers.map((member) => `<option value="${esc(member.id)}" ${member.id === selectedId ? 'selected' : ''}>${esc(member.name)} · ${esc(roleLabel(member.role))}</option>`).join('');
+  }
+
   function assigneeShortName(lead) {
-    if (!lead.assignedTo) return 'Unassigned';
+    if (!lead.assignedTo) return 'Sem responsável';
     const parts = lead.assignedTo.name.trim().split(/\s+/);
     return parts.length > 1 ? `${parts[0]} ${parts[parts.length - 1][0]}.` : parts[0];
   }
@@ -268,12 +293,13 @@
                 </div>
                 <div class="is-f6501b31">${esc(lead.carName)}</div>
                 <div class="is-948e6d6e">
-                  <div class="is-112a74ce">${esc(lead.source)}</div>
+                  <div class="is-112a74ce">${esc(sourceLabel(lead.source))}</div>
                   <div class="is-5a55404e"></div>
                 </div>
-                <select class="kanban-move" aria-label="Move ${esc(lead.name)} to stage" style="width: 100%; min-height: 44px; margin-top: 8px; font: 500 11px 'IBM Plex Sans', sans-serif; padding: 4px 6px; border-radius: 6px; border: 1px solid oklch(91% 0.005 260); background: #fff;" onclick="event.stopPropagation()" onchange="event.stopPropagation(); moveLeadToStage('${esc(lead.id)}', this.value)">
+                <select class="kanban-move" aria-label="Mover ${esc(lead.name)} para uma etapa" style="width: 100%; min-height: 44px; margin-top: 8px; font: 500 11px 'IBM Plex Sans', sans-serif; padding: 4px 6px; border-radius: 6px; border: 1px solid oklch(91% 0.005 260); background: #fff;" onclick="event.stopPropagation()" onchange="event.stopPropagation(); moveLeadToStage('${esc(lead.id)}', this.value)">
                   ${STAGES.map(s => `<option value="${s.dbName}" ${s.dbName === stage.dbName ? 'selected' : ''}>${s.name}</option>`).join('')}
                 </select>
+                <label style="display:block;margin-top:8px;color:#64748b;font-size:10px" onclick="event.stopPropagation()">Vendedor responsável<select class="kanban-assignee" aria-label="Vendedor responsável por ${esc(lead.name)}" style="width:100%;min-height:40px;margin-top:4px;font:500 11px 'IBM Plex Sans',sans-serif;padding:4px 6px;border-radius:6px;border:1px solid oklch(91% 0.005 260);background:#fff" onclick="event.stopPropagation()" onchange="event.stopPropagation();assignLead('${esc(lead.id)}',this.value)">${memberOptions(lead.assignedToId)}</select></label>
               </div>
             `).join('')}
           </div>
@@ -345,11 +371,11 @@
         if (idx !== -1) leads[idx] = lead;
         render();
       } else {
-        DosShell.toast('Could not move lead', 'error');
+        DosShell.toast('Não foi possível mover o lead.', 'error');
       }
     } catch (err) {
       console.error('Error updating lead:', err);
-      DosShell.toast('Could not move lead: ' + err.message, 'error');
+      DosShell.toast('Não foi possível mover o lead: ' + err.message, 'error');
     }
   }
 
@@ -360,9 +386,9 @@
       <div onclick="selectLead('${lead.id}')" class="is-d91df727">
         <div class="is-db117290">${esc(lead.name)}</div>
         <div class="is-024dc74f">${esc(lead.carName)}</div>
-        <div class="is-024dc74f">${esc(lead.source)}</div>
-        <div><span class="is-93e08d6f">${lead.status || 'New'}</span></div>
-        <div style="color: ${priorityColor(lead)};">${esc(lead.priority || 'Normal')}</div>
+        <div class="is-024dc74f">${esc(sourceLabel(lead.source))}</div>
+        <div><span class="is-93e08d6f">${esc(statusLabel(lead.status))}</span></div>
+        <div style="color: ${priorityColor(lead)};">${esc(priorityLabel(lead.priority))}</div>
         <div class="is-bd9db1cb"><div class="is-94e51f7f"></div>${esc(assigneeShortName(lead))}</div>
       </div>
     `).join('');
@@ -375,12 +401,16 @@
 
     document.getElementById('detailName').textContent = lead.name;
     document.getElementById('detailContact').textContent = `${lead.email} · ${lead.phone}`;
-    document.getElementById('detailStatus').textContent = lead.status || 'New';
+    document.getElementById('detailStatus').textContent = statusLabel(lead.status);
     document.getElementById('detailVehicle').textContent = lead.carName;
-    document.getElementById('detailSource').textContent = lead.source;
-    document.getElementById('detailAssigned').textContent = lead.assignedTo ? lead.assignedTo.name : 'Unassigned';
-    document.getElementById('detailCreated').textContent = new Date(lead.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    document.getElementById('detailPriority').textContent = lead.priority || 'Normal';
+    const linkedVehicle = inventoryVehicles.find((vehicle) => vehicle.id === lead.carId);
+    document.getElementById('detailVehiclePrice').textContent = linkedVehicle
+      ? `${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(linkedVehicle.price / 100)} · ${new Intl.NumberFormat('pt-BR').format(linkedVehicle.mileage)} km`
+      : 'Preço e quilometragem não informados';
+    document.getElementById('detailSource').textContent = sourceLabel(lead.source);
+    document.getElementById('detailAssigned').innerHTML = memberOptions(lead.assignedToId);
+    document.getElementById('detailCreated').textContent = new Date(lead.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+    document.getElementById('detailPriority').textContent = priorityLabel(lead.priority);
 
     // Timeline
     const timeline = document.getElementById('detailTimeline');
@@ -389,7 +419,7 @@
         <div class="is-65912071"></div>
         <div>
           <div class="is-befe80c3">${esc(lead.name)} solicitou um test-drive de ${esc(lead.carName)}</div>
-          <div class="is-749d71d0">${new Date(lead.createdAt).toLocaleString()}</div>
+          <div class="is-749d71d0">${new Date(lead.createdAt).toLocaleString('pt-BR')}</div>
         </div>
       </div>
     `;
@@ -397,11 +427,11 @@
     // Documents (derived from lead source — a trade-in submission attaches an estimate)
     const documents = document.getElementById('detailDocuments');
     if (lead.source === 'trade-in-estimator') {
-      documents.innerHTML = `<div>📄 Trade-in_estimate_${lead.id.slice(-6)}.pdf</div>`;
+      documents.innerHTML = `<div>Avaliação_de_troca_${lead.id.slice(-6)}.pdf</div>`;
     } else if (lead.source === 'financing-calculator') {
-      documents.innerHTML = `<div>📄 Financing_application_${lead.id.slice(-6)}.pdf</div>`;
+      documents.innerHTML = `<div>Proposta_de_financiamento_${lead.id.slice(-6)}.pdf</div>`;
     } else {
-      documents.innerHTML = `<div class="is-f8c16a82">No documents attached</div>`;
+      documents.innerHTML = `<div class="is-f8c16a82">Nenhum documento anexado</div>`;
     }
   }
 
@@ -438,6 +468,49 @@
     document.getElementById('tableView').style.display = currentView === 'table' ? 'block' : 'none';
     document.getElementById('detailView').style.display = currentView === 'detail' ? 'grid' : 'none';
   }
+
+  async function assignLead(leadId, assignedToId) {
+    if (!leadId) return;
+    try {
+      const response = await fetch(`/api/leads/${leadId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ assignedToId: assignedToId || null }) });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || 'Não foi possível trocar o responsável.');
+      const index = leads.findIndex((lead) => lead.id === leadId);
+      if (index !== -1) leads[index] = payload.lead;
+      DosShell.toast(assignedToId ? 'Vendedor responsável atualizado.' : 'Lead ficou sem responsável.');
+      render();
+    } catch (error) {
+      DosShell.toast(error.message, 'error');
+      await fetchLeads();
+    }
+  }
+
+  window.assignLead = assignLead;
+
+  document.getElementById('newLeadBtn').addEventListener('click', async () => {
+    const result = await DosShell.openModal({
+      title: 'Cadastrar novo lead', confirmLabel: 'Adicionar ao funil', cancelLabel: 'Cancelar', focusSelector: '#newLeadName',
+      bodyHtml: `
+        <label for="newLeadName" class="dos-field-label">Nome</label><input id="newLeadName" class="dos-field-input" placeholder="Nome do cliente">
+        <label for="newLeadPhone" class="dos-field-label" style="margin-top:12px">Telefone</label><input id="newLeadPhone" class="dos-field-input" placeholder="(11) 99999-9999">
+        <label for="newLeadEmail" class="dos-field-label" style="margin-top:12px">E-mail</label><input id="newLeadEmail" type="email" class="dos-field-input" placeholder="cliente@email.com">
+        <label for="newLeadVehicle" class="dos-field-label" style="margin-top:12px">Veículo do estoque</label><select id="newLeadVehicle" class="dos-field-input"><option value="">Não definido ou fora do estoque</option>${inventoryVehicles.map((vehicle) => `<option value="${esc(vehicle.id)}">${esc(`${vehicle.year} ${vehicle.make} ${vehicle.model}`)}</option>`).join('')}</select>
+        <label for="newLeadVehicleOther" class="dos-field-label" style="margin-top:12px">Outro veículo de interesse</label><input id="newLeadVehicleOther" class="dos-field-input" placeholder="Preencha somente se não escolheu acima"><small style="display:block;margin-top:5px;color:#64748b">Vincular um veículo real permite calcular a comissão quando a venda for concluída.</small>`,
+      onConfirm: async (overlay) => {
+        const carId = overlay.querySelector('#newLeadVehicle').value;
+        const vehicle = inventoryVehicles.find((item) => item.id === carId);
+        const payload = { name: overlay.querySelector('#newLeadName').value.trim(), phone: overlay.querySelector('#newLeadPhone').value.trim(), email: overlay.querySelector('#newLeadEmail').value.trim(), carId: carId || null, carName: vehicle ? `${vehicle.year} ${vehicle.make} ${vehicle.model}` : overlay.querySelector('#newLeadVehicleOther').value.trim(), source: 'manual' };
+        if (!payload.name || !payload.phone || !payload.email || !payload.carName) throw new Error('Preencha todos os campos.');
+        const response = await fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'Não foi possível cadastrar o lead.');
+        return true;
+      }
+    });
+    if (!result) return;
+    DosShell.toast('Lead adicionado e distribuído para a equipe.');
+    await fetchLeads();
+  });
 
   // Initial load
   fetchLeads();

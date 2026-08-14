@@ -46,6 +46,7 @@
   }
 
   function installWhatsApp(config) {
+    if (document.body.matches('.dos-body, .admin-body, .settings-body') || /\/(dashboard|crm|inventory|appointments|customers|analytics|staff-activity|settings|superadmin)(\.html)?$/i.test(location.pathname)) return;
     const digits = String(config.whatsapp || '').replace(/\D/g, '');
     if (!digits || document.querySelector('[data-runtime-whatsapp]')) return;
     const link = document.createElement('a');

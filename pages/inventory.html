@@ -23,6 +23,7 @@
     .photo-preview { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
     .photo-preview img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:7px; border:1px solid #e2e8f0; background:#eef2f6; }
     .photo-help { display:block; color:#64748b; font-size:11px; line-height:1.4; margin-top:5px; }
+    .inventory-location-summary{padding:14px 36px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.inventory-location-summary article{padding:12px 14px;border:1px solid #e2e8f0;border-radius:9px;background:#fff}.inventory-location-summary small,.inventory-location-summary strong{display:block}.inventory-location-summary small{font-size:10px;color:#64748b}.inventory-location-summary strong{margin-top:3px;font-size:18px}.location-pill{display:inline-flex;margin-top:5px;padding:4px 8px;border-radius:999px;background:#e0f5fb;color:#087aa6;font-size:10px;font-weight:700}@media(max-width:900px){.inventory-location-summary{grid-template-columns:repeat(2,1fr);padding-inline:18px}}
   </style>
 </head>
 <body class="dos-body">
@@ -68,6 +69,9 @@
       <select id="filterBody" class="inv-filter-input" aria-label="Filtrar por carroceria" onchange="applyFilters()">
         <option value="">Carroceria ▾</option>
       </select>
+      <select id="filterLocation" class="inv-filter-input" aria-label="Filtrar por localização" onchange="applyFilters()">
+        <option value="">Localização ▾</option><option value="patio">Pátio</option><option value="garagem">Garagem</option><option value="showroom">Showroom</option><option value="oficina">Oficina</option><option value="terceiros">Em terceiros</option>
+      </select>
       <select id="filterPrice" class="inv-filter-input" aria-label="Filtrar por faixa de preço" onchange="applyFilters()">
         <option value="">Preço ▾</option>
         <option value="0-20000000">Até R$ 200 mil</option>
@@ -76,8 +80,15 @@
       </select>
       <div class="inv-view-toggle is-dc310e06">
         <button type="button" class="inv-view-btn active" data-view="table" onclick="setView('table')">Tabela</button>
-        <button type="button" class="inv-view-btn" data-view="cards" onclick="setView('cards')">Cards</button>
+        <button type="button" class="inv-view-btn" data-view="cards" onclick="setView('cards')">Cartões</button>
       </div>
+    </div>
+
+    <div class="inventory-location-summary" aria-label="Distribuição física do estoque">
+      <article><small>No pátio</small><strong id="locationPatio">0</strong></article>
+      <article><small>Na garagem</small><strong id="locationGaragem">0</strong></article>
+      <article><small>No showroom</small><strong id="locationShowroom">0</strong></article>
+      <article><small>Oficina ou terceiros</small><strong id="locationOther">0</strong></article>
     </div>
 
     <!-- Destaque strip -->
@@ -94,7 +105,7 @@
           <div></div><div>Veículo</div><div>Preço</div><div>Quilometragem</div><div>Situação</div><div>Dias anunciado</div><div>Ações</div>
         </div>
         <div id="vehicleList"></div>
-        <div id="emptyState" class="is-76756bd7">No vehicles match these filters</div>
+        <div id="emptyState" class="is-76756bd7">Nenhum veículo corresponde aos filtros.</div>
       </div>
 
       <!-- Cards view -->
@@ -105,10 +116,10 @@
 
 <!-- Quick edit side panel -->
 <div class="quick-edit-overlay" id="quickEditOverlay" onclick="closeQuickEdit()"></div>
-<div class="quick-edit-panel" id="quickEditPanel" role="dialog" aria-modal="true" aria-label="Quick edit vehicle">
+<div class="quick-edit-panel" id="quickEditPanel" role="dialog" aria-modal="true" aria-label="Edição rápida do veículo">
   <div class="is-ba97c8dd">
-    <div class="is-140a247e">Quick edit</div>
-    <button type="button" onclick="closeQuickEdit()"  aria-label="Close" class="is-96d1af6f">✕</button>
+    <div class="is-140a247e">Edição rápida</div>
+    <button type="button" onclick="closeQuickEdit()"  aria-label="Fechar" class="is-96d1af6f">✕</button>
   </div>
   <div class="is-d3c9f1ae">
     <div id="quickEditName" class="is-85b20de1"></div>
@@ -125,10 +136,11 @@
         <option value="sold">Vendido</option>
       </select>
     </div>
+    <div><label class="is-204b9faf" for="qeLocation">Localização física</label><select id="qeLocation" class="is-b94f2f17"><option value="patio">Pátio</option><option value="garagem">Garagem</option><option value="showroom">Showroom</option><option value="oficina">Oficina</option><option value="terceiros">Em terceiros</option></select></div>
     <div>
       <label class="is-204b9faf" for="qeImages">Fotos do veículo</label>
       <input type="file" id="qeImages" accept="image/jpeg,image/png,image/webp" multiple class="is-b94f2f17" onchange="previewQuickEditImages(this.files)">
-      <small class="photo-help">Selecione até 5 fotos. Novas fotos substituem as atuais.</small>
+      <small class="photo-help"><strong>Padrão recomendado:</strong> horizontal 4:3, 1600 × 1200 px, sem moldura ou marca-d'água. Até 5 fotos; a primeira será a capa. Novas fotos substituem as atuais.</small>
       <div class="photo-preview" id="qeImagePreview"></div>
     </div>
   </div>
@@ -151,9 +163,9 @@
   let requestedEditId = new URLSearchParams(location.search).get('edit');
 
   const fallbackVehicles = [
-    { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active', body: 'SUV', color: 'Black', drivetrain: 'AWD', createdAt: new Date().toISOString() },
-    { id: 2, make: 'Mercedes-Benz', model: 'S-Class', year: 2023, mileage: 12500, price: 45000000, status: 'featured', body: 'Sedan', color: 'Grey', drivetrain: 'RWD', createdAt: new Date().toISOString() },
-    { id: 3, make: 'Chevrolet', model: 'Onix', year: 2025, mileage: 19300, price: 8270500, status: 'sold', body: 'Hatch', color: 'Prata', drivetrain: 'Dianteira', createdAt: new Date().toISOString() }
+    { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active', location: 'showroom', body: 'SUV', color: 'Preto', drivetrain: 'AWD', createdAt: new Date().toISOString() },
+    { id: 2, make: 'Mercedes-Benz', model: 'S-Class', year: 2023, mileage: 12500, price: 45000000, status: 'featured', location: 'garagem', body: 'Sedan', color: 'Cinza', drivetrain: 'RWD', createdAt: new Date().toISOString() },
+    { id: 3, make: 'Chevrolet', model: 'Onix', year: 2025, mileage: 19300, price: 8270500, status: 'sold', location: 'patio', body: 'Hatch', color: 'Prata', drivetrain: 'Dianteira', createdAt: new Date().toISOString() }
   ];
 
   async function fetchVehicles() {
@@ -241,6 +253,10 @@
     return new Intl.NumberFormat('pt-BR', { style:'currency', currency:'BRL' }).format(Number(value || 0) / 100);
   }
 
+  function locationLabel(value) {
+    return ({ patio: 'Pátio', garagem: 'Garagem', showroom: 'Showroom', oficina: 'Oficina', terceiros: 'Em terceiros' }[value] || 'Pátio');
+  }
+
   function fipeIndicator(v) {
     if (!v.fipePrice) return '<span style="display:block;color:#b45309;font-size:11px;margin-top:3px">FIPE não associada</span>';
     const difference = ((v.price - v.fipePrice) / v.fipePrice) * 100;
@@ -252,12 +268,14 @@
     const q = document.getElementById('filterSearch').value.trim().toLowerCase();
     const status = document.getElementById('filterStatus').value;
     const body = document.getElementById('filterBody').value;
+    const location = document.getElementById('filterLocation').value;
     const priceRange = document.getElementById('filterPrice').value;
 
     filteredVehicles = vehicles.filter(v => {
       if (q && !`${v.make} ${v.model} ${v.year}`.toLowerCase().includes(q)) return false;
       if (status && v.status !== status) return false;
       if (body && v.body !== body) return false;
+      if (location && (v.location || 'patio') !== location) return false;
       if (priceRange) {
         const [min, max] = priceRange.split('-').map(Number);
         if (v.price < min || v.price > max) return false;
@@ -279,6 +297,10 @@
     const draft = vehicles.filter(v => v.status === 'draft').length;
     const sold = vehicles.filter(v => v.status === 'sold').length;
     document.getElementById('countsSummary').textContent = `${active} ativos · ${draft} rascunhos · ${sold} vendidos`;
+    document.getElementById('locationPatio').textContent = vehicles.filter(v => (v.location || 'patio') === 'patio').length;
+    document.getElementById('locationGaragem').textContent = vehicles.filter(v => v.location === 'garagem').length;
+    document.getElementById('locationShowroom').textContent = vehicles.filter(v => v.location === 'showroom').length;
+    document.getElementById('locationOther').textContent = vehicles.filter(v => ['oficina', 'terceiros'].includes(v.location)).length;
   }
 
   function renderDestaque() {
@@ -324,7 +346,7 @@
         </div>
         <div class="is-db117290">${money(v.price)}${fipeIndicator(v)}</div>
         <div class="is-024dc74f">${v.mileage.toLocaleString()} km</div>
-        <div>${statusPill(v.status)}</div>
+        <div>${statusPill(v.status)}<span class="location-pill">${locationLabel(v.location)}</span></div>
         <div class="is-024dc74f">${daysListed(v)}</div>
         <div><a href="#" onclick="openQuickEdit('${v.id}'); return false;" class="is-f8fe0cda">Editar</a><br><a href="#" onclick="linkFipe('${v.id}'); return false;" class="is-f8fe0cda">Associar FIPE</a><br><a href="financing-calculator.html?vehicle=${v.id}" class="is-f8fe0cda">Simular</a></div>
       </div>
@@ -340,7 +362,7 @@
         <div class="is-ec940996">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
         <div class="is-adc0edca">${money(v.price)} · ${v.mileage.toLocaleString('pt-BR')} km${fipeIndicator(v)}</div>
         <div class="is-948e6d6e">
-          ${statusPill(v.status)}
+          <span>${statusPill(v.status)} <span class="location-pill">${locationLabel(v.location)}</span></span>
           <a href="#" onclick="linkFipe('${v.id}'); return false;" class="is-2f2acdc5">Associar FIPE</a>
         </div>
       </div>
@@ -440,32 +462,35 @@
   async function openBulkAções() {
     if (selectedIds.size === 0) return;
     const result = await DosShell.openModal({
-      title: `Update ${selectedIds.size} selected vehicle${selectedIds.size === 1 ? '' : 's'}`,
-      confirmLabel: 'Apply',
+      title: `Atualizar ${selectedIds.size} veículo${selectedIds.size === 1 ? '' : 's'}`,
+      confirmLabel: 'Aplicar alterações',
       focusSelector: '#bulkStatus',
       bodyHtml: `
         <label for="bulkStatus" class="dos-field-label">Novo status</label>
         <select id="bulkStatus" class="dos-field-input">
-          <option value="active">Active</option>
+          <option value="active">Disponível</option>
           <option value="featured">Destaque</option>
-          <option value="draft">Draft</option>
+          <option value="draft">Rascunho</option>
           <option value="sold">Vendido</option>
         </select>
+        <label for="bulkLocation" class="dos-field-label" style="margin-top:12px">Mover para</label>
+        <select id="bulkLocation" class="dos-field-input"><option value="">Manter localização atual</option><option value="patio">Pátio</option><option value="garagem">Garagem</option><option value="showroom">Showroom</option><option value="oficina">Oficina</option><option value="terceiros">Em terceiros</option></select>
       `,
       onConfirm: async (overlay) => {
         const status = overlay.querySelector('#bulkStatus').value;
+        const location = overlay.querySelector('#bulkLocation').value;
         await Promise.all([...selectedIds].map(id =>
           fetch(`/api/vehicles/${id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status })
+            body: JSON.stringify(location ? { status, location } : { status })
           })
         ));
         return true;
       }
     });
     if (!result) return;
-    DosShell.toast(`Updated ${selectedIds.size} vehicle(s)`);
+    DosShell.toast(`${selectedIds.size} veículo(s) atualizado(s).`);
     selectedIds = new Set();
     document.getElementById('bulkAçõesBtn').disabled = true;
     await fetchVehicles();
@@ -479,6 +504,7 @@
     document.getElementById('quickEditName').textContent = `${v.year} ${v.make} ${v.model}`;
     document.getElementById('qePrice').value = (Number(v.price || 0) / 100).toFixed(2);
     document.getElementById('qeStatus').value = v.status;
+    document.getElementById('qeLocation').value = v.location || 'patio';
     document.getElementById('qeImages').value = '';
     quickEditImages = imagesOf(v);
     document.getElementById('qeImagePreview').innerHTML = quickEditImages.map((image, index) => `<img src="${esc(imageSrc(image))}" alt="Foto atual ${index + 1}" onerror="this.onerror=null;this.src='../assets/web/car-placeholder.svg'">`).join('');
@@ -520,10 +546,11 @@
         body: JSON.stringify({
           price: Math.round(Number(document.getElementById('qePrice').value) * 100),
           status: document.getElementById('qeStatus').value,
+          location: document.getElementById('qeLocation').value,
           images
         })
       });
-      if (!res.ok) throw new Error((await res.json()).error || 'Save failed');
+      if (!res.ok) throw new Error((await res.json()).error || 'Não foi possível salvar o veículo.');
       DosShell.toast('Veículo atualizado.');
       closeQuickEdit();
       await fetchVehicles();
@@ -559,8 +586,9 @@
           </select>
         </div>
         <div style="margin-bottom:14px"><label for="avTransmission" class="dos-field-label">Câmbio</label><select id="avTransmission" class="dos-field-input"><option>Automático</option><option>Manual</option><option>CVT</option></select></div>
+        <div style="margin-bottom:14px"><label for="avLocation" class="dos-field-label">Onde o veículo ficará?</label><select id="avLocation" class="dos-field-input"><option value="patio">Pátio</option><option value="garagem">Garagem</option><option value="showroom">Showroom</option><option value="oficina">Oficina</option><option value="terceiros">Em terceiros</option></select><small class="photo-help">Essa localização aparece no controle interno e pode ser alterada depois.</small></div>
         ${field('avVin', 'Chassi/VIN ou código interno', 'BR' + Date.now(), 'text')}
-        <div style="margin-bottom:14px"><label for="avImages" class="dos-field-label">Fotos</label><input id="avImages" type="file" accept="image/jpeg,image/png,image/webp" multiple class="dos-field-input" onchange="previewAddVehicleImages(this.files)"><small class="photo-help">Até 5 fotos. Elas serão otimizadas antes do envio.</small><div class="photo-preview" id="avImagePreview"></div></div>
+        <div style="margin-bottom:14px"><label for="avImages" class="dos-field-label">Fotos do veículo</label><input id="avImages" type="file" accept="image/jpeg,image/png,image/webp" multiple class="dos-field-input" onchange="previewAddVehicleImages(this.files)"><small class="photo-help"><strong>Padrão recomendado:</strong> horizontal 4:3, 1600 × 1200 px, sem moldura ou marca-d'água. Até 5 fotos; a primeira será a capa. O sistema otimiza os arquivos antes do envio.</small><div class="photo-preview" id="avImagePreview"></div></div>
       `,
       onConfirm: async (overlay) => {
         const make = overlay.querySelector('#avMake').value.trim();
@@ -581,6 +609,7 @@
             engine: overlay.querySelector('#avEngine').value.trim(),
             transmission: overlay.querySelector('#avTransmission').value,
             drivetrain: 'Dianteira',
+            location: overlay.querySelector('#avLocation').value,
             images: photos,
             status: 'active'
           })

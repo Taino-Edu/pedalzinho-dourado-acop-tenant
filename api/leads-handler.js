@@ -2,7 +2,7 @@ const { prisma } = require('./_lib/db');
 const { requireAuth } = require('./_lib/auth');
 const { broadcast } = require('./_lib/events');
 
-const VALID_SOURCES = ['test-drive-modal', 'trade-in-estimator'];
+const VALID_SOURCES = ['test-drive-modal', 'trade-in-estimator', 'financing-calculator', 'manual'];
 const VALID_STATUSES = ['NEW', 'CONTACTED', 'QUALIFIED', 'APPT_SCHEDULED', 'NEGOTIATING', 'SOLD', 'LOST'];
 const VALID_PRIORITIES = ['Low', 'Normal', 'High'];
 
@@ -80,7 +80,7 @@ module.exports = async (req, res) => {
     if (!requireAuth(req, res)) return;
 
     if (req.method === 'PATCH') {
-      const { status, priority, tags, tasks } = req.body || {};
+      const { status, priority, tags, tasks, assignedToId, carId, carName } = req.body || {};
       const data = {};
 
       if (status !== undefined) {
@@ -98,6 +98,26 @@ module.exports = async (req, res) => {
       if (tasks !== undefined) {
         if (!isValidTasks(tasks)) return res.status(400).json({ error: 'Invalid tasks' });
         data.tasks = tasks;
+      }
+      if (assignedToId !== undefined) {
+        if (assignedToId) {
+          const member = await prisma.teamMember.findFirst({ where: { id: assignedToId, deactivatedAt: null }, select: { id: true } });
+          if (!member) return res.status(400).json({ error: 'Funcionário inválido ou inativo.' });
+        }
+        data.assignedToId = assignedToId || null;
+      }
+      if (carId !== undefined) {
+        if (carId) {
+          const vehicle = await prisma.vehicle.findUnique({ where: { id: carId }, select: { id: true, make: true, model: true, year: true } });
+          if (!vehicle) return res.status(400).json({ error: 'Veículo não encontrado.' });
+          data.carId = vehicle.id;
+          data.carName = `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
+        } else {
+          data.carId = null;
+          if (carName !== undefined) data.carName = String(carName).trim();
+        }
+      } else if (carName !== undefined && String(carName).trim()) {
+        data.carName = String(carName).trim();
       }
       if (Object.keys(data).length === 0) {
         return res.status(400).json({ error: 'No valid fields to update' });

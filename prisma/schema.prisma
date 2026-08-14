@@ -45,6 +45,7 @@ model Vehicle {
   images       String        @default("[]") // JSON stringified array of URLs
   history      String? // Vehicle history notes
   dealerNotes  String?
+  location     String        @default("patio") // patio, garagem, showroom, oficina, terceiros
   status       String        @default("active") // draft, active, featured, sold
   externalSource String?
   externalId     String?
@@ -58,6 +59,7 @@ model Vehicle {
   updatedAt    DateTime      @updatedAt
 
   @@unique([externalSource, externalId])
+  @@index([location])
 }
 
 model Appointment {
@@ -108,6 +110,7 @@ model TeamMember {
   name          String
   email         String
   role          String     @default("sales") // owner, manager, sales, bdc
+  commissionRate Float     @default(1.5) // percentual aplicado ao valor dos veiculos vendidos
   permissions   String     @default("[]") // JSON stringified array
   assignedLeads Lead[]
   joinedAt      DateTime   @default(now())

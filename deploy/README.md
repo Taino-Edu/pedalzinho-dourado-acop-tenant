@@ -70,6 +70,13 @@ senhas localmente e grava apenas duas cópias protegidas em `/root`. O script
 valida a aplicação e o Nginx antes de recarregar o proxy e não abre portas
 novas no firewall.
 
+Nas atualizações seguintes, use o script dedicado. Ele preserva o arquivo de
+ambiente, as senhas, o volume PostgreSQL e as configurações da concessionária:
+
+```sh
+bash /opt/concessionarias/autos/deploy/update.sh
+```
+
 ## Backup
 
 ```sh

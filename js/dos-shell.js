@@ -8,14 +8,14 @@
  */
 (function () {
   const NAV_ITEMS = [
-    { label: 'Overview', href: 'dashboard.html', icon: '▦' },
+    { label: 'Visão geral', href: 'dashboard.html', icon: '▦' },
     { label: 'CRM', href: 'crm.html', icon: '☎' },
-    { label: 'Inventory', href: 'inventory.html', icon: '▤' },
-    { label: 'Appointments', href: 'appointments.html', icon: '◔' },
-    { label: 'Customers', href: 'customers.html', icon: '✎' },
-    { label: 'Analytics', href: 'analytics.html', icon: '▲' },
-    { label: 'Staff Activity', href: 'staff-activity.html', icon: '◫' },
-    { label: 'Settings', href: 'settings.html', icon: '⚙' }
+    { label: 'Estoque', href: 'inventory.html', icon: '▤' },
+    { label: 'Agenda', href: 'appointments.html', icon: '◔' },
+    { label: 'Clientes', href: 'customers.html', icon: '✎' },
+    { label: 'Relatórios', href: 'analytics.html', icon: '▲' },
+    { label: 'Equipe', href: 'staff-activity.html', icon: '◫' },
+    { label: 'Configurações', href: 'settings.html', icon: '⚙' }
   ];
 
   function authHeader() {
@@ -441,16 +441,16 @@
   // Analytics/Settings/Staff Activity stay desktop-only, reached via a
   // "More" overflow from here.
   const MOBILE_TABS = [
-    { label: 'Home', href: 'dashboard.html', glyph: '▦' },
+    { label: 'Início', href: 'dashboard.html', glyph: '▦' },
     { label: 'Leads', href: 'crm.html', glyph: '☎' },
-    { label: 'Inventory', href: 'inventory.html', glyph: '▤' },
-    { label: 'Calendar', href: 'appointments.html', glyph: '◔' }
+    { label: 'Estoque', href: 'inventory.html', glyph: '▤' },
+    { label: 'Agenda', href: 'appointments.html', glyph: '◔' }
   ];
   const MOBILE_MORE_ITEMS = [
-    { label: 'Customers', href: 'customers.html', glyph: '✎' },
-    { label: 'Analytics', href: 'analytics.html', glyph: '▲' },
-    { label: 'Staff Activity', href: 'staff-activity.html', glyph: '◫' },
-    { label: 'Settings', href: 'settings.html', glyph: '⚙' }
+    { label: 'Clientes', href: 'customers.html', glyph: '✎' },
+    { label: 'Relatórios', href: 'analytics.html', glyph: '▲' },
+    { label: 'Equipe', href: 'staff-activity.html', glyph: '◫' },
+    { label: 'Configurações', href: 'settings.html', glyph: '⚙' }
   ];
 
   function currentPage() {
@@ -467,7 +467,7 @@
     // link semantics (Tab + Enter) already make these fully keyboard-usable.
     const sheet = document.createElement('div');
     sheet.className = 'dos-mobile-more-sheet';
-    sheet.setAttribute('aria-label', 'More pages');
+    sheet.setAttribute('aria-label', 'Mais páginas');
     sheet.innerHTML = MOBILE_MORE_ITEMS.map((item) => `
       <a class="dos-mobile-more-item" href="${item.href}"><span class="glyph">${item.glyph}</span>${esc(item.label)}</a>
     `).join('');
@@ -475,7 +475,7 @@
 
     const bar = document.createElement('nav');
     bar.className = 'dos-mobile-tabbar';
-    bar.setAttribute('aria-label', 'Gestão da concessionária mobile navigation');
+    bar.setAttribute('aria-label', 'Navegação móvel da gestão da concessionária');
     const isMoreActive = MOBILE_MORE_ITEMS.some((i) => i.href === page);
     bar.innerHTML = MOBILE_TABS.map((tab) => `
       <a class="dos-mobile-tab${tab.href === page ? ' active' : ''}" href="${tab.href}" aria-current="${tab.href === page ? 'page' : 'false'}">
@@ -483,7 +483,7 @@
       </a>
     `).join('') + `
       <button type="button" class="dos-mobile-tab${isMoreActive ? ' active' : ''}" id="dosMobileMoreBtn" aria-haspopup="true" aria-expanded="false">
-        <span class="glyph">☰</span>More
+        <span class="glyph">☰</span>Mais
       </button>
     `;
     document.body.appendChild(bar);
