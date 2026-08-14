@@ -3,6 +3,15 @@ const { requireAuth } = require('./_lib/auth');
 const { broadcast } = require('./_lib/events');
 
 const VALID_STATUSES = ['draft', 'active', 'featured', 'sold'];
+const MAX_IMAGES = 5;
+const MAX_IMAGE_LENGTH = 2_000_000;
+
+function validImages(value) {
+  if (!Array.isArray(value) || value.length > MAX_IMAGES) return null;
+  const images = value.map((item) => String(item || '').trim()).filter(Boolean);
+  if (images.some((item) => item.length > MAX_IMAGE_LENGTH || !/^(data:image\/(jpeg|png|webp);base64,|https?:\/\/|\/|[\w.-]+$)/i.test(item))) return null;
+  return images;
+}
 
 // Handles both /api/vehicles and /api/vehicles/:id (Vercel optional
 // catch-all) — merged into one function to stay under the Hobby plan's
@@ -31,6 +40,9 @@ module.exports = async (req, res) => {
           return res.status(400).json({ error: 'Missing required fields: vin, make, model, year, price' });
         }
 
+        const sanitizedImages = images === undefined ? [] : validImages(images);
+        if (sanitizedImages === null) return res.status(400).json({ error: 'Envie no máximo 5 imagens JPG, PNG ou WebP válidas.' });
+
         const vehicle = await prisma.vehicle.create({
           data: {
             vin,
@@ -45,7 +57,7 @@ module.exports = async (req, res) => {
             transmission: transmission || 'Automatic',
             drivetrain: drivetrain || 'FWD',
             mpg: mpg ? parseFloat(mpg) : null,
-            images: JSON.stringify(images || []),
+            images: JSON.stringify(sanitizedImages),
             status: VALID_STATUSES.includes(status) ? status : 'active',
             fipeCode: fipeCode || null,
             fipePrice: fipePrice ? parseInt(fipePrice) : null,
@@ -65,7 +77,7 @@ module.exports = async (req, res) => {
     if (!requireAuth(req, res)) return;
 
     if (req.method === 'PATCH') {
-      const { price, mileage, status, color, dealerNotes, history, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
+      const { price, mileage, status, color, dealerNotes, history, images, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
       const data = {};
 
       if (price !== undefined) data.price = parseInt(price);
@@ -73,6 +85,11 @@ module.exports = async (req, res) => {
       if (color !== undefined) data.color = color;
       if (dealerNotes !== undefined) data.dealerNotes = dealerNotes;
       if (history !== undefined) data.history = history;
+      if (images !== undefined) {
+        const sanitizedImages = validImages(images);
+        if (sanitizedImages === null) return res.status(400).json({ error: 'Envie no máximo 5 imagens JPG, PNG ou WebP válidas.' });
+        data.images = JSON.stringify(sanitizedImages);
+      }
       if (fipeCode !== undefined) data.fipeCode = fipeCode || null;
       if (fipePrice !== undefined) { data.fipePrice = fipePrice ? parseInt(fipePrice) : null; data.fipeUpdatedAt = fipePrice ? new Date() : null; }
       if (fipeModel !== undefined) data.fipeModel = fipeModel || null;

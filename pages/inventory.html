@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +18,11 @@
     .row-check, #selectAll { width: 18px; height: 18px; cursor: pointer; }
     .quick-edit-panel { position: fixed; top: 0; right: 0; height: 100vh; width: 360px; background: #fff; box-shadow: -12px 0 32px rgba(0,0,0,0.15); z-index: 1100; display: none; flex-direction: column; }
     .quick-edit-overlay { position: fixed; inset: 0; background: rgba(10,12,20,0.4); z-index: 1099; display: none; }
+    .vehicle-photo { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; background: #eef2f6; }
+    .inventory-thumb { width: 64px; height: 44px; border-radius: 7px; overflow: hidden; background: #eef2f6; }
+    .photo-preview { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
+    .photo-preview img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:7px; border:1px solid #e2e8f0; background:#eef2f6; }
+    .photo-help { display:block; color:#64748b; font-size:11px; line-height:1.4; margin-top:5px; }
   </style>
 </head>
 <body class="dos-body">
@@ -55,13 +60,13 @@
       <input type="text" id="filterSearch" class="inv-filter-input is-49cdf874" placeholder="Buscar no estoque…"  oninput="applyFilters()">
       <select id="filterStatus" class="inv-filter-input" aria-label="Filtrar por situação" onchange="applyFilters()">
         <option value="">Situação ▾</option>
-        <option value="active">Active</option>
+        <option value="active">Disponível</option>
         <option value="featured">Destaque</option>
-        <option value="draft">Draft</option>
+        <option value="draft">Rascunho</option>
         <option value="sold">Vendido</option>
       </select>
-      <select id="filterBody" class="inv-filter-input" aria-label="Filter by body type" onchange="applyFilters()">
-        <option value="">Body type ▾</option>
+      <select id="filterBody" class="inv-filter-input" aria-label="Filtrar por carroceria" onchange="applyFilters()">
+        <option value="">Carroceria ▾</option>
       </select>
       <select id="filterPrice" class="inv-filter-input" aria-label="Filtrar por faixa de preço" onchange="applyFilters()">
         <option value="">Preço ▾</option>
@@ -70,7 +75,7 @@
         <option value="50000000-999999999">Acima de R$ 500 mil</option>
       </select>
       <div class="inv-view-toggle is-dc310e06">
-        <button type="button" class="inv-view-btn active" data-view="table" onclick="setView('table')">Table</button>
+        <button type="button" class="inv-view-btn active" data-view="table" onclick="setView('table')">Tabela</button>
         <button type="button" class="inv-view-btn" data-view="cards" onclick="setView('cards')">Cards</button>
       </div>
     </div>
@@ -85,7 +90,7 @@
       <!-- Table view -->
       <div id="tableViewWrap" class="is-3c773fe7">
         <div class="is-b64e61e5">
-          <div><input type="checkbox" id="selectAll" aria-label="Select all vehicles" onchange="toggleSelectAll(this.checked)"></div>
+          <div><input type="checkbox" id="selectAll" aria-label="Selecionar todos os veículos" onchange="toggleSelectAll(this.checked)"></div>
           <div></div><div>Veículo</div><div>Preço</div><div>Quilometragem</div><div>Situação</div><div>Dias anunciado</div><div>Ações</div>
         </div>
         <div id="vehicleList"></div>
@@ -108,17 +113,23 @@
   <div class="is-d3c9f1ae">
     <div id="quickEditName" class="is-85b20de1"></div>
     <div>
-      <label class="is-204b9faf">Preço (centavos)</label>
+      <label class="is-204b9faf">Preço anunciado (R$)</label>
       <input type="number" id="qePrice" class="is-b94f2f17">
     </div>
     <div>
       <label class="is-204b9faf">Situação</label>
       <select id="qeStatus" class="is-b94f2f17">
-        <option value="active">Active</option>
+        <option value="active">Disponível</option>
         <option value="featured">Destaque</option>
-        <option value="draft">Draft</option>
+        <option value="draft">Rascunho</option>
         <option value="sold">Vendido</option>
       </select>
+    </div>
+    <div>
+      <label class="is-204b9faf" for="qeImages">Fotos do veículo</label>
+      <input type="file" id="qeImages" accept="image/jpeg,image/png,image/webp" multiple class="is-b94f2f17" onchange="previewQuickEditImages(this.files)">
+      <small class="photo-help">Selecione até 5 fotos. Novas fotos substituem as atuais.</small>
+      <div class="photo-preview" id="qeImagePreview"></div>
     </div>
   </div>
   <div class="is-f4bbe62a">
@@ -136,6 +147,8 @@
   let quickEditId = null;
   let quickEditFocusTrap = null;
   let quickEditTrigger = null;
+  let quickEditImages = [];
+  let requestedEditId = new URLSearchParams(location.search).get('edit');
 
   const fallbackVehicles = [
     { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active', body: 'SUV', color: 'Black', drivetrain: 'AWD', createdAt: new Date().toISOString() },
@@ -163,7 +176,7 @@
   function populateBodyFilter() {
     const select = document.getElementById('filterBody');
     const bodies = [...new Set(vehicles.map(v => v.body).filter(Boolean))].sort();
-    select.innerHTML = '<option value="">Body type ▾</option>' + bodies.map(b => `<option value="${b}">${b}</option>`).join('');
+    select.innerHTML = '<option value="">Carroceria ▾</option>' + bodies.map(b => `<option value="${b}">${b}</option>`).join('');
   }
 
   function daysListed(v) {
@@ -177,6 +190,51 @@
 
   function esc(s) {
     return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function imagesOf(vehicle) {
+    if (Array.isArray(vehicle?.images)) return vehicle.images.filter(Boolean);
+    try { return JSON.parse(vehicle?.images || '[]').filter(Boolean); } catch { return []; }
+  }
+
+  function imageSrc(value) {
+    const source = String(value || '').trim();
+    if (!source) return '../assets/web/car-placeholder.svg';
+    if (/^(data:image\/|https?:\/\/|\/)/i.test(source)) return source;
+    return `../assets/web/${source.replace(/^.*\/assets\/web\//, '').replace(/^.*\/images\/vehicles\//, '')}`;
+  }
+
+  function vehiclePhoto(vehicle, className = 'vehicle-photo') {
+    return `<img class="${className}" src="${esc(imageSrc(imagesOf(vehicle)[0]))}" alt="${esc(`${vehicle.make} ${vehicle.model}`)}" loading="lazy" onerror="this.onerror=null;this.src='../assets/web/car-placeholder.svg'">`;
+  }
+
+  function filePreview(files, target) {
+    const selected = [...files].slice(0, 5);
+    target.innerHTML = selected.map((file) => `<img src="${esc(URL.createObjectURL(file))}" alt="Prévia de ${esc(file.name)}">`).join('');
+  }
+
+  async function compressPhoto(file) {
+    if (!/^image\/(jpeg|png|webp)$/i.test(file.type)) throw new Error('Use somente imagens JPG, PNG ou WebP.');
+    if (file.size > 12 * 1024 * 1024) throw new Error(`A foto ${file.name} ultrapassa 12 MB.`);
+    const source = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => { const image = new Image(); image.onload = () => resolve(image); image.onerror = () => reject(new Error(`Não foi possível ler ${file.name}.`)); image.src = reader.result; };
+      reader.onerror = () => reject(new Error(`Não foi possível ler ${file.name}.`));
+      reader.readAsDataURL(file);
+    });
+    const limit = 1400;
+    const scale = Math.min(1, limit / Math.max(source.width, source.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(source.width * scale));
+    canvas.height = Math.max(1, Math.round(source.height * scale));
+    canvas.getContext('2d').drawImage(source, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg', 0.78);
+  }
+
+  async function preparePhotos(fileList) {
+    const files = [...fileList];
+    if (files.length > 5) throw new Error('Selecione no máximo 5 fotos por veículo.');
+    return Promise.all(files.map(compressPhoto));
   }
 
   function money(value) {
@@ -234,9 +292,9 @@
     section.style.display = 'block';
     strip.innerHTML = featured.map(v => `
       <div class="is-fe44beb6">
-        <div class="stripes is-141f1f5e"></div>
+        <div class="stripes is-141f1f5e">${vehiclePhoto(v)}</div>
         <div class="is-ec940996">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
-        <div class="is-41b12b7b">₦${v.price.toLocaleString()}</div>
+        <div class="is-41b12b7b">${money(v.price)}</div>
       </div>
     `).join('');
   }
@@ -258,8 +316,8 @@
 
     list.innerHTML = filteredVehicles.map(v => `
       <div class="is-937ce8ce">
-        <div><input type="checkbox" class="row-check" data-id="${v.id}" aria-label="Select ${esc(v.year)} ${esc(v.make)} ${esc(v.model)}" ${selectedIds.has(String(v.id)) ? 'checked' : ''} onchange="toggleSelect('${v.id}', this.checked)"></div>
-        <div class="stripes is-86ba105f"></div>
+        <div><input type="checkbox" class="row-check" data-id="${v.id}" aria-label="Selecionar ${esc(v.year)} ${esc(v.make)} ${esc(v.model)}" ${selectedIds.has(String(v.id)) ? 'checked' : ''} onchange="toggleSelect('${v.id}', this.checked)"></div>
+        <div class="stripes inventory-thumb">${vehiclePhoto(v)}</div>
         <div>
           <div class="is-db117290">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
           <div class="is-41b12b7b">${esc(trimOf(v))}</div>
@@ -278,7 +336,7 @@
     document.getElementById('cardsViewWrap').style.display = 'grid';
     document.getElementById('cardsViewWrap').innerHTML = filteredVehicles.map(v => `
       <div class="is-fe44beb6">
-        <div class="stripes is-141f1f5e"></div>
+        <div class="stripes is-141f1f5e">${vehiclePhoto(v)}</div>
         <div class="is-ec940996">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
         <div class="is-adc0edca">${money(v.price)} · ${v.mileage.toLocaleString('pt-BR')} km${fipeIndicator(v)}</div>
         <div class="is-948e6d6e">
@@ -291,9 +349,9 @@
 
   function statusPill(status) {
     const map = {
-      active: ['oklch(94% 0.03 145)', 'oklch(45% 0.13 145)', 'Active'],
+      active: ['oklch(94% 0.03 145)', 'oklch(45% 0.13 145)', 'Disponível'],
       featured: ['oklch(94% 0.03 55)', 'oklch(45% 0.13 55)', 'Destaque'],
-      draft: ['oklch(95% 0.005 260)', 'oklch(45% 0.01 260)', 'Draft'],
+      draft: ['oklch(95% 0.005 260)', 'oklch(45% 0.01 260)', 'Rascunho'],
       sold: ['oklch(95% 0.02 260)', 'oklch(45% 0.13 260)', 'Vendido']
     };
     const [bg, color, label] = map[status] || map.active;
@@ -419,13 +477,20 @@
     quickEditId = id;
     quickEditTrigger = document.activeElement;
     document.getElementById('quickEditName').textContent = `${v.year} ${v.make} ${v.model}`;
-    document.getElementById('qePrice').value = v.price;
+    document.getElementById('qePrice').value = (Number(v.price || 0) / 100).toFixed(2);
     document.getElementById('qeStatus').value = v.status;
+    document.getElementById('qeImages').value = '';
+    quickEditImages = imagesOf(v);
+    document.getElementById('qeImagePreview').innerHTML = quickEditImages.map((image, index) => `<img src="${esc(imageSrc(image))}" alt="Foto atual ${index + 1}" onerror="this.onerror=null;this.src='../assets/web/car-placeholder.svg'">`).join('');
     document.getElementById('quickEditOverlay').style.display = 'block';
     document.getElementById('quickEditPanel').style.display = 'flex';
     const panel = document.getElementById('quickEditPanel');
     document.getElementById('qePrice').focus();
     quickEditFocusTrap = DosShell.trapFocus(panel, quickEditTrigger);
+  }
+
+  function previewQuickEditImages(files) {
+    filePreview(files, document.getElementById('qeImagePreview'));
   }
 
   function closeQuickEdit() {
@@ -447,20 +512,23 @@
   async function saveQuickEdit() {
     if (!quickEditId) return;
     try {
+      const selectedFiles = document.getElementById('qeImages').files;
+      const images = selectedFiles.length ? await preparePhotos(selectedFiles) : quickEditImages;
       const res = await fetch(`/api/vehicles/${quickEditId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          price: Number(document.getElementById('qePrice').value),
-          status: document.getElementById('qeStatus').value
+          price: Math.round(Number(document.getElementById('qePrice').value) * 100),
+          status: document.getElementById('qeStatus').value,
+          images
         })
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Save failed');
-      DosShell.toast('Vehicle updated');
+      DosShell.toast('Veículo atualizado.');
       closeQuickEdit();
       await fetchVehicles();
     } catch (err) {
-      DosShell.toast('Could not save: ' + err.message, 'error');
+      DosShell.toast('Não foi possível salvar: ' + err.message, 'error');
     }
   }
 
@@ -472,26 +540,33 @@
       </div>
     `;
     const result = await DosShell.openModal({
-      title: 'Add vehicle',
-      confirmLabel: 'Add vehicle',
+      title: 'Adicionar veículo',
+      confirmLabel: 'Cadastrar veículo',
+      cancelLabel: 'Cancelar',
       focusSelector: '#avMake',
       bodyHtml: `
-        ${field('avMake', 'Make', '', 'text')}
-        ${field('avModel', 'Model', '', 'text')}
-        ${field('avYear', 'Year', '2024', 'number')}
-        ${field('avPrice', 'Preço (centavos)', '25000000', 'number')}
+        ${field('avMake', 'Marca', '', 'text')}
+        ${field('avModel', 'Modelo', '', 'text')}
+        ${field('avYear', 'Ano', String(new Date().getFullYear()), 'number')}
+        ${field('avPrice', 'Preço anunciado (R$)', '85000', 'number')}
+        ${field('avMileage', 'Quilometragem', '0', 'number')}
+        ${field('avColor', 'Cor', '', 'text')}
+        ${field('avEngine', 'Motor', '1.0 Flex', 'text')}
         <div style="margin-bottom: 14px;">
-          <label for="avBody" class="dos-field-label">Body type</label>
+          <label for="avBody" class="dos-field-label">Carroceria</label>
           <select id="avBody" class="dos-field-input">
-            <option>Sedan</option><option>SUV</option><option>Truck</option><option>Coupe</option>
+            <option>Hatch</option><option>Sedan</option><option>SUV</option><option>Picape</option><option>Utilitário</option><option>Cupê</option>
           </select>
         </div>
-        ${field('avVin', 'VIN', 'DEMO' + Date.now(), 'text')}
+        <div style="margin-bottom:14px"><label for="avTransmission" class="dos-field-label">Câmbio</label><select id="avTransmission" class="dos-field-input"><option>Automático</option><option>Manual</option><option>CVT</option></select></div>
+        ${field('avVin', 'Chassi/VIN ou código interno', 'BR' + Date.now(), 'text')}
+        <div style="margin-bottom:14px"><label for="avImages" class="dos-field-label">Fotos</label><input id="avImages" type="file" accept="image/jpeg,image/png,image/webp" multiple class="dos-field-input" onchange="previewAddVehicleImages(this.files)"><small class="photo-help">Até 5 fotos. Elas serão otimizadas antes do envio.</small><div class="photo-preview" id="avImagePreview"></div></div>
       `,
       onConfirm: async (overlay) => {
         const make = overlay.querySelector('#avMake').value.trim();
         const model = overlay.querySelector('#avModel').value.trim();
         if (!make || !model) throw new Error('Informe marca e modelo');
+        const photos = await preparePhotos(overlay.querySelector('#avImages').files);
         const res = await fetch('/api/vehicles', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -499,22 +574,36 @@
             vin: overlay.querySelector('#avVin').value.trim(),
             make, model,
             year: overlay.querySelector('#avYear').value,
-            price: overlay.querySelector('#avPrice').value,
+            price: Math.round(Number(overlay.querySelector('#avPrice').value) * 100),
             body: overlay.querySelector('#avBody').value,
-            mileage: 0,
+            mileage: Number(overlay.querySelector('#avMileage').value),
+            color: overlay.querySelector('#avColor').value.trim(),
+            engine: overlay.querySelector('#avEngine').value.trim(),
+            transmission: overlay.querySelector('#avTransmission').value,
+            drivetrain: 'Dianteira',
+            images: photos,
             status: 'active'
           })
         });
-        if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+        if (!res.ok) throw new Error((await res.json()).error || 'Não foi possível cadastrar.');
         return true;
       }
     });
     if (!result) return;
-    DosShell.toast('Vehicle added');
+    DosShell.toast('Veículo cadastrado e publicado no estoque.');
     await fetchVehicles();
   }
 
-  fetchVehicles();
+  function previewAddVehicleImages(files) {
+    filePreview(files, document.getElementById('avImagePreview'));
+  }
+
+  window.previewQuickEditImages = previewQuickEditImages;
+  window.previewAddVehicleImages = previewAddVehicleImages;
+
+  fetchVehicles().then(() => {
+    if (requestedEditId) { const id = requestedEditId; requestedEditId = null; openQuickEdit(id); }
+  });
   DosShell.onEvent(['vehicle.created', 'vehicle.updated', 'vehicle.deleted'], fetchVehicles);
   setInterval(fetchVehicles, 30000);
 </script>

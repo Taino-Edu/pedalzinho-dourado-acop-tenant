@@ -27,11 +27,14 @@ a { color:inherit; }
 .topbar-actions { margin-left:auto; display:flex; align-items:center; gap:.75rem; }
 .topbar-actions > a { min-height:42px; padding:0 1rem; display:flex; align-items:center; gap:.45rem; border:1px solid rgba(255,255,255,.16); border-radius:7px; text-decoration:none; font-weight:600; font-size:.82rem; }
 .notification-button,.profile-button { border:0; background:transparent; color:#fff; min-height:42px; display:flex; align-items:center; position:relative; }
-.notification-button i { position:absolute; top:3px; right:0; min-width:17px; height:17px; border-radius:9px; background:var(--admin-orange); font:700 .62rem/17px sans-serif; font-style:normal; }
+.notification-button { min-width:42px; justify-content:center; cursor:pointer; border-radius:7px; }
+.notification-button:hover,.profile-button:hover { background:rgba(255,255,255,.08); }
+.notification-button i { position:absolute; top:4px; right:4px; width:8px; height:8px; border-radius:50%; background:var(--admin-orange); }
 .profile-button { gap:.55rem; padding-left:.5rem; }
 .profile-button > span:first-child { width:34px; height:34px; border-radius:50%; background:#34445a; display:grid; place-items:center; font-size:.75rem; }
 .profile-copy { display:flex; flex-direction:column; text-align:left; }
 .profile-copy strong { font-size:.78rem; }.profile-copy small { color:#9cabbc; font-size:.67rem; }
+.profile-menu-wrap{position:relative}.profile-menu{position:absolute;right:0;top:48px;width:210px;padding:.4rem;background:#fff;color:var(--admin-ink);border:1px solid var(--admin-line);border-radius:8px;box-shadow:0 16px 38px rgba(9,21,36,.2);z-index:100}.profile-menu a{display:flex;align-items:center;gap:.6rem;min-height:42px;padding:0 .7rem;border-radius:6px;text-decoration:none;font-size:.75rem}.profile-menu a:hover{background:#f1f5fa}.profile-menu .material-symbols-rounded{color:#64748b;font-size:18px}
 .admin-main { grid-column:2; padding:2rem clamp(1rem,2.4vw,2.25rem) 1.2rem; min-width:0; }
 .admin-heading { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; margin-bottom:1.35rem; }
 .admin-heading h1 { font:700 clamp(1.6rem,2.4vw,2rem) 'Manrope',sans-serif; letter-spacing:-.035em; }

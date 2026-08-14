@@ -15,8 +15,10 @@ const ASSET_BASE = window.ASSET_BASE || 'assets/web/';
 const { formatNaira, sortCars, filterCars, parseMileageKm } = window.AutoSuiteInventory;
 
 function imageUrl(fileName) {
-  if (/^(https?:)?\/\//.test(fileName) || fileName.startsWith('/')) return fileName;
-  return ASSET_BASE + fileName;
+  const source = String(fileName || '').trim();
+  if (!source) return ASSET_BASE + 'car-placeholder.svg';
+  if (/^(data:image\/|(https?:)?\/\/|\/)/i.test(source)) return source;
+  return ASSET_BASE + source;
 }
 
 async function fetchCars() {
@@ -56,7 +58,7 @@ function carCardHTML(car, options) {
       <div class="car-card-media">
         <span class="data-chip"><span class="dot"></span>${car.year}</span>
         <button type="button" class="favorite-toggle${favorited ? ' is-favorited' : ''}" data-favorite-toggle="${car.id}" aria-pressed="${favorited}" aria-label="Save ${car.name} to favorites">${favorited ? '♥' : '♡'}</button>
-        <img src="${imageUrl(car.image)}" alt="${car.name}" loading="lazy">
+        <img src="${imageUrl(car.image)}" alt="${car.name}" loading="lazy" onerror="this.onerror=null;this.src='${ASSET_BASE}car-placeholder.svg'">
       </div>
       <div class="car-card-body">
         <h3>${car.name}</h3>
@@ -317,7 +319,7 @@ function renderSimilarVehicles(car, allCars) {
     .map(
       (c) => `
         <a class="similar-card" href="${carDetailUrl(c)}">
-          <img src="${imageUrl(c.image)}" alt="${c.name}">
+          <img src="${imageUrl(c.image)}" alt="${c.name}" onerror="this.onerror=null;this.src='${ASSET_BASE}car-placeholder.svg'">
           <h3>${c.name}</h3>
           <p class="similar-price">${formatNaira(c.price)}</p>
           <p>${c.brand} · ${c.drivetrain}</p>
@@ -389,7 +391,7 @@ async function initDetailPage() {
         .map(
           (img, i) => `
             <button type="button" ${i === 0 ? 'aria-current="true"' : ''}>
-              <img src="${imageUrl(img)}" data-full="${imageUrl(img)}" alt="${car.name} photo ${i + 1}">
+              <img src="${imageUrl(img)}" data-full="${imageUrl(img)}" alt="Foto ${i + 1} de ${car.name}" onerror="this.onerror=null;this.src='${ASSET_BASE}car-placeholder.svg'">
             </button>
           `
         )
@@ -409,7 +411,7 @@ async function initDetailPage() {
           const isInterior = /interior/i.test(img);
           const label = isInterior ? `Interior, photo ${++interiorCount}` : `Exterior, photo ${++exteriorCount}`;
           const alt = `${car.name} — ${label}`;
-          return `<button type="button" class="photo-grid-item" data-lightbox-index="${i}"><img src="${imageUrl(img)}" alt="${alt}" loading="lazy"></button>`;
+          return `<button type="button" class="photo-grid-item" data-lightbox-index="${i}"><img src="${imageUrl(img)}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='${ASSET_BASE}car-placeholder.svg'"></button>`;
         })
         .join('');
     }

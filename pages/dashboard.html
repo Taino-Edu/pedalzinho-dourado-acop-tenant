@@ -37,8 +37,11 @@
       <label class="admin-search"><span class="material-symbols-rounded">Buscar</span><input type="search" id="dashboardSearch" placeholder="Buscar leads, clientes, veículos, placas…"><kbd>Ctrl K</kbd></label>
       <div class="topbar-actions">
         <a href="../index.html" target="_blank">Ver site <span class="material-symbols-rounded">open_in_new</span></a>
-        <button type="button" class="notification-button" aria-label="3 notificações"><span class="material-symbols-rounded">notifications</span><i>3</i></button>
-        <button type="button" class="profile-button"><span>MS</span><span class="profile-copy"><strong>Marcos Silva</strong><small>Gerente</small></span><span class="material-symbols-rounded">expand_more</span></button>
+        <div data-dos-bell class="notification-button" aria-label="Notificações"><span class="material-symbols-rounded">notifications</span><i data-dos-bell-dot hidden></i></div>
+        <div class="profile-menu-wrap">
+          <button type="button" class="profile-button" id="profileMenuButton" aria-expanded="false" aria-controls="profileMenu"><span>MS</span><span class="profile-copy"><strong>Marcos Silva</strong><small>Gerente</small></span><span class="material-symbols-rounded">expand_more</span></button>
+          <div class="profile-menu" id="profileMenu" hidden><a href="settings.html"><span class="material-symbols-rounded">palette</span>Aparência</a><a href="inventory.html"><span class="material-symbols-rounded">directions_car</span>Gerenciar estoque</a><a href="superadmin.html"><span class="material-symbols-rounded">admin_panel_settings</span>Central 3esysten</a></div>
+        </div>
       </div>
     </header>
 
@@ -98,6 +101,7 @@
   <script>
     window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {} };
   </script>
-  <script src="../js/dashboard-home.js?v=2"></script>
+  <script src="../js/dos-shell.js?v=3"></script>
+  <script src="../js/dashboard-home.js?v=3"></script>
 </body>
 </html>

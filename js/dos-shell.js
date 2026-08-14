@@ -335,13 +335,13 @@
     const p = evt.payload || {};
     switch (evt.type) {
       case 'lead.created': return `Novo lead: ${p.name} — ${p.carName}`;
-      case 'lead.updated': return `${p.name} moved to ${p.status}`;
-      case 'appointment.created': return 'Novo agendamento scheduled';
-      case 'appointment.updated': return `Appointment marked ${p.status}`;
-      case 'vehicle.created': return `Vehicle added: ${p.make} ${p.model}`;
-      case 'vehicle.updated': return `Vehicle updated: ${(p.make || '') + ' ' + (p.model || '')}`.trim();
-      case 'vehicle.deleted': return 'Vehicle removed from inventory';
-      case 'customer.created': return `New customer: ${p.name}`;
+      case 'lead.updated': return `${p.name || 'Lead'} atualizado para ${p.status}`;
+      case 'appointment.created': return 'Novo agendamento recebido';
+      case 'appointment.updated': return `Agendamento atualizado para ${p.status}`;
+      case 'vehicle.created': return `Veículo cadastrado: ${p.make} ${p.model}`;
+      case 'vehicle.updated': return `Veículo atualizado: ${(p.make || '') + ' ' + (p.model || '')}`.trim();
+      case 'vehicle.deleted': return 'Veículo removido do estoque';
+      case 'customer.created': return `Novo cliente: ${p.name}`;
       default: return evt.type;
     }
   }
@@ -350,7 +350,7 @@
     if (!notifPanel) return;
     const body = notifPanel.querySelector('[data-notif-body]');
     if (notifications.length === 0) {
-      body.innerHTML = '<div style="padding:20px;text-align:center;color:oklch(50% 0.01 260);font:400 13px sans-serif;">No notifications yet</div>';
+      body.innerHTML = '<div style="padding:20px;text-align:center;color:oklch(50% 0.01 260);font:400 13px sans-serif;">Nenhuma notificação por enquanto.</div>';
       return;
     }
     body.innerHTML = notifications.map((n) => `
@@ -377,18 +377,18 @@
     bellWrap.style.cursor = 'pointer';
     bellWrap.setAttribute('role', 'button');
     bellWrap.setAttribute('tabindex', '0');
-    bellWrap.setAttribute('aria-label', 'Notifications');
+    bellWrap.setAttribute('aria-label', 'Notificações');
     notifBadge = bellWrap.querySelector('[data-dos-bell-dot]');
     if (notifBadge) notifBadge.style.display = 'none';
 
     notifPanel = document.createElement('div');
     notifPanel.setAttribute('role', 'region');
-    notifPanel.setAttribute('aria-label', 'Notifications list');
+    notifPanel.setAttribute('aria-label', 'Lista de notificações');
     notifPanel.style.cssText = 'position:absolute;top:24px;right:0;width:320px;max-height:420px;overflow-y:auto;background:#fff;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,0.18);display:none;z-index:1001;';
     notifPanel.innerHTML = `
       <div style="padding:14px 16px;border-bottom:1px solid oklch(93% 0.005 260);display:flex;justify-content:space-between;align-items:center;">
-        <div style="font:600 14px 'Space Grotesk',sans-serif;">Notifications</div>
-        <button type="button" data-mark-all style="font:500 12px 'IBM Plex Sans',sans-serif;color:oklch(45% 0.16 260);background:none;border:none;cursor:pointer;padding:0;">Mark all read</button>
+        <div style="font:600 14px 'Space Grotesk',sans-serif;">Notificações</div>
+        <button type="button" data-mark-all style="font:500 12px 'IBM Plex Sans',sans-serif;color:oklch(45% 0.16 260);background:none;border:none;cursor:pointer;padding:0;">Marcar como lidas</button>
       </div>
       <div data-notif-body></div>
     `;

@@ -15,6 +15,12 @@
   const normalizedPrice = (value) => Number(value) > 5000000 ? Number(value) / 100 : Number(value) || 0;
   const money = (value) => new Intl.NumberFormat('pt-BR', { style:'currency', currency:'BRL', maximumFractionDigits:0 }).format(normalizedPrice(value));
   const phoneLink = (phone) => `https://wa.me/${String(phone || '').replace(/\D/g,'')}`;
+  const imageSource = (value) => {
+    const source = String(value || '').trim();
+    if (!source) return '../assets/web/car-placeholder.svg';
+    if (/^(data:image\/|https?:\/\/|\/)/i.test(source)) return source;
+    return `../assets/web/${source.replace(/^\.\.\/assets\/web\//, '')}`;
+  };
 
   function toast(message) {
     const live = document.getElementById('adminLive');
@@ -75,9 +81,8 @@
   function renderInventory() {
     document.getElementById('inventoryRows').innerHTML = vehicles.slice(0,5).map((car) => {
       let images = []; try { images = JSON.parse(car.images || '[]'); } catch {}
-      const known = car.make === 'BMW' ? '2024-x6-exterior1.jpg' : car.make === 'Porsche' ? 'porsche-cayenne-exterior1.jpg' : 'mercedes-e450-2024-1.jpg';
-      const image = images[0] && !images[0].startsWith('/images/vehicles/') ? images[0].replace('/assets/web/','') : known;
-      return `<tr><td><span class="vehicle-cell"><img src="../assets/web/${esc(image)}" alt=""><span><strong>${esc(car.make)} ${esc(car.model)}</strong><small>${esc(car.color)} · ${esc(car.transmission)}</small></span></span></td><td>${car.year}</td><td>${Number(car.mileage).toLocaleString('pt-BR')} km</td><td><strong>${money(car.price)}</strong></td><td><span class="status-active">${car.status === 'featured' ? 'Destaque' : 'Disponível'}</span></td><td><span class="row-actions"><a href="inventory.html" aria-label="Editar veículo"><span class="material-symbols-rounded">edit</span></a><a href="../pages/car-page.html?id=${car.id}" target="_blank" aria-label="Ver no site"><span class="material-symbols-rounded">open_in_new</span></a></span></td></tr>`;
+      const image = imageSource(images[0]);
+      return `<tr><td><span class="vehicle-cell"><img src="${esc(image)}" alt="${esc(`${car.make} ${car.model}`)}" onerror="this.onerror=null;this.src='../assets/web/car-placeholder.svg'"><span><strong>${esc(car.make)} ${esc(car.model)}</strong><small>${esc(car.color)} · ${esc(car.transmission)}</small></span></span></td><td>${car.year}</td><td>${Number(car.mileage).toLocaleString('pt-BR')} km</td><td><strong>${money(car.price)}</strong></td><td><span class="status-active">${car.status === 'featured' ? 'Destaque' : 'Disponível'}</span></td><td><span class="row-actions"><a href="inventory.html?edit=${encodeURIComponent(car.id)}" aria-label="Editar veículo"><span class="material-symbols-rounded">edit</span></a><a href="../pages/car-page.html?id=${car.id}" target="_blank" aria-label="Ver no site"><span class="material-symbols-rounded">open_in_new</span></a></span></td></tr>`;
     }).join('') || '<tr><td colspan="6">Nenhum veículo cadastrado.</td></tr>';
   }
 
@@ -97,7 +102,9 @@
   function wireCollapse() {
     document.querySelectorAll('.collapse-module').forEach((button) => button.addEventListener('click', () => {
       const module = button.closest('.admin-module'); const collapsed = module.classList.toggle('is-collapsed');
-      button.setAttribute('aria-expanded', String(!collapsed)); button.querySelector('span').textContent = collapsed ? 'expand_more' : 'expand_less'; saveLayout();
+      button.setAttribute('aria-expanded', String(!collapsed));
+      button.setAttribute('aria-label', `${collapsed ? 'Expandir' : 'Recolher'} ${module.dataset.module === 'pipeline' ? 'pipeline' : module.dataset.module === 'inventory' ? 'estoque' : 'desempenho'}`);
+      button.querySelector('span').textContent = collapsed ? 'expand_more' : 'expand_less'; saveLayout();
     }));
     document.querySelectorAll('.drawer-collapse').forEach((button) => button.addEventListener('click', () => {
       const section = button.closest('.drawer-section'); const collapsed = section.classList.toggle('is-collapsed');
@@ -117,6 +124,17 @@
       (saved.order || []).forEach((id) => { const node = host.querySelector(`[data-module="${id}"]`); if (node) host.appendChild(node); });
       if (saved.collapsed) host.querySelectorAll('[data-module]').forEach((node) => node.classList.toggle('is-collapsed', saved.collapsed.includes(node.dataset.module)));
     } catch {}
+  }
+
+  function syncCollapseButtons() {
+    document.querySelectorAll('.admin-module').forEach((module) => {
+      const button = module.querySelector('.collapse-module');
+      if (!button) return;
+      const expanded = !module.classList.contains('is-collapsed');
+      button.setAttribute('aria-expanded', String(expanded));
+      button.setAttribute('aria-label', `${expanded ? 'Recolher' : 'Expandir'} ${module.dataset.module === 'pipeline' ? 'pipeline' : module.dataset.module === 'inventory' ? 'estoque' : 'desempenho'}`);
+      button.querySelector('span').textContent = expanded ? 'expand_less' : 'expand_more';
+    });
   }
 
   function wireModuleDrag() {
@@ -143,6 +161,22 @@
     const search = document.getElementById('dashboardSearch');
     document.addEventListener('keydown', (event) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); search.focus(); } });
     search.addEventListener('keydown', (event) => { if (event.key === 'Enter' && search.value.trim()) location.href = `crm.html?q=${encodeURIComponent(search.value.trim())}`; });
+    const profileButton = document.getElementById('profileMenuButton');
+    const profileMenu = document.getElementById('profileMenu');
+    profileButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const opening = profileMenu.hidden;
+      profileMenu.hidden = !opening;
+      profileButton.setAttribute('aria-expanded', String(opening));
+      profileButton.querySelector('.material-symbols-rounded:last-child').textContent = opening ? 'expand_less' : 'expand_more';
+    });
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.profile-menu-wrap')) {
+        profileMenu.hidden = true;
+        profileButton.setAttribute('aria-expanded', 'false');
+        profileButton.querySelector('.material-symbols-rounded:last-child').textContent = 'expand_more';
+      }
+    });
   }
 
   async function load() {
@@ -162,6 +196,6 @@
 
   const date = new Date();
   document.getElementById('todayLabel').textContent = date.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).replace(/^./,(c)=>c.toUpperCase());
-  restoreLayout(); wireCollapse(); wireModuleDrag(); wireShell();
+  restoreLayout(); syncCollapseButtons(); wireCollapse(); wireModuleDrag(); wireShell();
   load().catch(() => toast('Não foi possível carregar os dados do painel.'));
 })();
