@@ -1,10 +1,10 @@
 :root {
   --octus-blue: #35b9e6;
-  --octus-blue-strong: #199bcf;
+  --octus-blue-strong: #0877a6;
   --octus-blue-soft: #dff5fb;
   --octus-ink: #172033;
   --octus-text: #47516a;
-  --octus-muted: #7d879d;
+  --octus-muted: #5f697d;
   --octus-line: #dce1ea;
   --octus-bg: #f7f7fa;
   --octus-panel: #fff;
@@ -89,7 +89,7 @@ button, input { font: inherit; }
 .settings-sidebar nav { min-height: 0; display: grid; align-content: start; gap: 3px; overflow-y: auto; overflow-x: hidden; }
 .settings-nav-label {
   margin: 15px 10px 5px;
-  color: #8992a7;
+  color: #667086;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: .1em;
@@ -142,7 +142,7 @@ button, input { font: inherit; }
 }
 .settings-user > span:last-child { display: grid; gap: 3px; min-width: 0; }
 .settings-user strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
-.settings-user small { width: max-content; padding: 2px 7px; border-radius: 3px; color: #087bad; background: #d9f3fd; font-size: 8px; font-weight: 800; }
+.settings-user small { width: max-content; padding: 2px 7px; border-radius: 3px; color: #075f87; background: #d9f3fd; font-size: 8px; font-weight: 800; }
 
 .sidebar-collapsed .settings-brand { justify-content: center; padding: 0; }
 .sidebar-collapsed .settings-brand > span:last-child,
@@ -244,7 +244,7 @@ button, input { font: inherit; }
   height: 34px;
   padding: 0 10px;
   border-radius: 8px;
-  color: #087bad;
+  color: #075f87;
   background: var(--octus-blue-soft);
   display: grid;
   place-items: center;

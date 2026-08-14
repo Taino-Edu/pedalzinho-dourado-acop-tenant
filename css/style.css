@@ -270,7 +270,7 @@ button {
 }
 
 .nav-links a[aria-current="page"] {
-  color: var(--brand-blue);
+  color: var(--brand-blue-light);
 }
 
 .nav-links a[aria-current="page"]::after {
