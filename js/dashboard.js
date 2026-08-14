@@ -10,7 +10,7 @@
     { id: 'QUALIFIED', label: 'Qualified', color: 'oklch(55% 0.1 190)' },
     { id: 'APPT_SCHEDULED', label: 'Appt. Scheduled', color: 'oklch(48% 0.12 155)' },
     { id: 'NEGOTIATING', label: 'Negotiating', color: 'oklch(50% 0.15 55)' },
-    { id: 'SOLD', label: 'Sold', color: 'oklch(46% 0.14 145)' },
+    { id: 'SOLD', label: 'Vendido', color: 'oklch(46% 0.14 145)' },
     { id: 'LOST', label: 'Lost', color: 'oklch(45% 0.01 260)' },
   ];
   const OPEN_STAGES = ['NEW', 'CONTACTED', 'QUALIFIED', 'APPT_SCHEDULED', 'NEGOTIATING'];
@@ -33,7 +33,7 @@
   }
   function sourceLabel(source) {
     const s = source || 'website';
-    if (s === 'test-drive-modal') return 'Website';
+    if (s === 'test-drive-modal') return 'Site';
     if (s === 'trade-in-estimator') return 'Trade-in';
     return s;
   }
@@ -172,7 +172,7 @@
 
   /* ---------- Inventory + recently added ---------- */
   function statusPill(car, i) {
-    if (car.featured) return '<span class="status-pill" style="background:oklch(94% 0.05 55);color:oklch(45% 0.13 55)">Featured</span>';
+    if (car.featured) return '<span class="status-pill" style="background:oklch(94% 0.05 55);color:oklch(45% 0.13 55)">Destaque</span>';
     if (i % 7 === 6) return '<span class="status-pill" style="background:var(--surface-sunken);color:var(--ink-faint)">Draft</span>';
     return '<span class="status-pill" style="background:oklch(94% 0.05 145);color:oklch(40% 0.13 145)">Active</span>';
   }
@@ -210,7 +210,7 @@
     const sources = {};
     leads.forEach((l) => { const s = (l.source || 'website'); sources[s] = (sources[s] || 0) + 1; });
     const smax = Math.max(1, ...Object.values(sources));
-    const labelMap = { 'test-drive-modal': 'Test drive', 'trade-in-estimator': 'Trade-in', website: 'Website' };
+    const labelMap = { 'test-drive-modal': 'Test drive', 'trade-in-estimator': 'Trade-in', website: 'Site' };
     document.getElementById('analyticsSource').innerHTML = Object.entries(sources).map(([k, v]) => `
       <div class="pipe-row"><span class="pipe-name">${labelMap[k] || k}</span>
         <span class="pipe-track"><span class="pipe-fill" style="width:${Math.round((v / smax) * 100)}%;background:oklch(48% 0.16 260)"></span></span>

@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
 
       if (req.method === 'POST') {
         if (!requireAuth(req, res)) return;
-        const { vin, make, model, year, price, mileage, color, body, engine, transmission, drivetrain, mpg, images, status } = req.body || {};
+        const { vin, make, model, year, price, mileage, color, body, engine, transmission, drivetrain, mpg, images, status, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
 
         if (!vin || !make || !model || !year || !price) {
           return res.status(400).json({ error: 'Missing required fields: vin, make, model, year, price' });
@@ -47,6 +47,11 @@ module.exports = async (req, res) => {
             mpg: mpg ? parseFloat(mpg) : null,
             images: JSON.stringify(images || []),
             status: VALID_STATUSES.includes(status) ? status : 'active',
+            fipeCode: fipeCode || null,
+            fipePrice: fipePrice ? parseInt(fipePrice) : null,
+            fipeModel: fipeModel || null,
+            fipeReferenceMonth: fipeReferenceMonth || null,
+            fipeUpdatedAt: fipePrice ? new Date() : null,
           },
         });
         broadcast('vehicle.created', { id: vehicle.id, make: vehicle.make, model: vehicle.model, price: vehicle.price });
@@ -60,7 +65,7 @@ module.exports = async (req, res) => {
     if (!requireAuth(req, res)) return;
 
     if (req.method === 'PATCH') {
-      const { price, mileage, status, color, dealerNotes, history } = req.body || {};
+      const { price, mileage, status, color, dealerNotes, history, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
       const data = {};
 
       if (price !== undefined) data.price = parseInt(price);
@@ -68,6 +73,10 @@ module.exports = async (req, res) => {
       if (color !== undefined) data.color = color;
       if (dealerNotes !== undefined) data.dealerNotes = dealerNotes;
       if (history !== undefined) data.history = history;
+      if (fipeCode !== undefined) data.fipeCode = fipeCode || null;
+      if (fipePrice !== undefined) { data.fipePrice = fipePrice ? parseInt(fipePrice) : null; data.fipeUpdatedAt = fipePrice ? new Date() : null; }
+      if (fipeModel !== undefined) data.fipeModel = fipeModel || null;
+      if (fipeReferenceMonth !== undefined) data.fipeReferenceMonth = fipeReferenceMonth || null;
       if (status !== undefined) {
         if (!VALID_STATUSES.includes(status)) return res.status(400).json({ error: 'Invalid status' });
         data.status = status;

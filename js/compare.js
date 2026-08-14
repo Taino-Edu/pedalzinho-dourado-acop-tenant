@@ -163,7 +163,7 @@
       `;
     } catch (err) {
       console.error(err);
-      container.innerHTML = `<p class="empty-state">Inventory is temporarily unavailable. Please try again shortly.</p>`;
+      container.innerHTML = `<p class="empty-state">O estoque está temporariamente indisponível. Tente novamente em instantes.</p>`;
     }
   }
 

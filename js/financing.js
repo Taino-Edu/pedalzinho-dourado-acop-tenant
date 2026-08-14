@@ -23,8 +23,8 @@
     calculate();
   });
 
-  function formatNaira(amount) {
-    return '₦' + Math.round(amount).toLocaleString('en-NG');
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Math.round(amount) / 100);
   }
 
   function calculate() {
@@ -33,11 +33,11 @@
     const aprPct = Number(aprInput.value);
 
     downOut.textContent = `${downPct}%`;
-    termOut.textContent = `${termMonths} months`;
+    termOut.textContent = `${termMonths} meses`;
     aprOut.textContent = `${aprPct}%`;
 
     const monthly = window.AutoSuiteFinance.calculateMonthlyPayment({ price, downPct, termMonths, aprPct });
-    monthlyOut.textContent = formatNaira(monthly);
+    monthlyOut.textContent = formatCurrency(monthly);
   }
 
   [downInput, termInput, aprInput].forEach((input) => {
@@ -101,14 +101,14 @@
           source: 'trade-in-estimator',
         }),
       });
-      if (!res.ok) throw new Error('Request failed');
+      if (!res.ok) throw new Error('Não foi possível enviar a solicitação.');
 
-      if (tiStatusText) tiStatusText.textContent = `Thanks! A dealer will follow up with a trade-in estimate within one business day.`;
+      if (tiStatusText) tiStatusText.textContent = 'Obrigado! A concessionária enviará uma avaliação do seu usado em até um dia útil.';
       tiStatus?.classList.add('visible');
       tradeForm.reset();
       tiFields.forEach((f) => f.classList.remove('invalid'));
     } catch (err) {
-      if (tiStatusText) tiStatusText.textContent = `Something went wrong. Please try again or call us directly.`;
+      if (tiStatusText) tiStatusText.textContent = 'Não foi possível enviar agora. Tente novamente ou fale conosco por telefone.';
       tiStatus?.classList.add('visible');
     } finally {
       submitBtn.disabled = false;

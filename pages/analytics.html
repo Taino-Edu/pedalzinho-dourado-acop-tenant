@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analytics | AutoSuite Dealer OS</title>
+  <title>Relatórios | Gestão da concessionária</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,24 +37,24 @@
       <div class="is-dc3e742f">AutoSuite</div>
     </div>
     <div data-dos-search class="is-4330c69b">
-      <span>⌘K Search everything</span>
+      <span>⌘K Buscar em tudo</span>
     </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Overview</a>
+    <nav class="dos-nav" aria-label="Gestão da concessionária">
+      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Visão geral</a>
       <a href="crm.html" class="dos-nav-item is-3fa6ef03">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item is-3fa6ef03">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item is-3fa6ef03">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item active is-1cd5d92b">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Staff Activity</a>
+      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Estoque</a>
+      <a href="appointments.html" class="dos-nav-item is-3fa6ef03">◔ Agenda</a>
+      <a href="customers.html" class="dos-nav-item is-3fa6ef03">✎ Clientes</a>
+      <a href="analytics.html" class="dos-nav-item active is-1cd5d92b">▲ Relatórios</a>
+      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Atividade da equipe</a>
     </nav>
     <div class="is-df55b60c">
-      <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Settings</a>
+      <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Configurações</a>
     </div>
   </aside>
   <main class="is-cc38790d">
     <div class="is-aa8ddd09">
-      <h1 class="is-6f08c733">Analytics</h1>
+      <h1 class="is-6f08c733">Relatórios</h1>
       <div class="is-dc310e06">
         <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
@@ -69,15 +69,15 @@
         <div class="metric-card">
           <div class="metric-label">Conversion Rate</div>
           <div class="metric-value" id="metricConversion">-</div>
-          <div class="metric-change">Leads to sold</div>
+          <div class="metric-change">Leads convertidos em vendas</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Avg Sale Price</div>
+          <div class="metric-label">Preço médio de venda</div>
           <div class="metric-value" id="metricAvgPrice">-</div>
           <div class="metric-change">Per closed deal</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Appointments</div>
+          <div class="metric-label">Agenda</div>
           <div class="metric-value" id="metricAppointments">-</div>
           <div class="metric-change">Scheduled to date</div>
         </div>
@@ -85,7 +85,7 @@
 
       <div class="charts">
         <div class="chart-card">
-          <div class="chart-title">Inventory by Vehicle Type</div>
+          <div class="chart-title">Estoque por tipo de veículo</div>
           <div id="vehicleTypeChart"></div>
         </div>
         <div class="chart-card">
@@ -164,7 +164,7 @@
     document.getElementById('metricAvgPrice').textContent = fmtNaira(data.avgSalePrice);
     document.getElementById('metricAppointments').textContent = data.appointmentsThisWeek;
 
-    renderBarChart('vehicleTypeChart', data.vehiclesByType || {}, 'Inventory by vehicle type');
+    renderBarChart('vehicleTypeChart', data.vehiclesByType || {}, 'Estoque por tipo de veículo');
     renderBarChart('leadSourceChart', data.leadSources || {}, 'Lead source distribution');
 
     const funnel = data.funnel || {};
@@ -172,8 +172,8 @@
       ['Leads', funnel.leads],
       ['Contacted', funnel.contacted],
       ['Qualified', funnel.qualified],
-      ['Test Drive', funnel.testDriveBooked],
-      ['Sold', funnel.sold]
+      ['Test-drive', funnel.testDriveBooked],
+      ['Vendido', funnel.sold]
     ];
     document.getElementById('funnelChart').innerHTML = steps.map(([label, value]) =>
       `<div class="funnel-step">${label}<br>${value ?? 0}</div>`

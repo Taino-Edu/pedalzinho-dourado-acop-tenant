@@ -8,8 +8,11 @@
     "dev": "node server.js",
     "db:seed": "node prisma/seed.js",
     "db:deploy": "prisma migrate deploy",
-    "db:setup": "prisma migrate deploy && node prisma/seed-production-once.js",
+    "db:setup": "prisma migrate deploy && node prisma/seed-production-once.js && node scripts/seed-brazilian-inventory.js",
     "db:reset": "prisma migrate reset --force",
+    "market:warm": "node scripts/warm-market-cache.js",
+    "inventory:brazil": "node scripts/seed-brazilian-inventory.js",
+    "platform:seed": "node scripts/seed-platform-catalog.js",
     "build": "prisma generate",
     "start": "node server.js",
     "test": "vitest run"

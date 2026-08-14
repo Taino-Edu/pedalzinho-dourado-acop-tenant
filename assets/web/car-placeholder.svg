@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Veículo disponível</title>
+  <desc id="desc">Ilustração neutra de um automóvel</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1422"/><stop offset="1" stop-color="#253a55"/></linearGradient>
+    <linearGradient id="car" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d9b85f"/><stop offset="1" stop-color="#f2da8a"/></linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <circle cx="950" cy="120" r="260" fill="#d9b85f" opacity=".08"/>
+  <path d="M235 482h42l75-139c20-37 58-60 100-60h275c46 0 88 25 109 66l67 133h50c35 0 63 28 63 63v48H184v-48c0-35 23-63 51-63Z" fill="url(#car)"/>
+  <path d="m393 367 34-57c11-19 31-30 53-30h214c25 0 47 14 57 36l25 51H393Z" fill="#b8d0e7" opacity=".88"/>
+  <circle cx="369" cy="583" r="74" fill="#111827"/><circle cx="369" cy="583" r="32" fill="#94a3b8"/>
+  <circle cx="826" cy="583" r="74" fill="#111827"/><circle cx="826" cy="583" r="32" fill="#94a3b8"/>
+  <text x="600" y="700" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="34" font-weight="700">VEÍCULO DISPONÍVEL</text>
+</svg>

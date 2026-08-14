@@ -34,7 +34,7 @@
 
     <header class="admin-topbar">
       <button type="button" class="mobile-menu" id="mobileMenu" aria-label="Abrir navegação"><span class="material-symbols-rounded">menu</span></button>
-      <label class="admin-search"><span class="material-symbols-rounded">search</span><input type="search" id="dashboardSearch" placeholder="Buscar leads, clientes, veículos, placas…"><kbd>Ctrl K</kbd></label>
+      <label class="admin-search"><span class="material-symbols-rounded">Buscar</span><input type="search" id="dashboardSearch" placeholder="Buscar leads, clientes, veículos, placas…"><kbd>Ctrl K</kbd></label>
       <div class="topbar-actions">
         <a href="../index.html" target="_blank">Ver site <span class="material-symbols-rounded">open_in_new</span></a>
         <button type="button" class="notification-button" aria-label="3 notificações"><span class="material-symbols-rounded">notifications</span><i>3</i></button>
@@ -64,7 +64,11 @@
 
           <section class="admin-module inventory-module" data-module="inventory" draggable="true">
             <header class="module-head"><div><button class="drag-handle" type="button" aria-label="Arrastar módulo"><span class="material-symbols-rounded">drag_indicator</span></button><div><h2>Estoque e oportunidades</h2><p>Veículos prontos para criar oportunidades</p></div></div><div class="module-tools"><a href="inventory.html">Ver estoque completo <span class="material-symbols-rounded">open_in_new</span></a><button class="collapse-module" type="button" aria-expanded="true" aria-label="Recolher estoque"><span class="material-symbols-rounded">expand_less</span></button></div></header>
-            <div class="module-content table-scroll"><table class="inventory-table"><thead><tr><th>Veículo</th><th>Ano</th><th>KM</th><th>Preço</th><th>Status</th><th>Ações</th></tr></thead><tbody id="inventoryRows"><tr><td colspan="6">Carregando estoque…</td></tr></tbody></table></div>
+            <div class="module-content table-scroll"><table class="inventory-table"><thead><tr><th>Veículo</th><th>Ano</th><th>KM</th><th>Preço</th><th>Situação</th><th>Ações</th></tr></thead><tbody id="inventoryRows"><tr><td colspan="6">Carregando estoque…</td></tr></tbody></table></div>
+          </section>
+
+          <section class="admin-module simulator-module" data-module="simulator" draggable="true">
+            <header class="module-head"><div><button class="drag-handle" type="button" aria-label="Arrastar módulo"><span class="material-symbols-rounded">drag_indicator</span></button><div><h2>Simulador de financiamento</h2><p>FIPE, taxa média e parcelas em uma tela simples</p></div></div><a class="integration-action secondary" href="financing-calculator.html"><span class="material-symbols-rounded">calculate</span>Abrir simulador</a></header>
           </section>
 
           <section class="admin-module team-module is-collapsed" data-module="team" draggable="true">
@@ -94,6 +98,6 @@
   <script>
     window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {} };
   </script>
-  <script src="../js/dashboard-home.js"></script>
+  <script src="../js/dashboard-home.js?v=2"></script>
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book a Test Drive | AutoSuite</title>
-  <meta name="description" content="Preview AutoSuite's test drive booking flow in isolation.">
+  <title>Agendar test-drive | AutoSuite</title>
+  <meta name="description" content="Agende seu test-drive de forma rápida e simples.">
   <meta name="robots" content="noindex, follow">
   <meta name="theme-color" content="#0b1220">
   <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
@@ -41,7 +41,7 @@
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <a href="#main-content" class="skip-link">Ir para o conteúdo principal</a>
 
   <header class="navbar">
     <div class="logo">
@@ -52,21 +52,21 @@
     </div>
     <nav class="nav-links" id="primaryNav" aria-label="Primary">
       <a href="dashboard.html">Dashboard</a>
-      <a href="cars.html">Inventory</a>
-      <a href="financing-calculator.html">Financing</a>
-      <a href="appointments.html">Appointments</a>
-      <button type="button" class="btn small" data-open-test-drive>Book a Test Drive</button>
+      <a href="cars.html">Estoque</a>
+      <a href="financing-calculator.html">Financiamento</a>
+      <a href="appointments.html">Agenda</a>
+      <button type="button" class="btn small" data-open-test-drive>Agendar test-drive</button>
     </nav>
     <button type="button" class="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
   </header>
 
   <main id="main-content">
     <div class="preview-wrap">
-      <span class="eyebrow">Booking flow preview</span>
-      <h1>Test drive, isolated</h1>
+      <span class="eyebrow">Prévia do agendamento</span>
+      <h1>Agende seu test-drive</h1>
       <h2 class="visually-hidden">Preview the booking form</h2>
       <p>This page exists to preview the booking modal on its own. It's the same shared form used on every AutoSuite page — try it below.</p>
-      <button type="button" class="btn" data-open-test-drive>Book a Test Drive</button>
+      <button type="button" class="btn" data-open-test-drive>Agendar test-drive</button>
     </div>
   </main>
 
@@ -74,7 +74,7 @@
   <div id="testDriveModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="testDriveTitle">
     <div class="modal-content">
       <button type="button" class="close" aria-label="Close">&times;</button>
-      <h2 id="testDriveTitle">Book a Test Drive</h2>
+      <h2 id="testDriveTitle">Agendar test-drive</h2>
       <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
       <form id="testDriveForm" novalidate>
         <div class="field">
@@ -85,21 +85,21 @@
         <div class="field">
           <label for="td-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
           <input type="email" id="td-email" name="email" placeholder="you@example.com" required>
-          <span class="field-error">Enter a valid email address.</span>
+          <span class="field-error">Digite um e-mail válido.</span>
         </div>
         <div class="field-row">
           <div class="field">
-            <label for="td-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
+            <label for="td-name">Seu nome<span class="required-mark" aria-hidden="true">*</span></label>
             <input type="text" id="td-name" name="name" placeholder="Full name" required>
-            <span class="field-error">Enter your name.</span>
+            <span class="field-error">Digite seu nome.</span>
           </div>
           <div class="field">
-            <label for="td-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
+            <label for="td-phone">Telefone<span class="required-mark" aria-hidden="true">*</span></label>
             <input type="tel" id="td-phone" name="phone" placeholder="+234" inputmode="tel" required>
-            <span class="field-error">Enter a phone number.</span>
+            <span class="field-error">Digite um telefone válido.</span>
           </div>
         </div>
-        <button type="submit" class="btn">Submit Request</button>
+        <button type="submit" class="btn">Enviar solicitação</button>
         <p class="form-status" id="td-status" role="status" aria-live="polite">
           <span class="status-icon" aria-hidden="true">&check;</span>
           <span class="status-text"></span>
@@ -115,19 +115,19 @@
           <img src="../assets/web/autosuite-mark.png" alt="" width="22" height="22">
           AutoSuite
         </div>
-        <p>Dealership Operating System</p>
+        <p>Sistema de gestão da concessionária</p>
         <p>Abuja, Nigeria</p>
       </div>
       <div class="footer-col">
         <h3>Quick Links</h3>
         <nav class="footer-links" aria-label="Footer">
           <a href="../index.html">Home</a>
-          <a href="cars.html">Inventory</a>
+          <a href="cars.html">Estoque</a>
           <a href="dashboard.html">Dashboard</a>
         </nav>
       </div>
       <div class="footer-col">
-        <h3>Contact</h3>
+        <h3>Contato</h3>
         <p><a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a></p>
         <p><a href="tel:+2348001234567">+234 800 123 4567</a></p>
       </div>

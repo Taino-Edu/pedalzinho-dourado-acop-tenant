@@ -80,7 +80,7 @@ function carCardHTML(car, options) {
 }
 
 /* ---------- Homepage: featured cars ---------- */
-async function renderFeatured(selector) {
+async function renderDestaque(selector) {
   const el = document.querySelector(selector);
   if (!el) return;
   try {
@@ -89,7 +89,7 @@ async function renderFeatured(selector) {
     const featured = [...preferred, ...cars.filter((c) => !c.featured)].slice(0, 3);
     el.innerHTML = featured.map(carCardHTML).join('');
   } catch (err) {
-    el.innerHTML = `<p class="empty-state">Inventory is temporarily unavailable. Please try again shortly.</p>`;
+    el.innerHTML = `<p class="empty-state">O estoque está temporariamente indisponível. Tente novamente em instantes.</p>`;
     console.error(err);
   }
 }
@@ -167,7 +167,7 @@ async function initListingPage() {
     cars = await fetchCars();
   } catch (err) {
     grid.setAttribute('aria-busy', 'false');
-    grid.innerHTML = `<p class="empty-state">Inventory is temporarily unavailable. Please try again shortly.</p>`;
+    grid.innerHTML = `<p class="empty-state">O estoque está temporariamente indisponível. Tente novamente em instantes.</p>`;
     console.error(err);
     return;
   }
@@ -295,7 +295,7 @@ function wireGalleryThumbs() {
   });
 }
 
-/* Picks up to 3 other vehicles to show as "Similar Vehicles": same brand
+/* Picks up to 3 other vehicles to show as "Vehicles semelhantes": same brand
    first, then whatever's closest in price, excluding the current car. */
 function renderSimilarVehicles(car, allCars) {
   const grid = document.getElementById('similarGrid');
@@ -351,7 +351,7 @@ async function initDetailPage() {
       const syncFavBtn = () => {
         const favorited = window.AutoSuiteFavorites.isFavorite(car.id);
         favBtn.setAttribute('aria-pressed', String(favorited));
-        favBtn.textContent = favorited ? '♥ Saved' : '♡ Save';
+        favBtn.textContent = favorited ? '♥ Saved' : '♡ Salvar';
       };
       syncFavBtn();
       favBtn.addEventListener('click', () => {
@@ -369,7 +369,7 @@ async function initDetailPage() {
     if (subline) subline.textContent = [car.mileage, car.drivetrain].filter(Boolean).join(' · ');
 
     const priceEl = document.getElementById('carPrice');
-    if (priceEl) priceEl.innerHTML = `Listed at <strong>${formatNaira(car.price)}</strong>`;
+    if (priceEl) priceEl.innerHTML = `Anunciado por <strong>${formatNaira(car.price)}</strong>`;
 
     // Hero "Est. ₦X/mo" — reuses the tested financing lib with sensible
     // defaults (10% down, 60 months, 18% APR); the financing section below
@@ -429,7 +429,7 @@ async function initDetailPage() {
     const whatsNewEl = document.getElementById('buyersGuideWhatsNew');
     if (whatsNewEl && car.whatsNew) whatsNewEl.textContent = car.whatsNew;
 
-    // Vehicle Specifications — built entirely from this car's real data, so it's
+    // Especificações do veículo — built entirely from this car's real data, so it's
     // always accurate (no fabricated per-trim specs for vehicles we don't stock).
     const specsBody = document.getElementById('specsTableBody');
     if (specsBody) {
@@ -439,7 +439,7 @@ async function initDetailPage() {
         ['Horsepower', `${car.horsepower} hp`],
         ['Drivetrain', car.drivetrain],
         ['Mileage', car.mileage],
-        ['Model Year', car.year],
+        ['Ano-modelo', car.year],
         ['Price', formatNaira(car.price)],
       ];
       specsBody.innerHTML = rows
@@ -526,7 +526,7 @@ function initFeatureNavScrollSpy() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderFeatured('#featuredGrid');
+  renderDestaque('#featuredGrid');
   initListingPage();
   initDetailPage();
   wireGalleryThumbs();

@@ -1,5 +1,5 @@
 /**
- * AutoSuite Dealer OS — shared shell behavior.
+ * AutoSuite Gestão da concessionária — shared shell behavior.
  * Included by every dos-shell page. Provides:
  *  - A single EventSource connection per page (window.DosShell.onEvent)
  *  - Command palette (Cmd/Ctrl+K, or click the sidebar search box)
@@ -334,9 +334,9 @@
   function textFor(evt) {
     const p = evt.payload || {};
     switch (evt.type) {
-      case 'lead.created': return `New lead: ${p.name} — ${p.carName}`;
+      case 'lead.created': return `Novo lead: ${p.name} — ${p.carName}`;
       case 'lead.updated': return `${p.name} moved to ${p.status}`;
-      case 'appointment.created': return 'New appointment scheduled';
+      case 'appointment.created': return 'Novo agendamento scheduled';
       case 'appointment.updated': return `Appointment marked ${p.status}`;
       case 'vehicle.created': return `Vehicle added: ${p.make} ${p.model}`;
       case 'vehicle.updated': return `Vehicle updated: ${(p.make || '') + ' ' + (p.model || '')}`.trim();
@@ -475,7 +475,7 @@
 
     const bar = document.createElement('nav');
     bar.className = 'dos-mobile-tabbar';
-    bar.setAttribute('aria-label', 'Dealer OS mobile navigation');
+    bar.setAttribute('aria-label', 'Gestão da concessionária mobile navigation');
     const isMoreActive = MOBILE_MORE_ITEMS.some((i) => i.href === page);
     bar.innerHTML = MOBILE_TABS.map((tab) => `
       <a class="dos-mobile-tab${tab.href === page ? ' active' : ''}" href="${tab.href}" aria-current="${tab.href === page ? 'page' : 'false'}">

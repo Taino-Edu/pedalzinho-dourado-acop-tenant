@@ -1,0 +1,44 @@
+# Servidor atual:
+# Cloudflare (HTTPS) -> Nginx Docker (HTTP 80) -> app na rede deploy_cardgame_network
+#
+# Copie como /opt/tenant-erp/deploy/nginx/autosuite-CLIENTE.conf.
+# Troque domínio e nome do container antes de validar e recarregar o Nginx.
+
+server {
+    listen 80;
+    server_name estoque.cliente.com.br www.estoque.cliente.com.br;
+
+    add_header Strict-Transport-Security "max-age=15552000; includeSubDomains" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    client_max_body_size 20m;
+
+    # Variável + resolver Docker evitam travar o Nginx quando o app reinicia.
+    set $autosuite http://concessionaria_cliente_app:3000;
+
+    location /api/events {
+        proxy_pass $autosuite;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header Connection "";
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 1h;
+        proxy_send_timeout 1h;
+    }
+
+    location / {
+        proxy_pass $autosuite;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_read_timeout 75s;
+    }
+}

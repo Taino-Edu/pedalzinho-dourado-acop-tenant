@@ -12,6 +12,7 @@ const path = require('path');
 const url = require('url');
 const { emitter } = require('./api/_lib/events');
 const { checkAuth, createSessionCookie } = require('./api/_lib/auth');
+const { checkPlatformAuth, platformSessionCookie } = require('./api/_lib/platformAuth');
 
 // Simulated API handlers (normally Vercel functions). leads/appointments/
 // vehicles each merge their bare-collection and by-id routes into a single
@@ -32,7 +33,10 @@ const handlers = {
   analytics: require('./api/analytics.js'),
   customers: require('./api/customers.js'),
   team: require('./api/team.js'),
-  dealership: require('./api/dealership.js')
+  dealership: require('./api/dealership.js'),
+  integrations: require('./api/integrations.js'),
+  'market-data': require('./api/market-data.js'),
+  'platform-admin': require('./api/platform-admin.js')
 };
 
 // Collections whose /api/<name>/:id path routes to the bare handler above,
@@ -61,6 +65,11 @@ const protectedDashboardPages = new Set([
   '/pages/settings'
 ]);
 
+const protectedPlatformPages = new Set([
+  '/pages/superadmin.html',
+  '/pages/superadmin',
+]);
+
 function safeJsonForHtml(value) {
   return JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
 }
@@ -75,7 +84,15 @@ async function dashboardBootstrap() {
   ]);
   let settings = {};
   try { settings = JSON.parse(dealership?.settings || '{}'); } catch {}
-  return { leads, vehicles, appointments, branding: { ...settings, brandName: settings.brandName || dealership?.name || 'Sua Concessionária' } };
+  const { webmotorsStatus, santanderStatus } = require('./api/_lib/integrations');
+  const lastWebmotorsSync = await prisma.integrationEvent.findFirst({ where: { provider: 'webmotors' }, orderBy: { createdAt: 'desc' } });
+  return {
+    leads,
+    vehicles,
+    appointments,
+    branding: { ...settings, brandName: settings.brandName || dealership?.name || 'Sua Concessionária' },
+    integrations: { webmotors: { ...webmotorsStatus(), lastSync: lastWebmotorsSync }, santander: santanderStatus() },
+  };
 }
 
 // MIME types
@@ -150,6 +167,19 @@ const server = http.createServer((req, res) => {
     }
     const sessionCookie = createSessionCookie(req);
     if (sessionCookie) res.setHeader('Set-Cookie', sessionCookie);
+  }
+
+  if (protectedPlatformPages.has(pathname)) {
+    if (!checkPlatformAuth(req)) {
+      res.writeHead(401, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'WWW-Authenticate': 'Basic realm="3esysten Administracao Geral"'
+      });
+      res.end('Autenticacao obrigatoria');
+      return;
+    }
+    const platformCookie = platformSessionCookie(req);
+    if (platformCookie) res.setHeader('Set-Cookie', platformCookie);
   }
 
   // Set CORS headers for API

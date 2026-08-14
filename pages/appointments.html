@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Appointments | AutoSuite Dealer OS</title>
+  <title>Agenda | Gestão da concessionária</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,24 +42,24 @@
       <div class="is-dc3e742f">AutoSuite</div>
     </div>
     <div data-dos-search class="is-4330c69b">
-      <span>⌘K Search everything</span>
+      <span>⌘K Buscar em tudo</span>
     </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Overview</a>
+    <nav class="dos-nav" aria-label="Gestão da concessionária">
+      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Visão geral</a>
       <a href="crm.html" class="dos-nav-item is-3fa6ef03">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item active is-1cd5d92b">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item is-3fa6ef03">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item is-3fa6ef03">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Staff Activity</a>
+      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Estoque</a>
+      <a href="appointments.html" class="dos-nav-item active is-1cd5d92b">◔ Agenda</a>
+      <a href="customers.html" class="dos-nav-item is-3fa6ef03">✎ Clientes</a>
+      <a href="analytics.html" class="dos-nav-item is-3fa6ef03">▲ Relatórios</a>
+      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Atividade da equipe</a>
     </nav>
     <div class="is-df55b60c">
-      <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Settings</a>
+      <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Configurações</a>
     </div>
   </aside>
   <main class="is-cc38790d">
     <div class="is-aa8ddd09">
-      <h1 class="is-6f08c733">Appointments</h1>
+      <h1 class="is-6f08c733">Agenda</h1>
       <div class="is-dc310e06">
         <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
@@ -82,7 +82,7 @@
             <button type="button" class="cal-view-btn active" data-view="week">Week</button>
             <button type="button" class="cal-view-btn" data-view="list">List</button>
           </div>
-          <button type="button" onclick="promptNewAppointment()" class="is-872b78c6">+ New appointment</button>
+          <button type="button" onclick="promptNewAppointment()" class="is-872b78c6">+ Novo agendamento</button>
         </div>
 
         <div id="calGridWrap">
@@ -217,7 +217,7 @@
   function renderList() {
     const content = document.getElementById('listContent');
     if (allAppointments.length === 0) {
-      content.innerHTML = '<div class="is-577b8940">No appointments scheduled</div>';
+      content.innerHTML = '<div class="is-577b8940">Nenhum compromisso agendado</div>';
       return;
     }
     const sorted = [...allAppointments].sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
@@ -268,13 +268,13 @@
       return;
     }
     if (leads.length === 0) {
-      DosShell.toast('No leads available to schedule. Create a lead first.', 'error');
+      DosShell.toast('Não há leads disponíveis. Cadastre um atendimento primeiro.', 'error');
       return;
     }
 
     const today = new Date().toISOString().slice(0, 10);
     const result = await DosShell.openModal({
-      title: 'New appointment',
+      title: 'Novo agendamento',
       confirmLabel: 'Schedule',
       focusSelector: '#naLead',
       bodyHtml: `
@@ -297,7 +297,7 @@
         <div>
           <label for="naType" class="dos-field-label">Type</label>
           <select id="naType" class="dos-field-input">
-            <option value="test-drive">Test drive</option>
+            <option value="test-drive">Test-drive</option>
             <option value="consultation">Consultation</option>
             <option value="inspection">Inspection</option>
             <option value="maintenance">Maintenance</option>

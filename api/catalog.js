@@ -45,7 +45,7 @@ function parseImages(value, fallback) {
 module.exports = async (req, res) => {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Método não permitido' });
   }
 
   try {
@@ -71,11 +71,15 @@ module.exports = async (req, res) => {
         transmission: vehicle.transmission,
         color: vehicle.color,
         featured: vehicle.status === 'featured',
-        image: gallery[0] || 'car-placeholder.jpg',
+        image: gallery[0] || 'car-placeholder.svg',
         gallery,
         bodyStyle: vehicle.body,
         overview: vehicle.history || `${vehicle.make} ${vehicle.model} dispon\u00edvel para visita e test-drive. Entre em contato para confirmar condi\u00e7\u00f5es e disponibilidade.`,
         whatsNew: '',
+        fipeCode: vehicle.fipeCode,
+        fipePrice: vehicle.fipePrice,
+        fipeModel: vehicle.fipeModel,
+        fipeReferenceMonth: vehicle.fipeReferenceMonth,
       };
     });
 
@@ -83,6 +87,6 @@ module.exports = async (req, res) => {
     return res.status(200).json({ cars });
   } catch (err) {
     console.error('api/catalog error:', err);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Erro interno do servidor' });
   }
 };

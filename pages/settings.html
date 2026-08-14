@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Settings | AutoSuite Dealer OS</title>
+  <title>Configurações | Gestão da concessionária</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
@@ -18,32 +18,32 @@
       <div class="is-dc3e742f">AutoSuite</div>
     </div>
     <div data-dos-search class="is-4330c69b">
-      <span>⌘K Search everything</span>
+      <span>⌘K Buscar em tudo</span>
     </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Overview</a>
+    <nav class="dos-nav" aria-label="Gestão da concessionária">
+      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Visão geral</a>
       <a href="crm.html" class="dos-nav-item is-3fa6ef03">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item is-3fa6ef03">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item is-3fa6ef03">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item is-3fa6ef03">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Staff Activity</a>
+      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Estoque</a>
+      <a href="appointments.html" class="dos-nav-item is-3fa6ef03">◔ Agenda</a>
+      <a href="customers.html" class="dos-nav-item is-3fa6ef03">✎ Clientes</a>
+      <a href="analytics.html" class="dos-nav-item is-3fa6ef03">▲ Relatórios</a>
+      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Atividade da equipe</a>
     </nav>
     <div class="is-df55b60c">
-      <a href="settings.html" class="dos-nav-item active is-1cd5d92b">⚙ Settings</a>
+      <a href="settings.html" class="dos-nav-item active is-1cd5d92b">⚙ Configurações</a>
     </div>
   </aside>
   <main class="is-cc38790d">
     <div class="is-aa8ddd09">
-      <h1 class="is-6f08c733">Settings</h1>
+      <h1 class="is-6f08c733">Configurações</h1>
       <div class="is-dc310e06">
         <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
     </div>
     <div class="is-8eb1c857">
       <div id="settingsTabs" class="is-c01bf156">
-        <button type="button" class="settings-tab active is-7f96eb3e" data-tab="profile">Dealership Profile</button>
-        <button type="button" class="settings-tab is-6c897b40" data-tab="branding">Marca &amp; site</button>
+        <button type="button" class="settings-tab active is-7f96eb3e" data-tab="profile">Perfil da concessionária</button>
+        <button type="button" class="settings-tab is-6c897b40" data-tab="branding">Marca e site</button>
         <button type="button" class="settings-tab is-6c897b40" data-tab="staff">Staff &amp; Roles</button>
         <button type="button" class="settings-tab is-6c897b40" data-tab="routing">Lead Routing</button>
         <button type="button" class="settings-tab is-6c897b40" data-tab="notifications">Notifications</button>
@@ -55,10 +55,10 @@
 
         <!-- DEALERSHIP PROFILE -->
         <div class="settings-panel" data-panel="profile">
-          <div class="is-c1d2b310">Dealership Profile</div>
+          <div class="is-c1d2b310">Perfil da concessionária</div>
           <div class="is-269ea7a6">
             <div>
-              <label for="fieldName" class="is-204b9faf">Name</label>
+              <label for="fieldName" class="is-204b9faf">Nome</label>
               <input id="fieldName" type="text" class="is-b94f2f17">
             </div>
             <div>
@@ -70,11 +70,11 @@
               <input id="fieldPhone" type="text" class="is-b94f2f17">
             </div>
             <div>
-              <label for="fieldAddress" class="is-204b9faf">Address</label>
+              <label for="fieldAddress" class="is-204b9faf">Endereço</label>
               <input id="fieldAddress" type="text" class="is-b94f2f17">
             </div>
             <div>
-              <button type="button" onclick="saveDealership()" class="is-9bf70ab2">Save changes</button>
+              <button type="button" onclick="saveDealership()" class="is-9bf70ab2">Salvar alterações</button>
             </div>
           </div>
         </div>
@@ -135,7 +135,7 @@
               <option value="territory">Territory-based</option>
               <option value="skill-based">Skill-based</option>
             </select>
-            <button type="button" onclick="saveDealership()" class="is-9bf70ab2">Save changes</button>
+            <button type="button" onclick="saveDealership()" class="is-9bf70ab2">Salvar alterações</button>
           </div>
         </div>
 
@@ -289,7 +289,7 @@
       if (!res.ok) throw new Error((await res.json()).error || 'Falha ao salvar');
       dealershipSettings = { ...dealershipSettings, ...settings };
       updateBrandingPreview();
-      DosShell.toast('Marca publicada com sucesso');
+      DosShell.toast('Make publicada com sucesso');
     } catch (err) {
       DosShell.toast('Não foi possível publicar: ' + err.message, 'error');
     }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inventory | AutoSuite Dealer OS</title>
+  <title>Estoque | AutoSuite Gestão da concessionária</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
@@ -25,49 +25,49 @@
   <aside class="dos-sidebar">
     <div class="dos-brand is-3b2d2e52"><div class="is-97083f3d"></div><div class="is-dc3e742f">AutoSuite</div></div>
     <div data-dos-search class="is-4330c69b">
-      <span>⌘K Search everything</span>
+      <span>⌘K Buscar em tudo</span>
     </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item is-2397ef19">▦ Overview</a>
+    <nav class="dos-nav" aria-label="Gestão da concessionária">
+      <a href="dashboard.html" class="dos-nav-item is-2397ef19">▦ Visão geral</a>
       <a href="crm.html" class="dos-nav-item is-2397ef19">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item active is-f7e90231">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item is-2397ef19">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item is-2397ef19">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item is-2397ef19">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item is-2397ef19">◫ Staff Activity</a>
+      <a href="inventory.html" class="dos-nav-item active is-f7e90231">▤ Estoque</a>
+      <a href="appointments.html" class="dos-nav-item is-2397ef19">◔ Agenda</a>
+      <a href="customers.html" class="dos-nav-item is-2397ef19">✎ Clientes</a>
+      <a href="analytics.html" class="dos-nav-item is-2397ef19">▲ Relatórios</a>
+      <a href="staff-activity.html" class="dos-nav-item is-2397ef19">◫ Atividade da equipe</a>
     </nav>
     <div class="is-df55b60c">
-      <a href="settings.html" class="dos-nav-item is-2397ef19">⚙ Settings</a>
+      <a href="settings.html" class="dos-nav-item is-2397ef19">⚙ Configurações</a>
     </div>
   </aside>
   <main class="is-cc38790d">
     <div class="is-aa8ddd09">
-      <h1 class="is-6f08c733">Inventory</h1>
-      <div id="countsSummary" class="is-fef4eb97">— active · — draft · — sold this month</div>
+      <h1 class="is-6f08c733">Estoque</h1>
+      <div id="countsSummary" class="is-fef4eb97">— ativos · — rascunhos · — vendidos</div>
       <div class="is-d869cfd4">
-        <button type="button" id="bulkActionsBtn" onclick="openBulkActions()"  disabled class="is-d4c06154">Bulk actions</button>
-        <button type="button" onclick="promptAddVehicle()" class="is-02c24281">+ Add vehicle</button>
+        <button type="button" id="bulkAçõesBtn" onclick="openBulkAções()"  disabled class="is-d4c06154">Ações em lote</button>
+        <button type="button" onclick="promptAddVehicle()" class="is-02c24281">+ Adicionar veículo</button>
         <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
     </div>
 
     <div class="is-13948eb4">
-      <input type="text" id="filterSearch" class="inv-filter-input is-49cdf874" placeholder="Search inventory…"  oninput="applyFilters()">
-      <select id="filterStatus" class="inv-filter-input" aria-label="Filter by status" onchange="applyFilters()">
-        <option value="">Status ▾</option>
+      <input type="text" id="filterSearch" class="inv-filter-input is-49cdf874" placeholder="Buscar no estoque…"  oninput="applyFilters()">
+      <select id="filterStatus" class="inv-filter-input" aria-label="Filtrar por situação" onchange="applyFilters()">
+        <option value="">Situação ▾</option>
         <option value="active">Active</option>
-        <option value="featured">Featured</option>
+        <option value="featured">Destaque</option>
         <option value="draft">Draft</option>
-        <option value="sold">Sold</option>
+        <option value="sold">Vendido</option>
       </select>
       <select id="filterBody" class="inv-filter-input" aria-label="Filter by body type" onchange="applyFilters()">
         <option value="">Body type ▾</option>
       </select>
-      <select id="filterPrice" class="inv-filter-input" aria-label="Filter by price range" onchange="applyFilters()">
-        <option value="">Price ▾</option>
-        <option value="0-20000000">Under ₦20M</option>
-        <option value="20000000-50000000">₦20M – ₦50M</option>
-        <option value="50000000-999999999">₦50M+</option>
+      <select id="filterPrice" class="inv-filter-input" aria-label="Filtrar por faixa de preço" onchange="applyFilters()">
+        <option value="">Preço ▾</option>
+        <option value="0-20000000">Até R$ 200 mil</option>
+        <option value="20000000-50000000">R$ 200 mil – R$ 500 mil</option>
+        <option value="50000000-999999999">Acima de R$ 500 mil</option>
       </select>
       <div class="inv-view-toggle is-dc310e06">
         <button type="button" class="inv-view-btn active" data-view="table" onclick="setView('table')">Table</button>
@@ -75,9 +75,9 @@
       </div>
     </div>
 
-    <!-- Featured strip -->
+    <!-- Destaque strip -->
     <div id="featuredSection" class="is-6f243b60">
-      <div class="is-bf8e3981">Featured on homepage</div>
+      <div class="is-bf8e3981">Em destaque na página inicial</div>
       <div id="featuredStrip" class="is-52229003"></div>
     </div>
 
@@ -86,7 +86,7 @@
       <div id="tableViewWrap" class="is-3c773fe7">
         <div class="is-b64e61e5">
           <div><input type="checkbox" id="selectAll" aria-label="Select all vehicles" onchange="toggleSelectAll(this.checked)"></div>
-          <div></div><div>Vehicle</div><div>Price</div><div>Mileage</div><div>Status</div><div>Days listed</div><div>Actions</div>
+          <div></div><div>Veículo</div><div>Preço</div><div>Quilometragem</div><div>Situação</div><div>Dias anunciado</div><div>Ações</div>
         </div>
         <div id="vehicleList"></div>
         <div id="emptyState" class="is-76756bd7">No vehicles match these filters</div>
@@ -108,22 +108,22 @@
   <div class="is-d3c9f1ae">
     <div id="quickEditName" class="is-85b20de1"></div>
     <div>
-      <label class="is-204b9faf">Price (₦)</label>
+      <label class="is-204b9faf">Preço (centavos)</label>
       <input type="number" id="qePrice" class="is-b94f2f17">
     </div>
     <div>
-      <label class="is-204b9faf">Status</label>
+      <label class="is-204b9faf">Situação</label>
       <select id="qeStatus" class="is-b94f2f17">
         <option value="active">Active</option>
-        <option value="featured">Featured</option>
+        <option value="featured">Destaque</option>
         <option value="draft">Draft</option>
-        <option value="sold">Sold</option>
+        <option value="sold">Vendido</option>
       </select>
     </div>
   </div>
   <div class="is-f4bbe62a">
-    <button type="button" onclick="closeQuickEdit()" class="is-25c24b1f">Cancel</button>
-    <button type="button" onclick="saveQuickEdit()" class="is-1c6c9cfd">Save</button>
+    <button type="button" onclick="closeQuickEdit()" class="is-25c24b1f">Cancelar</button>
+    <button type="button" onclick="saveQuickEdit()" class="is-1c6c9cfd">Salvar</button>
   </div>
 </div>
 
@@ -140,7 +140,7 @@
   const fallbackVehicles = [
     { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active', body: 'SUV', color: 'Black', drivetrain: 'AWD', createdAt: new Date().toISOString() },
     { id: 2, make: 'Mercedes-Benz', model: 'S-Class', year: 2023, mileage: 12500, price: 45000000, status: 'featured', body: 'Sedan', color: 'Grey', drivetrain: 'RWD', createdAt: new Date().toISOString() },
-    { id: 3, make: 'Audi', model: 'A4', year: 2022, mileage: 28300, price: 25000000, status: 'sold', body: 'Sedan', color: 'White', drivetrain: 'AWD', createdAt: new Date().toISOString() }
+    { id: 3, make: 'Chevrolet', model: 'Onix', year: 2025, mileage: 19300, price: 8270500, status: 'sold', body: 'Hatch', color: 'Prata', drivetrain: 'Dianteira', createdAt: new Date().toISOString() }
   ];
 
   async function fetchVehicles() {
@@ -179,6 +179,17 @@
     return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
+  function money(value) {
+    return new Intl.NumberFormat('pt-BR', { style:'currency', currency:'BRL' }).format(Number(value || 0) / 100);
+  }
+
+  function fipeIndicator(v) {
+    if (!v.fipePrice) return '<span style="display:block;color:#b45309;font-size:11px;margin-top:3px">FIPE não associada</span>';
+    const difference = ((v.price - v.fipePrice) / v.fipePrice) * 100;
+    const color = difference > 10 ? '#b91c1c' : difference < -5 ? '#15803d' : '#475569';
+    return `<span style="display:block;color:${color};font-size:11px;margin-top:3px">FIPE ${money(v.fipePrice)} · ${difference >= 0 ? '+' : ''}${difference.toFixed(1).replace('.', ',')}%</span>`;
+  }
+
   function applyFilters() {
     const q = document.getElementById('filterSearch').value.trim().toLowerCase();
     const status = document.getElementById('filterStatus').value;
@@ -201,7 +212,7 @@
 
   function render() {
     renderCounts();
-    renderFeatured();
+    renderDestaque();
     if (currentView === 'table') renderTable(); else renderCards();
   }
 
@@ -209,10 +220,10 @@
     const active = vehicles.filter(v => v.status === 'active' || v.status === 'featured').length;
     const draft = vehicles.filter(v => v.status === 'draft').length;
     const sold = vehicles.filter(v => v.status === 'sold').length;
-    document.getElementById('countsSummary').textContent = `${active} active · ${draft} draft · ${sold} sold`;
+    document.getElementById('countsSummary').textContent = `${active} ativos · ${draft} rascunhos · ${sold} vendidos`;
   }
 
-  function renderFeatured() {
+  function renderDestaque() {
     const featured = vehicles.filter(v => v.status === 'featured').slice(0, 4);
     const section = document.getElementById('featuredSection');
     const strip = document.getElementById('featuredStrip');
@@ -253,11 +264,11 @@
           <div class="is-db117290">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
           <div class="is-41b12b7b">${esc(trimOf(v))}</div>
         </div>
-        <div class="is-db117290">₦${v.price.toLocaleString()}</div>
+        <div class="is-db117290">${money(v.price)}${fipeIndicator(v)}</div>
         <div class="is-024dc74f">${v.mileage.toLocaleString()} km</div>
         <div>${statusPill(v.status)}</div>
         <div class="is-024dc74f">${daysListed(v)}</div>
-        <div><a href="#" onclick="openQuickEdit('${v.id}'); return false;" class="is-f8fe0cda">Quick edit</a></div>
+        <div><a href="#" onclick="openQuickEdit('${v.id}'); return false;" class="is-f8fe0cda">Editar</a><br><a href="#" onclick="linkFipe('${v.id}'); return false;" class="is-f8fe0cda">Associar FIPE</a><br><a href="financing-calculator.html?vehicle=${v.id}" class="is-f8fe0cda">Simular</a></div>
       </div>
     `).join('');
   }
@@ -269,10 +280,10 @@
       <div class="is-fe44beb6">
         <div class="stripes is-141f1f5e"></div>
         <div class="is-ec940996">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
-        <div class="is-adc0edca">₦${v.price.toLocaleString()} · ${v.mileage.toLocaleString()} km</div>
+        <div class="is-adc0edca">${money(v.price)} · ${v.mileage.toLocaleString('pt-BR')} km${fipeIndicator(v)}</div>
         <div class="is-948e6d6e">
           ${statusPill(v.status)}
-          <a href="#" onclick="openQuickEdit('${v.id}'); return false;" class="is-2f2acdc5">Quick edit</a>
+          <a href="#" onclick="linkFipe('${v.id}'); return false;" class="is-2f2acdc5">Associar FIPE</a>
         </div>
       </div>
     `).join('');
@@ -281,9 +292,9 @@
   function statusPill(status) {
     const map = {
       active: ['oklch(94% 0.03 145)', 'oklch(45% 0.13 145)', 'Active'],
-      featured: ['oklch(94% 0.03 55)', 'oklch(45% 0.13 55)', 'Featured'],
+      featured: ['oklch(94% 0.03 55)', 'oklch(45% 0.13 55)', 'Destaque'],
       draft: ['oklch(95% 0.005 260)', 'oklch(45% 0.01 260)', 'Draft'],
-      sold: ['oklch(95% 0.02 260)', 'oklch(45% 0.13 260)', 'Sold']
+      sold: ['oklch(95% 0.02 260)', 'oklch(45% 0.13 260)', 'Vendido']
     };
     const [bg, color, label] = map[status] || map.active;
     return `<span style="font: 500 11px; padding: 4px 9px; border-radius: 999px; background: ${bg}; color: ${color};">${label}</span>`;
@@ -295,30 +306,92 @@
     render();
   }
 
+  async function marketRequest(action, params = {}) {
+    const query = new URLSearchParams({ action, ...params });
+    const response = await fetch(`/api/market-data?${query}`);
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.error || 'Consulta indisponível');
+    return payload;
+  }
+
+  async function loadFipeModels(brandCode) {
+    const select = document.getElementById('fipeModel');
+    const year = document.getElementById('fipeYear');
+    select.innerHTML = '<option value="">Carregando modelos…</option>'; year.innerHTML = '<option value="">Escolha o modelo primeiro</option>';
+    if (!brandCode) return;
+    try {
+      const data = await marketRequest('models', { brandCode });
+      select.innerHTML = '<option value="">Escolha o modelo</option>' + data.models.map((item) => `<option value="${item.codigo}">${esc(item.nome)}</option>`).join('');
+    } catch (error) { select.innerHTML = `<option value="">${esc(error.message)}</option>`; }
+  }
+
+  async function loadFipeYears(modelCode) {
+    const brandCode = document.getElementById('fipeBrand').value;
+    const select = document.getElementById('fipeYear');
+    select.innerHTML = '<option value="">Carregando anos…</option>';
+    if (!brandCode || !modelCode) return;
+    try {
+      const data = await marketRequest('years', { brandCode, modelCode });
+      select.innerHTML = '<option value="">Escolha ano e combustível</option>' + data.years.map((item) => `<option value="${esc(item.codigo)}">${esc(item.nome)}</option>`).join('');
+    } catch (error) { select.innerHTML = `<option value="">${esc(error.message)}</option>`; }
+  }
+
+  async function linkFipe(vehicleId) {
+    let brands;
+    try { brands = (await marketRequest('brands')).brands; } catch (error) { DosShell.toast(error.message, 'error'); return; }
+    const vehicle = vehicles.find((item) => String(item.id) === String(vehicleId));
+    const result = await DosShell.openModal({
+      title: `Associar FIPE · ${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+      confirmLabel: 'Salvar referência FIPE',
+      focusSelector: '#fipeBrand',
+      bodyHtml: `<p style="margin:0 0 14px;color:#64748b;font-size:13px">Escolha a versão exata. O valor e o mês de referência serão salvos no veículo.</p>
+        <label for="fipeBrand" class="dos-field-label">Marca</label><select id="fipeBrand" class="dos-field-input" onchange="loadFipeModels(this.value)"><option value="">Escolha a marca</option>${brands.map((item) => `<option value="${item.codigo}" ${String(item.nome).toLowerCase().includes(String(vehicle.make).toLowerCase()) ? 'selected' : ''}>${esc(item.nome)}</option>`).join('')}</select>
+        <label for="fipeModel" class="dos-field-label" style="margin-top:12px">Modelo/versão</label><select id="fipeModel" class="dos-field-input" onchange="loadFipeYears(this.value)"><option value="">Escolha a marca primeiro</option></select>
+        <label for="fipeYear" class="dos-field-label" style="margin-top:12px">Ano e combustível</label><select id="fipeYear" class="dos-field-input"><option value="">Escolha o modelo primeiro</option></select>`,
+      onConfirm: async (overlay) => {
+        const brandCode = overlay.querySelector('#fipeBrand').value;
+        const modelCode = overlay.querySelector('#fipeModel').value;
+        const yearCode = overlay.querySelector('#fipeYear').value;
+        if (!brandCode || !modelCode || !yearCode) throw new Error('Escolha marca, modelo e ano.');
+        const response = await fetch('/api/market-data', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ vehicleId, brandCode, modelCode, yearCode }) });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || 'Não foi possível associar a FIPE.');
+        return true;
+      },
+    });
+    if (!result) return;
+    DosShell.toast('Referência FIPE associada ao veículo.');
+    await fetchVehicles();
+  }
+
+  window.loadFipeModels = loadFipeModels;
+  window.loadFipeYears = loadFipeYears;
+  window.linkFipe = linkFipe;
+
   function toggleSelect(id, checked) {
     if (checked) selectedIds.add(String(id)); else selectedIds.delete(String(id));
-    document.getElementById('bulkActionsBtn').disabled = selectedIds.size === 0;
+    document.getElementById('bulkAçõesBtn').disabled = selectedIds.size === 0;
   }
 
   function toggleSelectAll(checked) {
     selectedIds = checked ? new Set(filteredVehicles.map(v => String(v.id))) : new Set();
-    document.getElementById('bulkActionsBtn').disabled = selectedIds.size === 0;
+    document.getElementById('bulkAçõesBtn').disabled = selectedIds.size === 0;
     renderTable();
   }
 
-  async function openBulkActions() {
+  async function openBulkAções() {
     if (selectedIds.size === 0) return;
     const result = await DosShell.openModal({
       title: `Update ${selectedIds.size} selected vehicle${selectedIds.size === 1 ? '' : 's'}`,
       confirmLabel: 'Apply',
       focusSelector: '#bulkStatus',
       bodyHtml: `
-        <label for="bulkStatus" class="dos-field-label">New status</label>
+        <label for="bulkStatus" class="dos-field-label">Novo status</label>
         <select id="bulkStatus" class="dos-field-input">
           <option value="active">Active</option>
-          <option value="featured">Featured</option>
+          <option value="featured">Destaque</option>
           <option value="draft">Draft</option>
-          <option value="sold">Sold</option>
+          <option value="sold">Vendido</option>
         </select>
       `,
       onConfirm: async (overlay) => {
@@ -336,7 +409,7 @@
     if (!result) return;
     DosShell.toast(`Updated ${selectedIds.size} vehicle(s)`);
     selectedIds = new Set();
-    document.getElementById('bulkActionsBtn').disabled = true;
+    document.getElementById('bulkAçõesBtn').disabled = true;
     await fetchVehicles();
   }
 
@@ -406,7 +479,7 @@
         ${field('avMake', 'Make', '', 'text')}
         ${field('avModel', 'Model', '', 'text')}
         ${field('avYear', 'Year', '2024', 'number')}
-        ${field('avPrice', 'Price (₦)', '25000000', 'number')}
+        ${field('avPrice', 'Preço (centavos)', '25000000', 'number')}
         <div style="margin-bottom: 14px;">
           <label for="avBody" class="dos-field-label">Body type</label>
           <select id="avBody" class="dos-field-input">
@@ -418,7 +491,7 @@
       onConfirm: async (overlay) => {
         const make = overlay.querySelector('#avMake').value.trim();
         const model = overlay.querySelector('#avModel').value.trim();
-        if (!make || !model) throw new Error('Make and model are required');
+        if (!make || !model) throw new Error('Informe marca e modelo');
         const res = await fetch('/api/vehicles', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

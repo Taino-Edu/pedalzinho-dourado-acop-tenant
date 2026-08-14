@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRM — Leads | AutoSuite Dealer OS</title>
+  <title>CRM — Leads | AutoSuite Gestão da concessionária</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#0b1220">
   <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
@@ -25,19 +25,19 @@
       <span class="dos-brand-text">AutoSuite</span>
     </div>
     <div data-dos-search class="is-4330c69b">
-      <span>⌘K Search everything</span>
+      <span>⌘K Buscar em tudo</span>
     </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item">▦ Overview</a>
+    <nav class="dos-nav" aria-label="Gestão da concessionária">
+      <a href="dashboard.html" class="dos-nav-item">▦ Visão geral</a>
       <a href="crm.html" class="dos-nav-item active">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item">◫ Staff Activity</a>
+      <a href="inventory.html" class="dos-nav-item">▤ Estoque</a>
+      <a href="appointments.html" class="dos-nav-item">◔ Agenda</a>
+      <a href="customers.html" class="dos-nav-item">✎ Clientes</a>
+      <a href="analytics.html" class="dos-nav-item">▲ Relatórios</a>
+      <a href="staff-activity.html" class="dos-nav-item">◫ Atividade da equipe</a>
     </nav>
     <div class="is-df55b60c">
-      <a href="settings.html" class="dos-nav-item">⚙ Settings</a>
+      <a href="settings.html" class="dos-nav-item">⚙ Configurações</a>
       <div class="is-134698af">
         <div class="is-3d056148"></div>
         <div class="is-3258b918">Derek Owusu</div>
@@ -56,7 +56,7 @@
         <button type="button" class="dos-tab is-a6f24b44" data-view="detail">Lead Detail</button>
       </div>
       <div class="is-5d07dfa7">
-        <div class="is-105a0715">+ New lead</div>
+        <div class="is-105a0715">+ Novo lead</div>
         <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
     </div>
@@ -75,10 +75,10 @@
       <div id="tableView" class="is-224b51a7">
         <div class="is-0f092062">
           <div class="is-e11beb8f">
-            <div>Customer</div>
-            <div>Vehicle</div>
+            <div>Cliente</div>
+            <div>Veículo</div>
             <div>Source</div>
-            <div>Status</div>
+            <div>Situação</div>
             <div>Priority</div>
             <div>Assigned</div>
           </div>
@@ -124,7 +124,7 @@
           <div class="is-04846003">
             <div class="is-93c47945">Details</div>
             <div class="is-7906cfd0">
-              <div class="is-58e548bd"><span class="is-41ab4fe8">Source</span><span id="detailSource">Website — test drive</span></div>
+              <div class="is-58e548bd"><span class="is-41ab4fe8">Origem</span><span id="detailSource">Site — test-drive</span></div>
               <div class="is-58e548bd"><span class="is-41ab4fe8">Assigned to</span><span id="detailAssigned">Derek Owusu</span></div>
               <div class="is-58e548bd"><span class="is-41ab4fe8">Priority</span><span id="detailPriority" class="is-1a2dfef6">High</span></div>
               <div class="is-58e548bd"><span class="is-41ab4fe8">Created</span><span id="detailCreated">Jul 9, 2026</span></div>
@@ -166,7 +166,7 @@
     { name: 'Qualified', dbName: 'QUALIFIED', color: 'oklch(55% 0.1 190)' },
     { name: 'Appt. Scheduled', dbName: 'APPT_SCHEDULED', color: 'oklch(60% 0.12 155)' },
     { name: 'Negotiating', dbName: 'NEGOTIATING', color: 'oklch(65% 0.14 55)' },
-    { name: 'Sold', dbName: 'SOLD', color: 'oklch(60% 0.14 145)' },
+    { name: 'Vendido', dbName: 'SOLD', color: 'oklch(60% 0.14 145)' },
     { name: 'Lost', dbName: 'LOST', color: 'oklch(60% 0.01 260)' }
   ];
 
@@ -388,7 +388,7 @@
       <div class="is-800a82fa">
         <div class="is-65912071"></div>
         <div>
-          <div class="is-befe80c3">${esc(lead.name)} submitted a test drive request for ${esc(lead.carName)}</div>
+          <div class="is-befe80c3">${esc(lead.name)} solicitou um test-drive de ${esc(lead.carName)}</div>
           <div class="is-749d71d0">${new Date(lead.createdAt).toLocaleString()}</div>
         </div>
       </div>
