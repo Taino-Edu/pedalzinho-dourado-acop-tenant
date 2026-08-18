@@ -26,6 +26,17 @@
     return `pages/car-page.html?id=${encodeURIComponent(car.id)}`;
   }
 
+  /* Vehicle photos reach us in three shapes: a bare file name shipped with the
+     site, an absolute/remote URL, and a data: URI for photos uploaded through
+     the dashboard. Only the first may be prefixed with the asset folder —
+     prefixing the other two produces a broken <img>. */
+  function imageUrl(source) {
+    const value = String(source == null ? '' : source).trim();
+    if (!value) return 'assets/web/car-placeholder.svg';
+    if (/^(data:image\/|(https?:)?\/\/|\/)/i.test(value)) return value;
+    return 'assets/web/' + value;
+  }
+
   function render(list) {
     if (!list.length) {
       grid.innerHTML = '<p class="showroom-loading">Nenhum veículo encontrado com esses filtros.</p>';
@@ -34,7 +45,7 @@
     grid.innerHTML = list.slice(0, 6).map((car) => `
       <article class="vehicle-card">
         <a class="vehicle-media" href="${detailUrl(car)}">
-          <img src="assets/web/${esc(car.image)}" alt="${esc(car.name)}" loading="lazy">
+          <img src="${esc(imageUrl(car.image))}" alt="${esc(car.name)}" loading="lazy" onerror="this.onerror=null;this.src='assets/web/car-placeholder.svg'">
           <span class="vehicle-year">${esc(car.year)}</span>
         </a>
         <div class="vehicle-body">
