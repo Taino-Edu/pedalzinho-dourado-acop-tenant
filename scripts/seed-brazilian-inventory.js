@@ -19,7 +19,6 @@ const DETAILS = [
 ];
 
 async function main() {
-  const existing = await prisma.vehicle.findMany({ orderBy: { createdAt: 'asc' } });
   const vehicles = [];
 
   for (let index = 0; index < POPULAR_CARS.length; index += 1) {
@@ -41,9 +40,17 @@ async function main() {
       dealerNotes: 'Veículo de demonstração com preço alinhado à Tabela FIPE.',
     };
 
-    const vehicle = existing[index]
-      ? await prisma.vehicle.update({ where: { id: existing[index].id }, data })
-      : await prisma.vehicle.upsert({ where: { vin: details.vin }, update: data, create: data });
+    // O VIN e a identidade estavel de cada veiculo de demonstracao — nunca a
+    // posicao na lista. Parear por indice (existing[index], ordenado por
+    // createdAt) quebrava porque o seed-production-once deixa tres veiculos
+    // legados criados antes destes: o indice 0 caia no Mercedes legado e
+    // tentava gravar nele o VIN que o Polo ja tinha, estourando P2002 em
+    // `vin` e derrubando o contentor em todo reinicio depois do primeiro.
+    const vehicle = await prisma.vehicle.upsert({
+      where: { vin: details.vin },
+      update: data,
+      create: data,
+    });
     vehicles.push(vehicle);
 
     await prisma.lead.updateMany({ where: { carId: vehicle.id }, data: { carName: `${car.make} ${car.model}` } });
