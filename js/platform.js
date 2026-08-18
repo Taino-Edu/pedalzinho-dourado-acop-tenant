@@ -27,16 +27,16 @@
 
     const copy = [
       {
-        title: 'The dealership operating system.',
-        sub: 'One platform connecting every customer touchpoint straight to your team.',
+        title: 'O sistema operacional da concessionária.',
+        sub: 'Uma plataforma que liga cada ponto de contato do cliente direto à sua equipe.',
       },
       {
-        title: 'From click to closed deal, instantly.',
-        sub: 'The moment David books a test drive, the lead is already on your board.',
+        title: 'Do clique ao negócio fechado, na hora.',
+        sub: 'No instante em que o David agenda um test-drive, o lead já está no seu funil.',
       },
       {
-        title: 'One board. Every department.',
-        sub: 'Watch a single lead move from New to SOLD — automatically, with nothing to configure.',
+        title: 'Um funil. Todos os setores.',
+        sub: 'Veja um lead andar de Novo até VENDIDO — automaticamente, sem nada para configurar.',
       },
     ];
 
@@ -61,7 +61,7 @@
     const puck = document.getElementById('pfKanbanPuck');
     const label = document.getElementById('pfKanbanLabel');
     const dots = kanban ? kanban.querySelectorAll('.pf-kanban-dot') : [];
-    const stages = ['New Lead', 'Assigned: Sarah', 'Contacted', 'Qualified', 'Appointment Set', 'SOLD'];
+    const stages = ['Novo lead', 'Atribuído: Sara', 'Contatado', 'Qualificado', 'Visita agendada', 'VENDIDO'];
     let kanbanTimer = null;
 
     function resetKanban() {

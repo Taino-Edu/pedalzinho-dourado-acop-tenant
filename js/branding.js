@@ -111,12 +111,14 @@
 
   window.AutoBrand = {
     config: defaults,
-    formatCurrency(value) {
+    // Values arrive in cents from the API, data/cars.json and the seed
+    // scripts alike, so the display value is always cents / 100.
+    formatCurrency(cents) {
       return new Intl.NumberFormat(this.config.locale, {
         style: 'currency',
         currency: this.config.currency,
         maximumFractionDigits: 0
-      }).format(Number(value) || 0);
+      }).format((Number(cents) || 0) / 100);
     }
   };
 

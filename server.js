@@ -13,6 +13,7 @@ const url = require('url');
 const { emitter } = require('./api/_lib/events');
 const { checkAuth, createSessionCookie } = require('./api/_lib/auth');
 const { checkPlatformAuth, platformSessionCookie } = require('./api/_lib/platformAuth');
+const { showcaseMode } = require('./api/_lib/showcase');
 
 // Simulated API handlers (normally Vercel functions). leads/appointments/
 // vehicles each merge their bare-collection and by-id routes into a single
@@ -46,6 +47,8 @@ const idRewriteCollections = new Set(['leads', 'vehicles', 'appointments']);
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
+// Paginas protegidas quando SHOWCASE_MODE=false. No modo vitrine (padrao
+// deste repositorio de demonstracao) nenhuma delas pede senha.
 const protectedDashboardPages = new Set([
   '/pages/dashboard.html',
   '/pages/dashboard',
@@ -156,7 +159,7 @@ const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   let pathname = parsedUrl.pathname;
 
-  if (protectedDashboardPages.has(pathname)) {
+  if (!showcaseMode() && protectedDashboardPages.has(pathname)) {
     if (!checkAuth(req)) {
       res.writeHead(401, {
         'Content-Type': 'text/plain; charset=utf-8',
@@ -169,7 +172,7 @@ const server = http.createServer((req, res) => {
     if (sessionCookie) res.setHeader('Set-Cookie', sessionCookie);
   }
 
-  if (protectedPlatformPages.has(pathname)) {
+  if (!showcaseMode() && protectedPlatformPages.has(pathname)) {
     if (!checkPlatformAuth(req)) {
       res.writeHead(401, {
         'Content-Type': 'text/plain; charset=utf-8',
@@ -365,7 +368,7 @@ server.listen(PORT, HOST, () => {
 ║  Dashboard: http://${HOST}:${PORT}/pages/dashboard.html ║
 ║  CRM:       http://${HOST}:${PORT}/pages/crm.html    ║
 ║                                        ║
-║  Auth: configured by environment     ║
+║  Modo vitrine: acesso livre (sem senha) ║
 ║                                        ║
 ║  Press Ctrl+C to stop                 ║
 ║                                        ║

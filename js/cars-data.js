@@ -12,7 +12,7 @@
 
 const CARS_JSON_PATH = window.CARS_JSON_PATH || 'data/cars.json';
 const ASSET_BASE = window.ASSET_BASE || 'assets/web/';
-const { formatNaira, sortCars, filterCars, parseMileageKm } = window.AutoSuiteInventory;
+const { formatPrice, sortCars, filterCars, parseMileageKm } = window.AutoSuiteInventory;
 
 function imageUrl(fileName) {
   const source = String(fileName || '').trim();
@@ -38,7 +38,7 @@ async function fetchCars() {
 
       if (window.AUTOSUITE_CARS) return window.AUTOSUITE_CARS;
       const response = await fetch(CARS_JSON_PATH);
-      if (!response.ok) throw new Error('Could not load inventory data');
+      if (!response.ok) throw new Error('Não foi possível carregar o estoque');
       return response.json();
     })();
   }
@@ -57,23 +57,23 @@ function carCardHTML(car, options) {
     <article class="car-card">
       <div class="car-card-media">
         <span class="data-chip"><span class="dot"></span>${car.year}</span>
-        <button type="button" class="favorite-toggle${favorited ? ' is-favorited' : ''}" data-favorite-toggle="${car.id}" aria-pressed="${favorited}" aria-label="Save ${car.name} to favorites">${favorited ? '♥' : '♡'}</button>
+        <button type="button" class="favorite-toggle${favorited ? ' is-favorited' : ''}" data-favorite-toggle="${car.id}" aria-pressed="${favorited}" aria-label="Salvar ${car.name} nos favoritos">${favorited ? '♥' : '♡'}</button>
         <img src="${imageUrl(car.image)}" alt="${car.name}" loading="lazy" onerror="this.onerror=null;this.src='${ASSET_BASE}car-placeholder.svg'">
       </div>
       <div class="car-card-body">
         <h3>${car.name}</h3>
-        <p class="price">${formatNaira(car.price)}</p>
+        <p class="price">${formatPrice(car.price)}</p>
         <ul class="specs">
-          <li>${car.engine} · ${car.horsepower} hp</li>
+          <li>${car.engine} · ${car.horsepower} cv</li>
           <li>${car.mileage}</li>
           <li>${car.drivetrain}</li>
         </ul>
         <div class="car-card-actions">
-          <a href="${carDetailUrl(car)}" class="btn small">View Details</a>
+          <a href="${carDetailUrl(car)}" class="btn small">Ver detalhes</a>
           ${showCompare ? `
           <label class="compare-check">
             <input type="checkbox" class="compare-toggle" data-id="${car.id}">
-            Compare
+            Comparar
           </label>` : ''}
         </div>
       </div>
@@ -114,10 +114,10 @@ function emptyStateHTML(hasActiveFilters) {
           <path d="M21 21l-4.3-4.3"></path>
         </svg>
       </div>
-      <span class="eyebrow">No matches</span>
-      <h3>No cars fit those filters</h3>
-      <p>${hasActiveFilters ? 'Try widening your price range, clearing the search, or resetting filters.' : 'Please check back shortly.'}</p>
-      ${hasActiveFilters ? '<button type="button" class="btn ghost small" id="emptyStateReset">Reset Filters</button>' : ''}
+      <span class="eyebrow">Nenhum resultado</span>
+      <h3>Nenhum veículo com esses filtros</h3>
+      <p>${hasActiveFilters ? 'Tente ampliar a faixa de preço, limpar a busca ou redefinir os filtros.' : 'Volte em instantes para conferir novidades.'}</p>
+      ${hasActiveFilters ? '<button type="button" class="btn ghost small" id="emptyStateReset">Limpar filtros</button>' : ''}
     </div>
   `;
 }
@@ -185,7 +185,7 @@ async function initListingPage() {
   priceRange.max = priceMax;
   priceRange.step = 1000000;
   priceRange.value = priceMax;
-  priceValue.textContent = formatNaira(priceMax);
+  priceValue.textContent = formatPrice(priceMax);
 
   // Mileage slider likewise; at max it reads "Any" and applies no cap.
   const maxMileage = Math.max(...cars.map((c) => parseMileageKm(c.mileage)).filter((n) => Number.isFinite(n)));
@@ -194,7 +194,7 @@ async function initListingPage() {
   mileageRange.max = mileageMax;
   mileageRange.step = 5000;
   mileageRange.value = mileageMax;
-  mileageValue.textContent = 'Any';
+  mileageValue.textContent = 'Qualquer';
 
   function hasActiveFilters() {
     return (
@@ -231,7 +231,7 @@ async function initListingPage() {
     if (emptyReset) emptyReset.addEventListener('click', resetFilters);
 
     if (resultCount) {
-      resultCount.textContent = `${results.length} vehicle${results.length === 1 ? '' : 's'}`;
+      resultCount.textContent = `${results.length} veículo${results.length === 1 ? '' : 's'}`;
     }
   }
 
@@ -241,9 +241,9 @@ async function initListingPage() {
     makeHost.querySelectorAll('input:checked').forEach((el) => (el.checked = false));
     sortSelect.value = 'default';
     priceRange.value = priceMax;
-    priceValue.textContent = formatNaira(priceMax);
+    priceValue.textContent = formatPrice(priceMax);
     mileageRange.value = mileageMax;
-    mileageValue.textContent = 'Any';
+    mileageValue.textContent = 'Qualquer';
     applyFilters();
     searchInput.focus();
   }
@@ -260,12 +260,12 @@ async function initListingPage() {
   makeHost.addEventListener('change', applyFilters);
   sortSelect.addEventListener('change', applyFilters);
   priceRange.addEventListener('input', () => {
-    priceValue.textContent = formatNaira(priceRange.value);
+    priceValue.textContent = formatPrice(priceRange.value);
     debouncedApply();
   });
   mileageRange.addEventListener('input', () => {
     const v = Number(mileageRange.value);
-    mileageValue.textContent = v >= mileageMax ? 'Any' : `${v.toLocaleString('en-NG')} km`;
+    mileageValue.textContent = v >= mileageMax ? 'Qualquer' : `${v.toLocaleString('pt-BR')} km`;
     debouncedApply();
   });
   resetBtn.addEventListener('click', resetFilters);
@@ -297,7 +297,7 @@ function wireGalleryThumbs() {
   });
 }
 
-/* Picks up to 3 other vehicles to show as "Vehicles semelhantes": same brand
+/* Picks up to 3 other vehicles to show as "Veículos semelhantes": same brand
    first, then whatever's closest in price, excluding the current car. */
 function renderSimilarVehicles(car, allCars) {
   const grid = document.getElementById('similarGrid');
@@ -321,7 +321,7 @@ function renderSimilarVehicles(car, allCars) {
         <a class="similar-card" href="${carDetailUrl(c)}">
           <img src="${imageUrl(c.image)}" alt="${c.name}" onerror="this.onerror=null;this.src='${ASSET_BASE}car-placeholder.svg'">
           <h3>${c.name}</h3>
-          <p class="similar-price">${formatNaira(c.price)}</p>
+          <p class="similar-price">${formatPrice(c.price)}</p>
           <p>${c.brand} · ${c.drivetrain}</p>
         </a>
       `
@@ -353,7 +353,7 @@ async function initDetailPage() {
       const syncFavBtn = () => {
         const favorited = window.AutoSuiteFavorites.isFavorite(car.id);
         favBtn.setAttribute('aria-pressed', String(favorited));
-        favBtn.textContent = favorited ? '♥ Saved' : '♡ Salvar';
+        favBtn.textContent = favorited ? '♥ Salvo' : '♡ Salvar';
       };
       syncFavBtn();
       favBtn.addEventListener('click', () => {
@@ -371,15 +371,15 @@ async function initDetailPage() {
     if (subline) subline.textContent = [car.mileage, car.drivetrain].filter(Boolean).join(' · ');
 
     const priceEl = document.getElementById('carPrice');
-    if (priceEl) priceEl.innerHTML = `Anunciado por <strong>${formatNaira(car.price)}</strong>`;
+    if (priceEl) priceEl.innerHTML = `Anunciado por <strong>${formatPrice(car.price)}</strong>`;
 
-    // Hero "Est. ₦X/mo" — reuses the tested financing lib with sensible
+    // Hero "Est. R$ X/mês" — reuses the tested financing lib with sensible
     // defaults (10% down, 60 months, 18% APR); the financing section below
     // lets the buyer adjust from there.
     const estEl = document.getElementById('heroEstMonthly');
     if (estEl && window.AutoSuiteFinance) {
       const monthly = window.AutoSuiteFinance.calculateMonthlyPayment({ price: car.price, downPct: 10, termMonths: 60, aprPct: 18 });
-      estEl.textContent = formatNaira(Math.round(monthly));
+      estEl.textContent = formatPrice(Math.round(monthly));
     }
 
     const mainPhoto = document.getElementById('mainPhoto');
@@ -409,7 +409,7 @@ async function initDetailPage() {
       photoGrid.innerHTML = car.gallery
         .map((img, i) => {
           const isInterior = /interior/i.test(img);
-          const label = isInterior ? `Interior, photo ${++interiorCount}` : `Exterior, photo ${++exteriorCount}`;
+          const label = isInterior ? `Interior, foto ${++interiorCount}` : `Exterior, foto ${++exteriorCount}`;
           const alt = `${car.name} — ${label}`;
           return `<button type="button" class="photo-grid-item" data-lightbox-index="${i}"><img src="${imageUrl(img)}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='${ASSET_BASE}car-placeholder.svg'"></button>`;
         })
@@ -419,7 +419,7 @@ async function initDetailPage() {
     const specEngine = document.getElementById('specEngine');
     if (specEngine) specEngine.textContent = car.engine;
     const specHp = document.getElementById('specHp');
-    if (specHp) specHp.textContent = `${car.horsepower} hp`;
+    if (specHp) specHp.textContent = `${car.horsepower} cv`;
     const specDrivetrain = document.getElementById('specDrivetrain');
     if (specDrivetrain) specDrivetrain.textContent = car.drivetrain;
     const specMileage = document.getElementById('specMileage');
@@ -436,13 +436,13 @@ async function initDetailPage() {
     const specsBody = document.getElementById('specsTableBody');
     if (specsBody) {
       const rows = [
-        ['Body Style', car.bodyStyle],
-        ['Engine', car.engine],
-        ['Horsepower', `${car.horsepower} hp`],
-        ['Drivetrain', car.drivetrain],
-        ['Mileage', car.mileage],
+        ['Carroceria', car.bodyStyle],
+        ['Motor', car.engine],
+        ['Potência', `${car.horsepower} cv`],
+        ['Tração', car.drivetrain],
+        ['Quilometragem', car.mileage],
         ['Ano-modelo', car.year],
-        ['Price', formatNaira(car.price)],
+        ['Preço', formatPrice(car.price)],
       ];
       specsBody.innerHTML = rows
         .filter(([, value]) => value !== undefined && value !== null)
@@ -455,7 +455,7 @@ async function initDetailPage() {
     const inventoryCarName = document.getElementById('inventoryCarName');
     if (inventoryCarName) inventoryCarName.textContent = car.name;
 
-    // Breadcrumb: Inventory / {BodyStyle}s / {name}
+    // Breadcrumb: Estoque / {Carroceria}s / {nome}
     const breadcrumbBody = document.getElementById('breadcrumbBody');
     if (breadcrumbBody && car.bodyStyle) breadcrumbBody.textContent = `${car.bodyStyle}s`;
     const breadcrumbName = document.getElementById('breadcrumbName');

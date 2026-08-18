@@ -128,7 +128,7 @@
       }
 
       const rows = [
-        ['Price', (c) => formatNaira(c.price)],
+        ['Price', (c) => formatPrice(c.price)],
         ['Year', (c) => c.year],
         ['Engine', (c) => c.engine],
         ['Horsepower', (c) => `${c.horsepower} hp`],

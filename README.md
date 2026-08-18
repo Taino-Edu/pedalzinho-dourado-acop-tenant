@@ -43,7 +43,7 @@ This is not a tutorial project. It's engineered the way client work ships:
 - **Accessibility is a build gate.** Every push runs per-page axe-core audits plus HTML validation in CI, across all 18 pages — WCAG failures fail the build. Every color pairing in the design system is contrast-verified (AA minimum, most exceed 7:1).
 - **A real design system.** OKLCH color tokens, spacing/type scales, and motion curves defined once in `css/style.css`/`css/dashboard.css` and consumed by every page — no one-off hex values, no drift between the storefront and the dealer-OS.
 - **Real data end to end.** Both dashboards show actual Postgres rows. The financing calculator computes real amortization against each car's actual price. Nothing a dealer or reviewer touches is faked.
-- **Deliberate architecture.** Hand-written HTML/CSS/JS for the storefront (fast and auditable) + Node APIs with Prisma/PostgreSQL. Docker Compose starts the app and its isolated database with the same schema used in production. The dealer-OS is served behind HTTP Basic Auth configured only through environment variables.
+- **Deliberate architecture.** Hand-written HTML/CSS/JS for the storefront (fast and auditable) + Node APIs with Prisma/PostgreSQL. Docker Compose starts the app and its isolated database with the same schema used in production. In showcase mode (the default) the dealer-OS is served without any login so the demo can be shared by link; set `SHOWCASE_MODE=false` to put it back behind HTTP Basic Auth configured only through environment variables.
 - **Real-time sync.** A single shared Server-Sent Events connection pushes lead/vehicle/appointment changes to every open dealer-OS tab — the CRM board, the dashboard KPIs, and the notification bell all update live, not on a timer.
 
 ## For dealers: the MVP today
@@ -122,6 +122,33 @@ The MVP follows the product design brief in [`docs/design-handoff/`](docs/design
 │                           archive/ (historical sprint/phase logs)
 └── .github/workflows/      Accessibility + validation CI (18 pages gated)
 ```
+
+## Showcase mode (no passwords)
+
+This repository ships as the **modelo de exibição** — a demo anyone can open
+from a link. `SHOWCASE_MODE` defaults to `true`, which means:
+
+- every dealer-OS screen (`/pages/dashboard.html`, CRM, estoque, agenda,
+  clientes, relatórios, atividade da equipe, configurações) opens with no login;
+- the 3esysten platform console (`/pages/superadmin.html`) opens with no login;
+- every `/api/*` route answers without credentials — **including writes**, so a
+  visitor can create leads, edit inventory and move deals. That is deliberate
+  for the demo; do not point a showcase instance at real customer data.
+
+To lock it back down for a real dealership, set the flag off and supply
+credentials:
+
+```
+SHOWCASE_MODE=false
+DASHBOARD_USER=...
+DASHBOARD_PASSWORD=...
+PLATFORM_ADMIN_USER=...
+PLATFORM_ADMIN_PASSWORD=...
+```
+
+With `SHOWCASE_MODE=false` the original HTTP Basic Auth behaviour returns
+unchanged — the auth code was not removed, only short-circuited by the flag
+(`api/_lib/showcase.js`).
 
 ## Development
 

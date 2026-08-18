@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatNaira, sortCars, filterCars, parseMileageKm } from '../js/lib/inventory.js';
+import { formatPrice, sortCars, filterCars, parseMileageKm } from '../js/lib/inventory.js';
 
 const cars = [
   { id: 'a', name: 'BMW X6', brand: 'BMW', bodyStyle: 'SUV', price: 52000000, year: 2024, mileage: '6,200 km', featured: true },
@@ -8,13 +8,17 @@ const cars = [
   { id: 'd', name: 'BMW 5 Series', brand: 'BMW', bodyStyle: 'Sedan', price: 33000000, year: 2018, mileage: '45,000 km', featured: false },
 ];
 
-describe('formatNaira', () => {
-  it('formats the server-side fallback as Brazilian real', () => {
-    expect(formatNaira(52000000)).toBe('R$ 52.000.000');
+describe('formatPrice', () => {
+  // Intl's pt-BR currency output separates the symbol with U+00A0, not a
+  // plain space — normalize so the expectations stay readable.
+  const plain = (value) => formatPrice(value).replace(/ /g, ' ');
+
+  it('renders a cents amount as Brazilian real', () => {
+    expect(plain(52000000)).toBe('R$ 520.000');
   });
 
   it('handles zero', () => {
-    expect(formatNaira(0)).toBe('R$ 0');
+    expect(plain(0)).toBe('R$ 0');
   });
 });
 

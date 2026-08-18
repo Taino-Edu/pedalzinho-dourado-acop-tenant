@@ -28,6 +28,9 @@ services:
       HOST: 0.0.0.0
       PORT: 3000
       DATABASE_URL: postgresql://${POSTGRES_USER:-autosuite}:${POSTGRES_PASSWORD:-change-this-database-password}@db:5432/${POSTGRES_DB:-autosuite}?schema=public
+      # Vitrine publica por padrao. Defina SHOWCASE_MODE=false no .env para
+      # exigir as credenciais abaixo.
+      SHOWCASE_MODE: ${SHOWCASE_MODE:-true}
       DASHBOARD_USER: ${DASHBOARD_USER:-dealer}
       DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:-change-this-dashboard-password}
       DASHBOARD_SESSION_SECRET: ${DASHBOARD_SESSION_SECRET:-change-this-session-secret}

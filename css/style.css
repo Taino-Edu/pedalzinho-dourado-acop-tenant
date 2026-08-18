@@ -348,6 +348,29 @@ button {
   padding-inline: 0.65rem;
 }
 
+/* Below the tablet breakpoint the burger shares the bar with these links, so
+   the word labels are dropped and only the glyph + count remain — otherwise
+   "Favoritos (0) Comparar (0)" is wide enough to push the burger off-screen. */
+@media (max-width: 767px) {
+  .nav-icons {
+    gap: 0.4rem;
+  }
+
+  .nav-icon-link {
+    gap: 0.25rem;
+    padding-inline: 0.35rem;
+    font-size: 0.8rem;
+  }
+
+  .nav-icon-link[href$="compare.html"] {
+    padding-inline: 0.45rem;
+  }
+
+  .nav-icon-label {
+    display: none;
+  }
+}
+
 .nav-backlink {
   display: inline-flex;
   align-items: center;

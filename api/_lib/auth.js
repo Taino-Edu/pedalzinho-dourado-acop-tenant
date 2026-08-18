@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { showcaseMode } = require('./showcase');
 
 const COOKIE_NAME = 'dealer_session';
 
@@ -49,11 +50,14 @@ function hasValidBasicAuth(req) {
   return validCreds || demoCreds;
 }
 
+// No modo vitrine o painel é público: nenhuma credencial é exigida.
 function checkAuth(req) {
+  if (showcaseMode()) return true;
   return hasValidCookie(req) || hasValidBasicAuth(req);
 }
 
 function createSessionCookie(req) {
+  if (showcaseMode()) return null;
   if (!hasValidBasicAuth(req)) return null;
   const secure = req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : '';
   return `${COOKIE_NAME}=${encodeURIComponent(sessionToken())}; Path=/; HttpOnly; SameSite=Lax; Max-Age=28800${secure}`;
@@ -62,6 +66,7 @@ function createSessionCookie(req) {
 // Sends the 401 + WWW-Authenticate challenge and returns false when auth
 // fails, so callers can `if (!requireAuth(req, res)) return;`
 function requireAuth(req, res) {
+  if (showcaseMode()) return true;
   if (checkAuth(req)) {
     const cookie = createSessionCookie(req);
     if (cookie) res.setHeader('Set-Cookie', cookie);
