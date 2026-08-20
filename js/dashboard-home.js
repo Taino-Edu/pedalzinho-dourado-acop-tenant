@@ -15,6 +15,7 @@
   const normalizedPrice = (value) => Number(value) > 5000000 ? Number(value) / 100 : Number(value) || 0;
   const money = (value) => new Intl.NumberFormat('pt-BR', { style:'currency', currency:'BRL', maximumFractionDigits:0 }).format(normalizedPrice(value));
   const phoneLink = (phone) => `https://wa.me/${String(phone || '').replace(/\D/g,'')}`;
+  const roleLabel = (role) => ({ owner:'Proprietário', manager:'Gerente', sales:'Vendedor', bdc:'Pré-vendas' }[role] || 'Admin');
   const imageSource = (value) => {
     const source = String(value || '').trim();
     if (!source) return '../assets/web/car-placeholder.svg';
@@ -181,16 +182,26 @@
 
   async function load() {
     const bootstrap = window.DEALER_BOOTSTRAP || {};
+    let branding = {};
+    let operator = {};
     if (Array.isArray(bootstrap.leads) && Array.isArray(bootstrap.vehicles) && Array.isArray(bootstrap.appointments)) {
       leads = bootstrap.leads; vehicles = bootstrap.vehicles; appointments = bootstrap.appointments;
-      document.querySelector('.admin-brand-name').textContent = bootstrap.branding?.brandName || 'Sua Concessionária';
+      branding = bootstrap.branding || {};
+      operator = bootstrap.operator || {};
     } else {
       const [leadResponse, vehicleResponse, appointmentResponse, brandResponse] = await Promise.all([fetch('/api/leads'), fetch('/api/vehicles'), fetch('/api/appointments'), fetch('/api/branding')]);
       if (![leadResponse,vehicleResponse,appointmentResponse].every((response) => response.ok)) throw new Error('Dados indisponíveis');
       leads = (await leadResponse.json()).leads || []; vehicles = (await vehicleResponse.json()).vehicles || []; appointments = (await appointmentResponse.json()).appointments || [];
       const brandPayload = brandResponse.ok ? await brandResponse.json() : { branding:{} };
-      document.querySelector('.admin-brand-name').textContent = brandPayload.branding?.brandName || 'Sua Concessionária';
+      branding = brandPayload.branding || {};
     }
+    document.querySelector('.admin-brand-name').textContent = branding.brandName || 'Sua Concessionária';
+    document.querySelector('.admin-brand-location').textContent = branding.address || 'Localização da loja';
+    const operatorName = operator.name || 'Administrador da loja';
+    document.querySelector('[data-operator-name]').textContent = operatorName;
+    document.querySelector('[data-operator-role]').textContent = roleLabel(operator.role);
+    document.querySelector('[data-operator-initials]').textContent = initials(operatorName);
+    document.getElementById('dashboardGreeting').textContent = `Bom dia, ${operatorName.split(/\s+/)[0]}`;
     renderKpis(); renderPipeline(); renderInventory(); renderAgenda(); renderContacts();
   }
 

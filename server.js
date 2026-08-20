@@ -79,11 +79,16 @@ function safeJsonForHtml(value) {
 
 async function dashboardBootstrap() {
   const { prisma } = require('./api/_lib/db');
-  const [leads, vehicles, appointments, dealership] = await Promise.all([
+  const [leads, vehicles, appointments, dealership, operator] = await Promise.all([
     prisma.lead.findMany({ orderBy: { createdAt: 'desc' }, include: { assignedTo: true } }),
     prisma.vehicle.findMany({ orderBy: { createdAt: 'desc' } }),
     prisma.appointment.findMany({ orderBy: { dateTime: 'asc' }, include: { lead: true, vehicle: true } }),
-    prisma.dealership.findFirst({ select: { name: true, settings: true } }),
+    prisma.dealership.findFirst({ select: { name: true, address: true, settings: true } }),
+    prisma.teamMember.findFirst({
+      where: { deactivatedAt: null, role: { in: ['owner', 'manager'] } },
+      orderBy: { joinedAt: 'asc' },
+      select: { name: true, role: true },
+    }),
   ]);
   let settings = {};
   try { settings = JSON.parse(dealership?.settings || '{}'); } catch {}
@@ -93,7 +98,8 @@ async function dashboardBootstrap() {
     leads,
     vehicles,
     appointments,
-    branding: { ...settings, brandName: settings.brandName || dealership?.name || 'Sua Concessionária' },
+    branding: { ...settings, brandName: settings.brandName || dealership?.name || 'Sua Concessionária', address: dealership?.address || '' },
+    operator: operator || { name: 'Administrador da loja', role: 'owner' },
     integrations: { webmotors: { ...webmotorsStatus(), lastSync: lastWebmotorsSync }, santander: santanderStatus() },
   };
 }

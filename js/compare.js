@@ -20,8 +20,19 @@
   }
 
   function setCompareIds(ids) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
-    document.dispatchEvent(new CustomEvent('autosuite:compare-changed', { detail: { ids } }));
+    const normalized = [...new Set(ids.map(String))].slice(0, MAX_COMPARE);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+    document.dispatchEvent(new CustomEvent('autosuite:compare-changed', { detail: { ids: normalized } }));
+  }
+
+  function comparisonUrl(ids) {
+    return ids.length >= 2 ? `compare.html?ids=${ids.map(encodeURIComponent).join(',')}` : 'compare.html';
+  }
+
+  function updateNavigationLinks(ids) {
+    document.querySelectorAll('a[aria-label="Comparar"]').forEach((link) => {
+      link.href = comparisonUrl(ids);
+    });
   }
 
   // Nav-badge access, same pattern as window.AutoSuiteFavorites.
@@ -41,12 +52,12 @@
       bar.id = 'compareBar';
       bar.className = 'compare-bar';
       bar.setAttribute('role', 'region');
-      bar.setAttribute('aria-label', 'Compare selection');
+      bar.setAttribute('aria-label', 'Veículos selecionados para comparação');
       bar.innerHTML = `
         <span id="compareBarCount"></span>
         <div class="compare-bar-actions">
-          <button type="button" class="btn outline small" id="compareBarClear">Clear</button>
-          <a class="btn small" id="compareBarGo" href="compare.html">Compare</a>
+          <button type="button" class="btn outline small" id="compareBarClear">Limpar</button>
+          <a class="btn small" id="compareBarGo" href="compare.html">Comparar</a>
         </div>
       `;
       document.body.appendChild(bar);
@@ -61,10 +72,11 @@
       const ids = getCompareIds();
       const count = document.getElementById('compareBarCount');
       const go = document.getElementById('compareBarGo');
+      updateNavigationLinks(ids);
       if (ids.length >= 2) {
         bar.classList.add('visible');
-        count.textContent = `${ids.length} vehicle${ids.length === 1 ? '' : 's'} selected`;
-        go.href = `compare.html?ids=${ids.join(',')}`;
+        count.textContent = `${ids.length} veículos selecionados`;
+        go.href = comparisonUrl(ids);
       } else {
         bar.classList.remove('visible');
       }
@@ -85,7 +97,7 @@
       if (box.checked) {
         if (ids.length >= MAX_COMPARE) {
           box.checked = false;
-          alert(`You can compare up to ${MAX_COMPARE} vehicles at a time.`);
+          alert(`Você pode comparar no máximo ${MAX_COMPARE} veículos por vez.`);
           return;
         }
         ids.push(box.dataset.id);
@@ -111,29 +123,30 @@
     if (!container) return;
 
     const params = new URLSearchParams(window.location.search);
-    const ids = (params.get('ids') || '').split(',').filter(Boolean);
+    const queryIds = (params.get('ids') || '').split(',').map((id) => decodeURIComponent(id)).filter(Boolean);
+    const ids = queryIds.length >= 2 ? queryIds : getCompareIds();
 
     if (ids.length < 2) {
-      container.innerHTML = `<p class="empty-state">Select 2–3 vehicles on the <a href="cars.html">inventory page</a> to compare them here.</p>`;
+      container.innerHTML = `<p class="empty-state">Selecione de 2 a 3 veículos no <a href="cars.html">estoque</a> para comparar.</p>`;
       return;
     }
 
     try {
       const cars = await fetchCars();
-      const selected = ids.map((id) => cars.find((c) => c.id === id)).filter(Boolean);
+      const selected = ids.map((id) => cars.find((c) => String(c.id) === String(id))).filter(Boolean);
 
       if (selected.length < 2) {
-        container.innerHTML = `<p class="empty-state">Couldn't find those vehicles. <a href="cars.html">Pick vehicles to compare</a>.</p>`;
+        container.innerHTML = `<p class="empty-state">Os veículos selecionados não estão mais disponíveis. <a href="cars.html">Escolha outros no estoque</a>.</p>`;
         return;
       }
 
       const rows = [
-        ['Price', (c) => formatPrice(c.price)],
-        ['Year', (c) => c.year],
-        ['Engine', (c) => c.engine],
-        ['Horsepower', (c) => `${c.horsepower} hp`],
-        ['Drivetrain', (c) => c.drivetrain],
-        ['Mileage', (c) => c.mileage],
+        ['Preço', (c) => formatPrice(c.price)],
+        ['Ano', (c) => c.year],
+        ['Motor', (c) => c.engine || 'Não informado'],
+        ['Potência', (c) => c.horsepower && c.horsepower !== '—' ? `${c.horsepower} cv` : 'Não informada'],
+        ['Tração', (c) => c.drivetrain || 'Não informada'],
+        ['Quilometragem', (c) => c.mileage],
       ];
 
       container.innerHTML = `
@@ -156,7 +169,7 @@
               .join('')}
             <tr>
               <th scope="row"></th>
-              ${selected.map((c) => `<td><a class="btn small" href="${carDetailUrl(c)}">View Details</a></td>`).join('')}
+              ${selected.map((c) => `<td><a class="btn small" href="${carDetailUrl(c)}">Ver detalhes</a></td>`).join('')}
             </tr>
           </tbody>
         </table>

@@ -71,6 +71,10 @@
   function fillFields() {
     const d = state.dealership;
     const s = state.settings;
+    const displayedName = s.brandName || d.name || 'Sua Concessionária';
+    const brand = document.querySelector('.settings-brand');
+    brand.querySelector('strong').textContent = displayedName;
+    brand.setAttribute('aria-label', `${displayedName} — visão geral`);
     $('fieldName').value = d.name || '';
     $('fieldEmail').value = d.email || '';
     $('fieldPhone').value = d.phone || '';
@@ -222,6 +226,12 @@
     try {
       const { team = [] } = await api('/api/team');
       state.team = team;
+      const operator = team.find((member) => member.active && ['owner', 'manager'].includes(member.role)) || team.find((member) => member.active);
+      if (operator) {
+        const user = document.querySelector('.settings-user');
+        user.querySelector('strong').textContent = operator.name;
+        user.querySelector('small').textContent = roleLabel(operator.role);
+      }
       $('teamActiveCount').textContent = team.filter((member) => member.active).length;
       $('teamOpenLeads').textContent = team.reduce((total, member) => total + member.openCount, 0);
       $('teamSoldCount').textContent = team.reduce((total, member) => total + member.soldCount, 0);

@@ -16,7 +16,7 @@
   <a href="#dashboardMain" class="admin-skip">Ir para o conteúdo</a>
   <div class="admin-shell" id="adminShell">
     <aside class="admin-sidebar" id="adminSidebar" aria-label="Menu lateral">
-      <a class="admin-brand" href="dashboard.html"><img src="../assets/web/autosuite-mark.png" alt="" width="34" height="34"><span><strong class="admin-brand-name">AutoSuite</strong><small>São Paulo, SP</small></span></a>
+      <a class="admin-brand" href="dashboard.html"><span class="admin-brand-mark material-symbols-rounded" aria-hidden="true">storefront</span><span><strong class="admin-brand-name">AutoSuite</strong><small class="admin-brand-location">Localização da loja</small></span></a>
       <nav class="admin-nav" aria-label="Gestão da concessionária">
         <a class="active" href="dashboard.html"><span class="material-symbols-rounded">home</span><span>Visão geral</span></a>
         <a href="crm.html"><span class="material-symbols-rounded">group</span><span>Leads</span></a>
@@ -39,7 +39,7 @@
         <a href="../index.html" target="_blank">Ver site <span class="material-symbols-rounded">open_in_new</span></a>
         <button type="button" data-dos-bell class="notification-button" aria-label="Notificações"><span class="material-symbols-rounded">notifications</span><i data-dos-bell-dot hidden></i></button>
         <div class="profile-menu-wrap">
-          <button type="button" class="profile-button" id="profileMenuButton" aria-expanded="false" aria-controls="profileMenu"><span>MS</span><span class="profile-copy"><strong>Marcos Silva</strong><small>Gerente</small></span><span class="material-symbols-rounded">expand_more</span></button>
+          <button type="button" class="profile-button" id="profileMenuButton" aria-expanded="false" aria-controls="profileMenu"><span data-operator-initials>AD</span><span class="profile-copy"><strong data-operator-name>Administrador da loja</strong><small data-operator-role>Admin</small></span><span class="material-symbols-rounded">expand_more</span></button>
           <div class="profile-menu" id="profileMenu" hidden><a href="settings.html"><span class="material-symbols-rounded">palette</span>Aparência</a><a href="inventory.html"><span class="material-symbols-rounded">directions_car</span>Gerenciar estoque</a><a href="superadmin.html"><span class="material-symbols-rounded">admin_panel_settings</span>Central 3esysten</a></div>
         </div>
       </div>
@@ -47,7 +47,7 @@
 
     <main class="admin-main" id="dashboardMain">
       <div class="admin-heading">
-        <div><h1>Bom dia, Marcos</h1><p id="todayLabel">Aqui está o resumo do seu dia.</p></div>
+        <div><h1 id="dashboardGreeting">Bom dia</h1><p id="todayLabel">Aqui está o resumo do seu dia.</p></div>
         <a href="crm.html" class="primary-action"><span class="material-symbols-rounded">add_circle</span>Novo atendimento<span class="material-symbols-rounded">expand_more</span></a>
       </div>
 
@@ -99,7 +99,7 @@
   </div>
   <div class="admin-live" id="adminLive" role="status" aria-live="polite"></div>
   <script>
-    window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {} };
+    window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {}, operator: {} };
   </script>
   <script src="../js/dos-shell.js?v=3"></script>
   <script src="../js/dashboard-home.js?v=3"></script>

@@ -10,9 +10,11 @@ a { color:inherit; }
 .admin-shell { min-height:100vh; display:grid; grid-template-columns:212px minmax(0,1fr); grid-template-rows:72px 1fr; }
 .admin-sidebar { grid-row:1/3; position:sticky; top:0; height:100vh; background:var(--admin-navy); color:#dce5ef; display:flex; flex-direction:column; z-index:30; transition:width .2s ease; overflow:hidden; }
 .admin-brand { height:72px; display:flex; align-items:center; gap:.75rem; padding:0 1.25rem; color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.08); }
+.admin-brand-mark { width:34px; height:34px; flex:none; display:grid; place-items:center; border-radius:6px; background:#2169f3; color:#fff; font-size:20px; }
 .admin-brand > span { min-width:0; display:flex; flex-direction:column; }
 .admin-brand strong { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font:700 .9rem 'Manrope',sans-serif; }
 .admin-brand small { color:#93a1b3; font-size:.69rem; }
+.admin-brand small { max-width:130px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .admin-nav { padding:.9rem .65rem; display:flex; flex-direction:column; gap:.25rem; }
 .admin-nav a,.sidebar-bottom a,.sidebar-bottom button { min-height:48px; display:flex; align-items:center; gap:.85rem; border:0; border-radius:6px; padding:0 .85rem; text-decoration:none; color:#d2dbe6; background:transparent; white-space:nowrap; }
 .admin-nav a:hover,.sidebar-bottom a:hover,.sidebar-bottom button:hover { background:rgba(255,255,255,.07); color:#fff; }
@@ -44,11 +46,10 @@ a { color:inherit; }
 .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:.75rem; margin-bottom:.75rem; }
 .kpi-strip article { min-width:0; background:#fff; border:1px solid var(--admin-line); border-radius:8px; padding:1rem; display:flex; align-items:center; gap:.8rem; }
 .kpi-icon { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; flex:none; }.kpi-icon.blue{color:#1268e8;background:#e9f1ff}.kpi-icon.green{color:#159458;background:#e9f8f0}.kpi-icon.orange{color:#df7500;background:#fff1df}.kpi-icon.purple{color:#7147d8;background:#f0ebff}
-.kpi-strip article div { min-width:0; display:grid; grid-template-columns:minmax(0,auto) minmax(0,auto); align-items:end; column-gap:.5rem; }
-.kpi-strip small { grid-column:1/3; color:var(--admin-muted); font-size:.68rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.kpi-strip strong { font:700 1.25rem 'Manrope',sans-serif; white-space:nowrap; }/* The value keeps its full width; the caption beside it gives way with an
-   ellipsis instead of spilling past the card onto its neighbour. */
-.kpi-strip em{font-style:normal;color:#586579;font-size:.63rem;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.kpi-strip article div { min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:.08rem; }
+.kpi-strip small { max-width:100%; color:var(--admin-muted); font-size:.68rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.kpi-strip strong { max-width:100%; font:700 1.12rem 'Manrope',sans-serif; white-space:nowrap; }
+.kpi-strip em{max-width:100%;font-style:normal;color:#586579;font-size:.63rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dashboard-layout { display:grid; grid-template-columns:minmax(0,1fr) 350px; gap:.75rem; align-items:start; }
 .dashboard-modules { display:flex; flex-direction:column; gap:.75rem; min-width:0; }
 .admin-module,.drawer-section { background:#fff; border:1px solid var(--admin-line); border-radius:8px; overflow:hidden; }

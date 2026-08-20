@@ -38,7 +38,7 @@
       img.alt = config.brandName;
       img.dataset.runtimeLogo = 'true';
       img.style.cssText = 'max-width:160px;max-height:42px;object-fit:contain;display:block;';
-      host.querySelectorAll('.logo-mark,.logo-wordmark,.dos-brand-mark').forEach((el) => {
+      host.querySelectorAll('.logo-mark,.logo-wordmark,.dos-brand-mark,.admin-brand-mark,.settings-brand-mark').forEach((el) => {
         el.style.display = 'none';
       });
       host.prepend(img);
