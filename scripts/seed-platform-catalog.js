@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { platformDomainFor } = require('../api/_lib/platformDomains');
 
 const prisma = new PrismaClient();
 
@@ -18,10 +19,11 @@ async function main() {
 
   const domain = process.env.PLATFORM_DEMO_DOMAIN;
   if (domain) {
+    const platformDomain = platformDomainFor('demonstracao-3esysten', process.env.PLATFORM_BASE_DOMAIN);
     const client = await prisma.platformClient.upsert({
       where: { slug: 'demonstracao-3esysten' },
-      update: { domain, status: 'active' },
-      create: { name: 'Demonstracao 3esysten', slug: 'demonstracao-3esysten', domain, status: 'active', notes: 'Ambiente comercial de demonstracao.' },
+      update: { domain, platformDomain, domainStatus: 'active', status: 'active' },
+      create: { name: 'Demonstracao 3esysten', slug: 'demonstracao-3esysten', domain, platformDomain, domainStatus: 'active', status: 'active', notes: 'Ambiente comercial de demonstracao.' },
     });
     await prisma.platformDeployment.upsert({
       where: { clientId_environment: { clientId: client.id, environment: 'production' } },

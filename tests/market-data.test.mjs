@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { annualToMonthlyRate, parseBrazilianCurrency, pricePayment, analyzeFinancing } from '../api/_lib/marketData.js';
+import { annualToMonthlyRate, parseBrazilianCurrency, pricePayment, analyzeFinancing, normalizeVehicleType } from '../api/_lib/marketData.js';
 
 describe('dados de mercado e financiamento', () => {
+  it('separa carros e motos para a consulta FIPE', () => {
+    expect(normalizeVehicleType('car')).toBe('car');
+    expect(normalizeVehicleType('motorcycle')).toBe('motorcycle');
+    expect(normalizeVehicleType('motos')).toBe('motorcycle');
+    expect(normalizeVehicleType('valor-invalido')).toBe('car');
+  });
   it('converte o valor brasileiro da FIPE para centavos', () => {
     expect(parseBrazilianCurrency('R$ 119.329,00')).toBe(11932900);
   });

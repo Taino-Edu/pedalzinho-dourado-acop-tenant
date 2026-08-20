@@ -60,6 +60,7 @@ module.exports = async (req, res) => {
       const gallery = parseImages(vehicle.images, media.gallery);
       return {
         id: vehicle.id,
+        vehicleType: vehicle.vehicleType,
         brand: vehicle.make,
         name: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
         year: vehicle.year,

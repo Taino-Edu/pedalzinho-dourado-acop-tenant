@@ -25,6 +25,7 @@
     .photo-help { display:block; color:#64748b; font-size:11px; line-height:1.4; margin-top:5px; }
     .inventory-location-summary{padding:14px 36px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.inventory-location-summary article{padding:12px 14px;border:1px solid #e2e8f0;border-radius:9px;background:#fff}.inventory-location-summary small,.inventory-location-summary strong{display:block}.inventory-location-summary small{font-size:10px;color:#64748b}.inventory-location-summary strong{margin-top:3px;font-size:18px}.location-pill{display:inline-flex;margin-top:5px;padding:4px 8px;border-radius:999px;background:#e0f5fb;color:#087aa6;font-size:10px;font-weight:700}@media(max-width:900px){.inventory-location-summary{grid-template-columns:repeat(2,1fr);padding-inline:18px}}
     .location-pill { color: #075c7d; }
+    .vehicle-type-pill { display:inline-flex; margin-right:6px; padding:3px 7px; border:1px solid #cbd5e1; border-radius:999px; color:#334155; background:#f8fafc; font-size:10px; font-weight:700; }
   </style>
 </head>
 <body class="dos-body">
@@ -66,6 +67,9 @@
         <option value="featured">Destaque</option>
         <option value="draft">Rascunho</option>
         <option value="sold">Vendido</option>
+      </select>
+      <select id="filterVehicleType" class="inv-filter-input" aria-label="Filtrar por tipo de veículo" onchange="applyFilters()">
+        <option value="">Carros e motos</option><option value="car">Somente carros</option><option value="motorcycle">Somente motos</option>
       </select>
       <select id="filterBody" class="inv-filter-input" aria-label="Filtrar por carroceria" onchange="applyFilters()">
         <option value="">Carroceria ▾</option>
@@ -164,9 +168,9 @@
   let requestedEditId = new URLSearchParams(location.search).get('edit');
 
   const fallbackVehicles = [
-    { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active', location: 'showroom', body: 'SUV', color: 'Preto', drivetrain: 'AWD', createdAt: new Date().toISOString() },
-    { id: 2, make: 'Mercedes-Benz', model: 'S-Class', year: 2023, mileage: 12500, price: 45000000, status: 'featured', location: 'garagem', body: 'Sedan', color: 'Cinza', drivetrain: 'RWD', createdAt: new Date().toISOString() },
-    { id: 3, make: 'Chevrolet', model: 'Onix', year: 2025, mileage: 19300, price: 8270500, status: 'sold', location: 'patio', body: 'Hatch', color: 'Prata', drivetrain: 'Dianteira', createdAt: new Date().toISOString() }
+    { id: 1, vehicleType: 'car', make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active', location: 'showroom', body: 'SUV', color: 'Preto', drivetrain: 'AWD', createdAt: new Date().toISOString() },
+    { id: 2, vehicleType: 'car', make: 'Mercedes-Benz', model: 'S-Class', year: 2023, mileage: 12500, price: 45000000, status: 'featured', location: 'garagem', body: 'Sedan', color: 'Cinza', drivetrain: 'RWD', createdAt: new Date().toISOString() },
+    { id: 3, vehicleType: 'motorcycle', make: 'Honda', model: 'CB 500F', year: 2025, mileage: 3200, price: 4190000, status: 'active', location: 'showroom', body: 'Naked', color: 'Vermelha', drivetrain: 'Corrente', createdAt: new Date().toISOString() }
   ];
 
   async function fetchVehicles() {
@@ -258,6 +262,10 @@
     return ({ patio: 'Pátio', garagem: 'Garagem', showroom: 'Showroom', oficina: 'Oficina', terceiros: 'Em terceiros' }[value] || 'Pátio');
   }
 
+  function vehicleTypeLabel(value) {
+    return value === 'motorcycle' ? 'Moto' : 'Carro';
+  }
+
   function fipeIndicator(v) {
     if (!v.fipePrice) return '<span style="display:block;color:#b45309;font-size:11px;margin-top:3px">FIPE não associada</span>';
     const difference = ((v.price - v.fipePrice) / v.fipePrice) * 100;
@@ -268,6 +276,7 @@
   function applyFilters() {
     const q = document.getElementById('filterSearch').value.trim().toLowerCase();
     const status = document.getElementById('filterStatus').value;
+    const vehicleType = document.getElementById('filterVehicleType').value;
     const body = document.getElementById('filterBody').value;
     const location = document.getElementById('filterLocation').value;
     const priceRange = document.getElementById('filterPrice').value;
@@ -275,6 +284,7 @@
     filteredVehicles = vehicles.filter(v => {
       if (q && !`${v.make} ${v.model} ${v.year}`.toLowerCase().includes(q)) return false;
       if (status && v.status !== status) return false;
+      if (vehicleType && (v.vehicleType || 'car') !== vehicleType) return false;
       if (body && v.body !== body) return false;
       if (location && (v.location || 'patio') !== location) return false;
       if (priceRange) {
@@ -342,7 +352,7 @@
         <div><input type="checkbox" class="row-check" data-id="${v.id}" aria-label="Selecionar ${esc(v.year)} ${esc(v.make)} ${esc(v.model)}" ${selectedIds.has(String(v.id)) ? 'checked' : ''} onchange="toggleSelect('${v.id}', this.checked)"></div>
         <div class="stripes inventory-thumb">${vehiclePhoto(v)}</div>
         <div>
-          <div class="is-db117290">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
+          <div class="is-db117290"><span class="vehicle-type-pill">${vehicleTypeLabel(v.vehicleType)}</span>${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
           <div class="is-41b12b7b">${esc(trimOf(v))}</div>
         </div>
         <div class="is-db117290">${money(v.price)}${fipeIndicator(v)}</div>
@@ -360,7 +370,7 @@
     document.getElementById('cardsViewWrap').innerHTML = filteredVehicles.map(v => `
       <div class="is-fe44beb6">
         <div class="stripes is-141f1f5e">${vehiclePhoto(v)}</div>
-        <div class="is-ec940996">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
+        <div class="is-ec940996"><span class="vehicle-type-pill">${vehicleTypeLabel(v.vehicleType)}</span>${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
         <div class="is-adc0edca">${money(v.price)} · ${v.mileage.toLocaleString('pt-BR')} km${fipeIndicator(v)}</div>
         <div class="is-948e6d6e">
           <span>${statusPill(v.status)} <span class="location-pill">${locationLabel(v.location)}</span></span>
@@ -401,31 +411,35 @@
     select.innerHTML = '<option value="">Carregando modelos…</option>'; year.innerHTML = '<option value="">Escolha o modelo primeiro</option>';
     if (!brandCode) return;
     try {
-      const data = await marketRequest('models', { brandCode });
+      const vehicleType = document.getElementById('fipeVehicleType').value;
+      const data = await marketRequest('models', { brandCode, vehicleType });
       select.innerHTML = '<option value="">Escolha o modelo</option>' + data.models.map((item) => `<option value="${item.codigo}">${esc(item.nome)}</option>`).join('');
     } catch (error) { select.innerHTML = `<option value="">${esc(error.message)}</option>`; }
   }
 
   async function loadFipeYears(modelCode) {
     const brandCode = document.getElementById('fipeBrand').value;
+    const vehicleType = document.getElementById('fipeVehicleType').value;
     const select = document.getElementById('fipeYear');
     select.innerHTML = '<option value="">Carregando anos…</option>';
     if (!brandCode || !modelCode) return;
     try {
-      const data = await marketRequest('years', { brandCode, modelCode });
+      const data = await marketRequest('years', { brandCode, modelCode, vehicleType });
       select.innerHTML = '<option value="">Escolha ano e combustível</option>' + data.years.map((item) => `<option value="${esc(item.codigo)}">${esc(item.nome)}</option>`).join('');
     } catch (error) { select.innerHTML = `<option value="">${esc(error.message)}</option>`; }
   }
 
   async function linkFipe(vehicleId) {
-    let brands;
-    try { brands = (await marketRequest('brands')).brands; } catch (error) { DosShell.toast(error.message, 'error'); return; }
     const vehicle = vehicles.find((item) => String(item.id) === String(vehicleId));
+    const vehicleType = vehicle?.vehicleType || 'car';
+    let brands;
+    try { brands = (await marketRequest('brands', { vehicleType })).brands; } catch (error) { DosShell.toast(error.message, 'error'); return; }
     const result = await DosShell.openModal({
       title: `Associar FIPE · ${vehicle.year} ${vehicle.make} ${vehicle.model}`,
       confirmLabel: 'Salvar referência FIPE',
       focusSelector: '#fipeBrand',
       bodyHtml: `<p style="margin:0 0 14px;color:#64748b;font-size:13px">Escolha a versão exata. O valor e o mês de referência serão salvos no veículo.</p>
+        <input id="fipeVehicleType" type="hidden" value="${vehicleType}">
         <label for="fipeBrand" class="dos-field-label">Marca</label><select id="fipeBrand" class="dos-field-input" onchange="loadFipeModels(this.value)"><option value="">Escolha a marca</option>${brands.map((item) => `<option value="${item.codigo}" ${String(item.nome).toLowerCase().includes(String(vehicle.make).toLowerCase()) ? 'selected' : ''}>${esc(item.nome)}</option>`).join('')}</select>
         <label for="fipeModel" class="dos-field-label" style="margin-top:12px">Modelo/versão</label><select id="fipeModel" class="dos-field-input" onchange="loadFipeYears(this.value)"><option value="">Escolha a marca primeiro</option></select>
         <label for="fipeYear" class="dos-field-label" style="margin-top:12px">Ano e combustível</label><select id="fipeYear" class="dos-field-input"><option value="">Escolha o modelo primeiro</option></select>`,
@@ -573,6 +587,7 @@
       cancelLabel: 'Cancelar',
       focusSelector: '#avMake',
       bodyHtml: `
+        <div style="margin-bottom:14px"><label for="avVehicleType" class="dos-field-label">Tipo de veículo</label><select id="avVehicleType" class="dos-field-input" onchange="updateVehicleTypeFields(this.value)"><option value="car">Carro</option><option value="motorcycle">Moto</option></select></div>
         ${field('avMake', 'Marca', '', 'text')}
         ${field('avModel', 'Modelo', '', 'text')}
         ${field('avYear', 'Ano', String(new Date().getFullYear()), 'number')}
@@ -601,6 +616,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             vin: overlay.querySelector('#avVin').value.trim(),
+            vehicleType: overlay.querySelector('#avVehicleType').value,
             make, model,
             year: overlay.querySelector('#avYear').value,
             price: Math.round(Number(overlay.querySelector('#avPrice').value) * 100),
@@ -628,8 +644,25 @@
     filePreview(files, document.getElementById('avImagePreview'));
   }
 
+  function updateVehicleTypeFields(vehicleType) {
+    const body = document.getElementById('avBody');
+    const engine = document.getElementById('avEngine');
+    const transmission = document.getElementById('avTransmission');
+    if (!body || !engine || !transmission) return;
+    if (vehicleType === 'motorcycle') {
+      body.innerHTML = '<option>Street</option><option>Naked</option><option>Trail</option><option>Scooter</option><option>Custom</option><option>Sport</option><option>Touring</option>';
+      engine.value = '160 cc';
+      transmission.innerHTML = '<option>Manual</option><option>Automático</option><option>CVT</option>';
+      return;
+    }
+    body.innerHTML = '<option>Hatch</option><option>Sedan</option><option>SUV</option><option>Picape</option><option>Utilitário</option><option>Cupê</option>';
+    engine.value = '1.0 Flex';
+    transmission.innerHTML = '<option>Automático</option><option>Manual</option><option>CVT</option>';
+  }
+
   window.previewQuickEditImages = previewQuickEditImages;
   window.previewAddVehicleImages = previewAddVehicleImages;
+  window.updateVehicleTypeFields = updateVehicleTypeFields;
 
   fetchVehicles().then(() => {
     if (requestedEditId) { const id = requestedEditId; requestedEditId = null; openQuickEdit(id); }

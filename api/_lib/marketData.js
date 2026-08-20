@@ -1,4 +1,4 @@
-const FIPE_BASE_URL = 'https://parallelum.com.br/fipe/api/v1/carros';
+const FIPE_API_URL = 'https://parallelum.com.br/fipe/api/v1';
 const BCB_VEHICLE_RATE_URL = 'https://api.bcb.gov.br/dados/serie/bcdata.sgs.20749/dados/ultimos/1?formato=json';
 
 const POPULAR_CARS = [
@@ -87,23 +87,32 @@ async function cached(prisma, key, ttlMs, loader) {
   }
 }
 
-const fipePath = (path) => `${FIPE_BASE_URL}${path}`;
-
-async function getFipeBrands(prisma) {
-  return cached(prisma, 'fipe:brands', 24 * 3600000, () => fetchJson(fipePath('/marcas')));
+function normalizeVehicleType(value) {
+  return value === 'motorcycle' || value === 'motos' ? 'motorcycle' : 'car';
 }
 
-async function getFipeModels(prisma, brandCode) {
-  return cached(prisma, `fipe:models:${brandCode}`, 24 * 3600000, async () => (await fetchJson(fipePath(`/marcas/${encodeURIComponent(brandCode)}/modelos`))).modelos || []);
+const fipeCategory = (vehicleType) => normalizeVehicleType(vehicleType) === 'motorcycle' ? 'motos' : 'carros';
+const fipePath = (path, vehicleType) => `${FIPE_API_URL}/${fipeCategory(vehicleType)}${path}`;
+
+async function getFipeBrands(prisma, vehicleType = 'car') {
+  const category = fipeCategory(vehicleType);
+  return cached(prisma, `fipe:${category}:brands`, 24 * 3600000, () => fetchJson(fipePath('/marcas', vehicleType)));
 }
 
-async function getFipeYears(prisma, brandCode, modelCode) {
-  return cached(prisma, `fipe:years:${brandCode}:${modelCode}`, 24 * 3600000, () => fetchJson(fipePath(`/marcas/${encodeURIComponent(brandCode)}/modelos/${encodeURIComponent(modelCode)}/anos`)));
+async function getFipeModels(prisma, brandCode, vehicleType = 'car') {
+  const category = fipeCategory(vehicleType);
+  return cached(prisma, `fipe:${category}:models:${brandCode}`, 24 * 3600000, async () => (await fetchJson(fipePath(`/marcas/${encodeURIComponent(brandCode)}/modelos`, vehicleType))).modelos || []);
 }
 
-async function getFipePrice(prisma, brandCode, modelCode, yearCode) {
-  return cached(prisma, `fipe:price:${brandCode}:${modelCode}:${yearCode}`, 7 * 24 * 3600000, async () => {
-    const raw = await fetchJson(fipePath(`/marcas/${encodeURIComponent(brandCode)}/modelos/${encodeURIComponent(modelCode)}/anos/${encodeURIComponent(yearCode)}`));
+async function getFipeYears(prisma, brandCode, modelCode, vehicleType = 'car') {
+  const category = fipeCategory(vehicleType);
+  return cached(prisma, `fipe:${category}:years:${brandCode}:${modelCode}`, 24 * 3600000, () => fetchJson(fipePath(`/marcas/${encodeURIComponent(brandCode)}/modelos/${encodeURIComponent(modelCode)}/anos`, vehicleType)));
+}
+
+async function getFipePrice(prisma, brandCode, modelCode, yearCode, vehicleType = 'car') {
+  const category = fipeCategory(vehicleType);
+  return cached(prisma, `fipe:${category}:price:${brandCode}:${modelCode}:${yearCode}`, 7 * 24 * 3600000, async () => {
+    const raw = await fetchJson(fipePath(`/marcas/${encodeURIComponent(brandCode)}/modelos/${encodeURIComponent(modelCode)}/anos/${encodeURIComponent(yearCode)}`, vehicleType));
     return { ...raw, priceCents: parseBrazilianCurrency(raw.Valor) };
   });
 }
@@ -117,4 +126,4 @@ async function getVehicleMarketRate(prisma) {
   });
 }
 
-module.exports = { POPULAR_CARS, POPULAR_CARS_REFERENCE, parseBrazilianCurrency, annualToMonthlyRate, pricePayment, analyzeFinancing, getFipeBrands, getFipeModels, getFipeYears, getFipePrice, getVehicleMarketRate };
+module.exports = { POPULAR_CARS, POPULAR_CARS_REFERENCE, normalizeVehicleType, parseBrazilianCurrency, annualToMonthlyRate, pricePayment, analyzeFinancing, getFipeBrands, getFipeModels, getFipeYears, getFipePrice, getVehicleMarketRate };

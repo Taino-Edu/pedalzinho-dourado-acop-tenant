@@ -111,7 +111,7 @@
 .is-dc310e06 { margin-left: auto; }
 .is-6f243b60 { padding: 24px 36px 0; }
 .is-bf8e3981 { font: 600 12px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; color: oklch(50% 0.01 260); margin-bottom: 12px; }
-.is-52229003 { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; }
+.is-52229003 { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 240px)); gap: 16px; }
 .is-5a356d1e { padding: 28px 36px 60px; }
 .is-3c773fe7 { background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; overflow: hidden; }
 .is-b64e61e5 { display: grid; grid-template-columns: 0.3fr 0.6fr 1.6fr 1fr 1fr 0.9fr 0.7fr 0.8fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); }

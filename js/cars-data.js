@@ -56,7 +56,7 @@ function carCardHTML(car, options) {
   return `
     <article class="car-card">
       <div class="car-card-media">
-        <span class="data-chip"><span class="dot"></span>${car.year}</span>
+        <span class="data-chip"><span class="dot"></span>${car.vehicleType === 'motorcycle' ? 'Moto' : 'Carro'} · ${car.year}</span>
         <button type="button" class="favorite-toggle${favorited ? ' is-favorited' : ''}" data-favorite-toggle="${car.id}" aria-pressed="${favorited}" aria-label="Salvar ${car.name} nos favoritos">${favorited ? '♥' : '♡'}</button>
         <img src="${imageUrl(car.image)}" alt="${car.name}" loading="lazy" onerror="this.onerror=null;this.src='${ASSET_BASE}car-placeholder.svg'">
       </div>
@@ -155,6 +155,7 @@ async function initListingPage() {
   const searchInput = document.getElementById('searchBar');
   const searchClear = document.getElementById('searchClear');
   const bodyStyleHost = document.getElementById('bodyStyleFilters');
+  const vehicleTypeHost = document.getElementById('vehicleTypeFilters');
   const makeHost = document.getElementById('makeFilters');
   const sortSelect = document.getElementById('sortBy');
   const priceRange = document.getElementById('priceRange');
@@ -199,6 +200,7 @@ async function initListingPage() {
   function hasActiveFilters() {
     return (
       Boolean(searchInput.value.trim()) ||
+      checkedValues(vehicleTypeHost).length > 0 ||
       checkedValues(bodyStyleHost).length > 0 ||
       checkedValues(makeHost).length > 0 ||
       Number(priceRange.value) < priceMax ||
@@ -209,6 +211,7 @@ async function initListingPage() {
   function applyFilters() {
     const query = searchInput.value.trim();
     const bodyStyles = checkedValues(bodyStyleHost);
+    const vehicleTypes = checkedValues(vehicleTypeHost);
     const brands = checkedValues(makeHost);
     const maxPriceAllowed = Number(priceRange.value);
     const mileageVal = Number(mileageRange.value);
@@ -216,8 +219,9 @@ async function initListingPage() {
 
     searchClear.hidden = query.length === 0;
 
+    const typeFilteredCars = vehicleTypes.length ? cars.filter((car) => vehicleTypes.includes(car.vehicleType || 'car')) : cars;
     const results = sortCars(
-      filterCars(cars, { query, brands, bodyStyles, maxPrice: maxPriceAllowed, maxMileage: maxMileageAllowed }),
+      filterCars(typeFilteredCars, { query, brands, bodyStyles, maxPrice: maxPriceAllowed, maxMileage: maxMileageAllowed }),
       sortSelect.value
     );
 
@@ -237,6 +241,7 @@ async function initListingPage() {
 
   function resetFilters() {
     searchInput.value = '';
+    vehicleTypeHost.querySelectorAll('input:checked').forEach((el) => (el.checked = false));
     bodyStyleHost.querySelectorAll('input:checked').forEach((el) => (el.checked = false));
     makeHost.querySelectorAll('input:checked').forEach((el) => (el.checked = false));
     sortSelect.value = 'default';
@@ -257,6 +262,7 @@ async function initListingPage() {
     searchInput.focus();
   });
   bodyStyleHost.addEventListener('change', applyFilters);
+  vehicleTypeHost.addEventListener('change', applyFilters);
   makeHost.addEventListener('change', applyFilters);
   sortSelect.addEventListener('change', applyFilters);
   priceRange.addEventListener('input', () => {

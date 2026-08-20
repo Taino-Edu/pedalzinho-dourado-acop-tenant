@@ -31,6 +31,7 @@ services:
       # Vitrine publica por padrao. Defina SHOWCASE_MODE=false no .env para
       # exigir as credenciais abaixo.
       SHOWCASE_MODE: ${SHOWCASE_MODE:-true}
+      PLATFORM_BASE_DOMAIN: ${PLATFORM_BASE_DOMAIN:-3esysten.com.br}
       DASHBOARD_USER: ${DASHBOARD_USER:-dealer}
       DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:-change-this-dashboard-password}
       DASHBOARD_SESSION_SECRET: ${DASHBOARD_SESSION_SECRET:-change-this-session-secret}

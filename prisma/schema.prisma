@@ -31,6 +31,7 @@ model Lead {
 model Vehicle {
   id           String        @id @default(cuid())
   vin          String        @unique
+  vehicleType  String        @default("car") // car, motorcycle
   make         String
   model        String
   year         Int
@@ -59,6 +60,7 @@ model Vehicle {
   updatedAt    DateTime      @updatedAt
 
   @@unique([externalSource, externalId])
+  @@index([vehicleType, status])
   @@index([location])
 }
 
@@ -206,6 +208,10 @@ model PlatformClient {
   name            String
   slug            String                 @unique
   domain          String                 @unique
+  platformDomain  String                 @unique
+  customDomain    String?                @unique
+  domainMode      String                 @default("platform") // platform, custom
+  domainStatus    String                 @default("pending") // pending, dns_required, verifying, active, error
   contactName     String?
   contactEmail    String?
   contactPhone    String?
@@ -256,6 +262,10 @@ model PlatformDeployment {
   projectName   String
   appContainer  String
   domain        String
+  appPort       Int?
+  postgresPort  Int?
+  installPath   String?
+  lastError     String?
   status        String         @default("pending")
   lastHealthAt  DateTime?
   deployedAt    DateTime?

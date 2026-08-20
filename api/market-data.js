@@ -12,20 +12,21 @@ module.exports = async (req, res) => {
   try {
     if (req.method === 'GET') {
       const action = req.query?.action || 'overview';
+      const vehicleType = req.query?.vehicleType || 'car';
       if (action === 'popular') return res.status(200).json({ cars: POPULAR_CARS, reference: POPULAR_CARS_REFERENCE });
-      if (action === 'brands') return res.status(200).json({ brands: await getFipeBrands(prisma) });
+      if (action === 'brands') return res.status(200).json({ brands: await getFipeBrands(prisma, vehicleType) });
       if (action === 'models') {
         if (!req.query.brandCode) return res.status(400).json({ error: 'Informe a marca.' });
-        return res.status(200).json({ models: await getFipeModels(prisma, req.query.brandCode) });
+        return res.status(200).json({ models: await getFipeModels(prisma, req.query.brandCode, vehicleType) });
       }
       if (action === 'years') {
         if (!req.query.brandCode || !req.query.modelCode) return res.status(400).json({ error: 'Informe marca e modelo.' });
-        return res.status(200).json({ years: await getFipeYears(prisma, req.query.brandCode, req.query.modelCode) });
+        return res.status(200).json({ years: await getFipeYears(prisma, req.query.brandCode, req.query.modelCode, vehicleType) });
       }
       if (action === 'price') {
         const { brandCode, modelCode, yearCode } = req.query;
         if (!brandCode || !modelCode || !yearCode) return res.status(400).json({ error: 'Informe marca, modelo e ano.' });
-        return res.status(200).json({ fipe: await getFipePrice(prisma, brandCode, modelCode, yearCode) });
+        return res.status(200).json({ fipe: await getFipePrice(prisma, brandCode, modelCode, yearCode, vehicleType) });
       }
 
       const vehicles = await prisma.vehicle.findMany({ where: { status: { in: ['active', 'featured'] } }, orderBy: { createdAt: 'desc' } });
@@ -33,7 +34,7 @@ module.exports = async (req, res) => {
       return res.status(200).json({
         rate,
         vehicles: vehicles.map((vehicle) => ({
-          id: vehicle.id, make: vehicle.make, model: vehicle.model, year: vehicle.year, price: vehicle.price,
+          id: vehicle.id, vehicleType: vehicle.vehicleType, make: vehicle.make, model: vehicle.model, year: vehicle.year, price: vehicle.price,
           fipeCode: vehicle.fipeCode, fipePrice: vehicle.fipePrice, fipeModel: vehicle.fipeModel,
           fipeReferenceMonth: vehicle.fipeReferenceMonth, fipeUpdatedAt: vehicle.fipeUpdatedAt,
           analysis: analyzeFinancing({ askingPrice: vehicle.price, fipePrice: vehicle.fipePrice, annualRate: rate.annualPercent }),
@@ -45,7 +46,9 @@ module.exports = async (req, res) => {
       if (!requireAuth(req, res)) return;
       const { vehicleId, brandCode, modelCode, yearCode } = req.body || {};
       if (!vehicleId || !brandCode || !modelCode || !yearCode) return res.status(400).json({ error: 'Informe o veículo e a versão FIPE.' });
-      const fipe = await getFipePrice(prisma, brandCode, modelCode, yearCode);
+      const currentVehicle = await prisma.vehicle.findUnique({ where: { id: vehicleId }, select: { vehicleType: true } });
+      if (!currentVehicle) return res.status(404).json({ error: 'Veículo não encontrado.' });
+      const fipe = await getFipePrice(prisma, brandCode, modelCode, yearCode, currentVehicle.vehicleType);
       const vehicle = await prisma.vehicle.update({ where: { id: vehicleId }, data: {
         fipeCode: fipe.CodigoFipe,
         fipePrice: fipe.priceCents,

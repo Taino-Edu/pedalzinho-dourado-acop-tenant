@@ -50,7 +50,7 @@
     <header class="inv-head">
       <span class="eyebrow">Estoque completo</span>
       <h1><span id="resultCount" role="status" aria-live="polite">Carregando</span> à venda</h1>
-      <p class="inv-sub">Filtre por carroceria, marca, orçamento ou quilometragem — a lista atualiza enquanto você escolhe.</p>
+      <p class="inv-sub">Filtre por tipo, categoria, marca, orçamento ou quilometragem — a lista atualiza enquanto você escolhe.</p>
     </header>
 
     <div class="inv-layout">
@@ -71,7 +71,15 @@
           </div>
 
           <fieldset class="rail-group">
-            <legend class="rail-label">Carroceria</legend>
+            <legend class="rail-label">Tipo de veículo</legend>
+            <div id="vehicleTypeFilters" class="rail-checks">
+              <label class="rail-check"><input type="checkbox" name="vehicleType" value="car"><span class="rail-check-label">Carros</span></label>
+              <label class="rail-check"><input type="checkbox" name="vehicleType" value="motorcycle"><span class="rail-check-label">Motos</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="rail-group">
+            <legend class="rail-label">Categoria</legend>
             <div id="bodyStyleFilters" class="rail-checks"></div>
           </fieldset>
 
