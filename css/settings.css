@@ -312,7 +312,8 @@ button, input { font: inherit; }
 .settings-form label { color: #677187; display: grid; gap: 6px; font-size: 9px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .settings-form label.full,
 .settings-form .full { grid-column: 1 / -1; }
-.settings-form input:not([type=color]) {
+.settings-form input:not([type=color]),
+.settings-form textarea {
   width: 100%;
   min-height: 40px;
   padding: 9px 11px;
@@ -323,7 +324,9 @@ button, input { font: inherit; }
   font-size: 12px;
   text-transform: none;
 }
-.settings-form input:focus { outline: 3px solid rgba(53, 185, 230, .16); border-color: var(--octus-blue); }
+.settings-form textarea { resize: vertical; min-height: 76px; font-family: inherit; }
+.settings-form input:focus,
+.settings-form textarea:focus { outline: 3px solid rgba(53, 185, 230, .16); border-color: var(--octus-blue); }
 .settings-form label small { color: var(--octus-muted); font-size: 9px; font-weight: 500; letter-spacing: 0; text-transform: none; }
 .form-actions { display: flex; justify-content: flex-end; }
 .settings-primary {
@@ -357,6 +360,11 @@ button, input { font: inherit; }
 .config-actions .material-symbols-rounded { font-size: 15px; }
 .branding-grid { max-width: 980px; display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 12px; align-items: start; }
 .logo-uploader { padding: 14px; border: 1px dashed #cbd1dc; border-radius: 8px; background: #fafbfc; }
+.settings-section-title { padding-top: 4px; border-top: 1px solid #e6e9ef; }
+.settings-section-title strong { color: var(--octus-text); font-size: 12px; }
+.settings-section-title p { margin: 3px 0 0; color: var(--octus-muted); font-size: 9px; }
+.hero-image-preview { width: 180px; height: 102px; }
+.hero-image-preview img { width: 100%; height: 100%; object-fit: cover; }
 .logo-copy strong { color: var(--octus-ink); font-size: 10px; }
 .logo-copy p { margin: 4px 0 12px; color: var(--octus-muted); font-size: 9px; line-height: 1.5; letter-spacing: 0; text-transform: none; }
 .logo-row { display: flex; align-items: center; gap: 12px; }

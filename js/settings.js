@@ -33,6 +33,7 @@
     const primary = $('fieldPrimaryColor').value || '#2169f3';
     const accent = $('fieldAccentColor').value || '#3ed5c5';
     const logo = $('fieldLogoUrl').value;
+    const heroImage = $('fieldHeroImageUrl').value;
     $('brandingPreviewName').textContent = name;
     $('brandingPreviewTagline').textContent = tagline;
     $('primaryColorValue').textContent = primary.toUpperCase();
@@ -41,6 +42,7 @@
     $('brandingPreview').style.setProperty('--preview-accent', accent);
     $('brandingPreviewLogo').innerHTML = logo ? `<img src="${safe(logo)}" alt="Prévia do logotipo">` : '';
     $('logoPreview').innerHTML = logo ? `<img src="${safe(logo)}" alt="Logotipo selecionado">` : '<span class="material-symbols-rounded">image</span><small>Nenhum logo enviado</small>';
+    $('heroImagePreview').innerHTML = heroImage ? `<img src="${safe(heroImage)}" alt="Foto de capa selecionada">` : '<span class="material-symbols-rounded">image</span><small>Usando foto padrão</small>';
   }
 
   function profileReady() {
@@ -82,6 +84,11 @@
     $('fieldBrandName').value = s.brandName || d.name || '';
     $('fieldTagline').value = s.tagline || '';
     $('fieldLogoUrl').value = s.logoUrl || '';
+    $('fieldHeroImageUrl').value = s.heroImageUrl || '';
+    $('fieldHeroKicker').value = s.heroKicker || 'Seu novo carro está aqui';
+    $('fieldHeroTitle').value = s.heroTitle || 'Seu próximo carro';
+    $('fieldHeroHighlight').value = s.heroHighlight || 'começa aqui';
+    $('fieldHeroDescription').value = s.heroDescription || 'Veículos selecionados, procedência e um atendimento que acompanha você do primeiro clique até a entrega.';
     $('fieldWhatsapp').value = s.whatsapp || '';
     $('fieldInstagram').value = s.instagram || '';
     $('fieldPrimaryColor').value = s.primaryColor || '#2169f3';
@@ -126,6 +133,11 @@
       brandName: $('fieldBrandName').value.trim(),
       tagline: $('fieldTagline').value.trim(),
       logoUrl: $('fieldLogoUrl').value,
+      heroImageUrl: $('fieldHeroImageUrl').value,
+      heroKicker: $('fieldHeroKicker').value.trim(),
+      heroTitle: $('fieldHeroTitle').value.trim(),
+      heroHighlight: $('fieldHeroHighlight').value.trim(),
+      heroDescription: $('fieldHeroDescription').value.trim(),
       whatsapp: $('fieldWhatsapp').value.replace(/\D/g, ''),
       instagram: $('fieldInstagram').value.trim(),
       primaryColor: $('fieldPrimaryColor').value,
@@ -149,23 +161,25 @@
     }
   }
 
-  function readImage(file) {
+  function readImage(file, options = {}) {
+    const { label = 'imagem', maxWidth = 800, maxHeight = 240, maxOutput = 1_500_000, preservePng = true } = options;
     return new Promise((resolve, reject) => {
       if (!file || !/^image\/(png|jpeg|webp)$/i.test(file.type)) return reject(new Error('Escolha uma imagem PNG, JPG ou WebP.'));
-      if (file.size > 4 * 1024 * 1024) return reject(new Error('O logotipo deve ter no máximo 4 MB.'));
+      if (file.size > 4 * 1024 * 1024) return reject(new Error(`A ${label} deve ter no máximo 4 MB.`));
       const reader = new FileReader();
       reader.onerror = () => reject(new Error('Não foi possível ler a imagem.'));
       reader.onload = () => {
         const image = new Image();
         image.onerror = () => reject(new Error('O arquivo de imagem está inválido.'));
         image.onload = () => {
-          const scale = Math.min(1, 800 / image.width, 240 / image.height);
+          const scale = Math.min(1, maxWidth / image.width, maxHeight / image.height);
           const canvas = document.createElement('canvas');
           canvas.width = Math.max(1, Math.round(image.width * scale));
           canvas.height = Math.max(1, Math.round(image.height * scale));
           canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
-          const output = canvas.toDataURL(file.type === 'image/jpeg' ? 'image/jpeg' : 'image/png', .9);
-          if (output.length > 1_500_000) return reject(new Error('O logo continua muito pesado. Use uma imagem mais simples.'));
+          const outputType = preservePng && file.type === 'image/png' ? 'image/png' : (file.type === 'image/webp' ? 'image/webp' : 'image/jpeg');
+          const output = canvas.toDataURL(outputType, .86);
+          if (output.length > maxOutput) return reject(new Error(`A ${label} continua muito pesada. Use uma imagem mais simples.`));
           resolve(output);
         };
         image.src = reader.result;
@@ -176,9 +190,20 @@
 
   async function chooseLogo(event) {
     try {
-      $('fieldLogoUrl').value = await readImage(event.target.files?.[0]);
+      $('fieldLogoUrl').value = await readImage(event.target.files?.[0], { label: 'logo' });
       updatePreview();
       toast('Logo preparado. Clique em “Salvar e publicar”.');
+    } catch (error) {
+      toast(error.message, 'error');
+      event.target.value = '';
+    }
+  }
+
+  async function chooseHeroImage(event) {
+    try {
+      $('fieldHeroImageUrl').value = await readImage(event.target.files?.[0], { label: 'foto de capa', maxWidth: 1920, maxHeight: 1080, maxOutput: 2_500_000, preservePng: false });
+      updatePreview();
+      toast('Foto de capa preparada. Clique em “Salvar e publicar”.');
     } catch (error) {
       toast(error.message, 'error');
       event.target.value = '';
@@ -208,6 +233,11 @@
       $('fieldBrandName').value = b.brandName || '';
       $('fieldTagline').value = b.tagline || '';
       $('fieldLogoUrl').value = b.logoUrl || '';
+      $('fieldHeroImageUrl').value = b.heroImageUrl || '';
+      $('fieldHeroKicker').value = b.heroKicker || '';
+      $('fieldHeroTitle').value = b.heroTitle || '';
+      $('fieldHeroHighlight').value = b.heroHighlight || '';
+      $('fieldHeroDescription').value = b.heroDescription || '';
       $('fieldWhatsapp').value = b.whatsapp || '';
       $('fieldInstagram').value = b.instagram || '';
       if (/^#[0-9a-f]{6}$/i.test(b.primaryColor || '')) $('fieldPrimaryColor').value = b.primaryColor;
@@ -310,9 +340,11 @@
   $('brandingForm').addEventListener('submit', saveBranding);
   $('fieldLogoFile').addEventListener('change', chooseLogo);
   $('removeLogo').addEventListener('click', () => { $('fieldLogoUrl').value = ''; $('fieldLogoFile').value = ''; updatePreview(); });
+  $('fieldHeroImageFile').addEventListener('change', chooseHeroImage);
+  $('removeHeroImage').addEventListener('click', () => { $('fieldHeroImageUrl').value = ''; $('fieldHeroImageFile').value = ''; updatePreview(); });
   $('exportBranding').addEventListener('click', exportConfiguration);
   $('importBranding').addEventListener('change', importConfiguration);
-  ['fieldBrandName', 'fieldTagline', 'fieldPrimaryColor', 'fieldAccentColor'].forEach((id) => $(id).addEventListener('input', updatePreview));
+  ['fieldBrandName', 'fieldTagline', 'fieldPrimaryColor', 'fieldAccentColor', 'fieldHeroKicker', 'fieldHeroTitle', 'fieldHeroHighlight', 'fieldHeroDescription'].forEach((id) => $(id).addEventListener('input', updatePreview));
   selectTab(location.hash.slice(1) || 'start');
   loadData();
   loadTeam();

@@ -5,6 +5,11 @@
     brandName: 'Sua Concession\u00e1ria',
     tagline: 'Seu pr\u00f3ximo carro come\u00e7a aqui.',
     logoUrl: '',
+    heroImageUrl: '',
+    heroKicker: 'Seu novo carro est\u00e1 aqui',
+    heroTitle: 'Seu pr\u00f3ximo carro',
+    heroHighlight: 'come\u00e7a aqui',
+    heroDescription: 'Ve\u00edculos selecionados, proced\u00eancia e um atendimento que acompanha voc\u00ea do primeiro clique at\u00e9 a entrega.',
     primaryColor: '#2457d6',
     accentColor: '#e58a1f',
     whatsapp: '',
@@ -60,6 +65,23 @@
     document.body.appendChild(link);
   }
 
+  function applyShowroomContent(config) {
+    const values = {
+      showroomBrandTagline: config.tagline,
+      showroomFooterTagline: config.tagline,
+      heroKickerText: config.heroKicker,
+      heroTitleMain: config.heroTitle,
+      heroTitleHighlight: config.heroHighlight,
+      heroDescription: config.heroDescription
+    };
+    Object.entries(values).forEach(([id, value]) => {
+      const element = document.getElementById(id);
+      if (element && value) element.textContent = value;
+    });
+    const heroPhoto = document.querySelector('.hero-photo');
+    if (heroPhoto && config.heroImageUrl) heroPhoto.src = config.heroImageUrl;
+  }
+
   function localizeCurrency(root, config) {
     if (config.currency !== 'BRL') return;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -100,6 +122,7 @@
     localizeCurrency(document.body, config);
     document.title = document.title.replaceAll('AutoSuite', config.brandName);
     installLogo(config);
+    applyShowroomContent(config);
     installWhatsApp(config);
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {

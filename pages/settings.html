@@ -88,7 +88,7 @@
           <div class="branding-grid">
             <form id="brandingForm" class="settings-card settings-form">
               <label class="full">Nome exibido<input id="fieldBrandName" type="text" maxlength="80" required placeholder="Minha Concessionária"></label>
-              <label class="full">Frase principal<input id="fieldTagline" type="text" maxlength="140" placeholder="Seu próximo carro começa aqui."></label>
+              <label class="full">Slogan da marca<input id="fieldTagline" type="text" maxlength="140" placeholder="Seu próximo carro começa aqui."></label>
               <div class="logo-uploader full">
                 <div class="logo-copy"><strong>Logotipo da loja</strong><p>PNG ou WebP com fundo transparente. Recomendado: <b>800 × 240 px</b>, proporção horizontal, até 4 MB.</p></div>
                 <div class="logo-row">
@@ -96,6 +96,19 @@
                   <div><label class="upload-button">Escolher arquivo<input id="fieldLogoFile" type="file" accept="image/png,image/jpeg,image/webp" hidden></label><button id="removeLogo" class="text-button" type="button">Remover logo</button></div>
                 </div>
                 <input id="fieldLogoUrl" type="hidden">
+              </div>
+              <div class="settings-section-title full"><strong>Conteúdo da capa</strong><p>Defina o que o cliente vê primeiro ao abrir o site.</p></div>
+              <label>Chamada pequena<input id="fieldHeroKicker" type="text" maxlength="60" placeholder="Seu novo carro está aqui"></label>
+              <label>Título principal<input id="fieldHeroTitle" type="text" maxlength="90" placeholder="Seu próximo carro"></label>
+              <label class="full">Trecho destacado<input id="fieldHeroHighlight" type="text" maxlength="60" placeholder="começa aqui"></label>
+              <label class="full">Descrição da capa<textarea id="fieldHeroDescription" maxlength="240" rows="3" placeholder="Veículos selecionados, procedência e atendimento completo."></textarea></label>
+              <div class="logo-uploader full">
+                <div class="logo-copy"><strong>Foto de capa</strong><p>JPG, PNG ou WebP horizontal. Recomendado: <b>1920 × 1080 px</b>, até 4 MB.</p></div>
+                <div class="logo-row">
+                  <div id="heroImagePreview" class="logo-preview hero-image-preview"><span class="material-symbols-rounded">image</span><small>Nenhuma foto enviada</small></div>
+                  <div><label class="upload-button">Escolher foto<input id="fieldHeroImageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden></label><button id="removeHeroImage" class="text-button" type="button">Usar foto padrão</button></div>
+                </div>
+                <input id="fieldHeroImageUrl" type="hidden">
               </div>
               <label>WhatsApp com DDI<input id="fieldWhatsapp" type="tel" inputmode="numeric" placeholder="5511999999999"><small>Somente números, incluindo 55 e DDD.</small></label>
               <label>Instagram<input id="fieldInstagram" type="text" placeholder="@minhaloja"></label>

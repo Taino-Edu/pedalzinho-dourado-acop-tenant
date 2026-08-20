@@ -4,6 +4,11 @@ const DEFAULT_BRANDING = Object.freeze({
   brandName: 'Sua Concession\u00e1ria',
   tagline: 'Seu pr\u00f3ximo carro come\u00e7a aqui.',
   logoUrl: '',
+  heroImageUrl: '',
+  heroKicker: 'Seu novo carro est\u00e1 aqui',
+  heroTitle: 'Seu pr\u00f3ximo carro',
+  heroHighlight: 'come\u00e7a aqui',
+  heroDescription: 'Ve\u00edculos selecionados, proced\u00eancia e um atendimento que acompanha voc\u00ea do primeiro clique at\u00e9 a entrega.',
   primaryColor: '#2457d6',
   accentColor: '#e58a1f',
   whatsapp: '',
@@ -22,7 +27,8 @@ function parseSettings(value) {
 
 function publicBranding(settings) {
   const keys = [
-    'brandName', 'tagline', 'logoUrl', 'primaryColor', 'accentColor',
+    'brandName', 'tagline', 'logoUrl', 'heroImageUrl', 'heroKicker',
+    'heroTitle', 'heroHighlight', 'heroDescription', 'primaryColor', 'accentColor',
     'whatsapp', 'instagram', 'locale', 'currency'
   ];
   return Object.fromEntries(keys.filter((key) => settings[key] !== undefined).map((key) => [key, settings[key]]));

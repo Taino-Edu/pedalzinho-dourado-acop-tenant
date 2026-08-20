@@ -5,9 +5,11 @@ const { broadcast } = require('./_lib/events');
 const VALID_ROUTING = ['round-robin', 'territory', 'skill-based'];
 const HEX_COLOR = /^#[0-9a-f]{6}$/i;
 const BRANDING_FIELDS = new Set([
-  'brandName', 'tagline', 'logoUrl', 'primaryColor', 'accentColor',
+  'brandName', 'tagline', 'logoUrl', 'heroImageUrl', 'heroKicker',
+  'heroTitle', 'heroHighlight', 'heroDescription', 'primaryColor', 'accentColor',
   'whatsapp', 'instagram', 'locale', 'currency'
 ]);
+const IMAGE_FIELDS = new Set(['logoUrl', 'heroImageUrl']);
 
 function sanitizeSettings(settings) {
   const sanitized = {};
@@ -18,8 +20,9 @@ function sanitizeSettings(settings) {
     }
     if (typeof value !== 'string') continue;
     const clean = value.trim();
-    if (key === 'logoUrl') {
-      if (clean.length > 1_500_000) continue;
+    if (IMAGE_FIELDS.has(key)) {
+      const maxLength = key === 'logoUrl' ? 1_500_000 : 2_500_000;
+      if (clean.length > maxLength) continue;
       if (clean && !/^(data:image\/(png|jpeg|webp);base64,|https?:\/\/|\/)/i.test(clean)) continue;
       sanitized[key] = clean;
       continue;
