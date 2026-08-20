@@ -80,6 +80,9 @@
     });
     const heroPhoto = document.querySelector('.hero-photo');
     if (heroPhoto && config.heroImageUrl) heroPhoto.src = config.heroImageUrl;
+    document.querySelectorAll('.dos-brand-location').forEach((element) => {
+      element.textContent = config.address || 'Localização da loja';
+    });
   }
 
   function localizeCurrency(root, config) {

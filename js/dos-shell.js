@@ -436,6 +436,31 @@
     });
   }
 
+  function normalizeDealerNavigation() {
+    const labels = {
+      'dashboard.html': ['▦', 'Visão geral'],
+      'crm.html': ['●', 'Leads'],
+      'inventory.html': ['▤', 'Estoque'],
+      'appointments.html': ['◫', 'Agenda'],
+      'customers.html': ['○', 'Clientes'],
+      'analytics.html': ['▥', 'Relatórios'],
+      'staff-activity.html': ['◇', 'Equipe'],
+      'settings.html': ['◈', 'Personalizar site']
+    };
+    document.querySelectorAll('.dos-nav-item, .dos-navitem').forEach((link) => {
+      const page = (link.getAttribute('href') || '').split('/').pop().split('#')[0];
+      const item = labels[page];
+      if (!item) return;
+      link.innerHTML = `<span aria-hidden="true">${item[0]}</span><span>${item[1]}</span>`;
+      link.setAttribute('aria-label', item[1]);
+    });
+    const brand = document.querySelector('.dos-brand');
+    if (brand && !brand.querySelector('[data-runtime-logo]')) {
+      const currentName = brand.textContent.trim() || 'Sua Concessionária';
+      brand.innerHTML = `<span class="dos-brand-mark" aria-hidden="true">3e</span><span><strong class="dos-brand-text">${esc(currentName)}</strong><small class="dos-brand-location">Localização da loja</small></span>`;
+    }
+  }
+
   // ---------- Mobile bottom tab bar ----------
   // Scoped to floor tasks only (Home / Leads / Inventory / Calendar);
   // Analytics/Settings/Staff Activity stay desktop-only, reached via a
@@ -503,6 +528,7 @@
   }
 
   function init() {
+    normalizeDealerNavigation();
     initSearchBox();
     initBell();
     initMobileTabBar();

@@ -128,13 +128,13 @@ function serveStaticFile(filePath, res, options = {}) {
       return;
     }
     if (path.extname(filePath) === '.html') {
-      let html = data.toString('utf8').replace(
-        '</head>',
-        '  <script src="/js/branding.js" defer></script>\n</head>'
-      );
+      let html = data.toString('utf8');
+      const dealerWorkspace = /<body\s+class="(?:admin-body|dos-body|settings-body)"/i.test(html);
+      const workspaceStyle = dealerWorkspace ? '  <link rel="stylesheet" href="/css/admin-unified.css">\n' : '';
+      html = html.replace('</head>', `${workspaceStyle}  <script src="/js/branding.js" defer></script>\n</head>`);
       if (options.bootstrap) {
         html = html.replace(
-          'window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {} };',
+          'window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {}, operator: {} };',
           `window.DEALER_BOOTSTRAP = ${safeJsonForHtml(options.bootstrap)};`
         );
       }

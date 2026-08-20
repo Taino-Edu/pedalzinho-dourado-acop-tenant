@@ -77,6 +77,8 @@
     const brand = document.querySelector('.settings-brand');
     brand.querySelector('strong').textContent = displayedName;
     brand.setAttribute('aria-label', `${displayedName} — visão geral`);
+    const brandLocation = brand.querySelector('.settings-brand-location');
+    if (brandLocation) brandLocation.textContent = d.address || 'Localização da loja';
     $('fieldName').value = d.name || '';
     $('fieldEmail').value = d.email || '';
     $('fieldPhone').value = d.phone || '';
