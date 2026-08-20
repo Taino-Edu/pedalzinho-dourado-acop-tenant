@@ -72,6 +72,8 @@
   font: 500 14px "IBM Plex Sans", sans-serif !important;
   text-decoration: none;
 }
+.dos-nav-item .material-symbols-rounded,
+.dos-navitem .material-symbols-rounded { width: 20px; font-size: 20px; line-height: 1; }
 .dos-nav-item:hover,
 .dos-navitem:hover,
 .settings-sidebar nav a:hover,
@@ -86,6 +88,7 @@
 .settings-sidebar-foot { margin-top: auto; padding: 10px !important; border-top: 1px solid rgba(255,255,255,.08) !important; }
 .dos-sidebar-foot,
 .dos-sidebar .is-df55b60c { margin-top: auto !important; padding: 10px !important; border-top: 1px solid rgba(255,255,255,.08) !important; }
+.dos-sidebar .is-df55b60c:empty { display: none !important; }
 .settings-user { min-height: 58px !important; padding: 8px 10px !important; border: 0 !important; border-radius: 6px !important; color: #fff; background: rgba(255,255,255,.05); }
 .settings-user > .material-symbols-rounded { color: #fff !important; background: #34445a !important; }
 .settings-user small { color: #b9c5d3 !important; background: transparent !important; padding: 0 !important; }

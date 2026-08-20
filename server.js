@@ -46,6 +46,7 @@ const idRewriteCollections = new Set(['leads', 'vehicles', 'appointments']);
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
+const STATIC_ASSET_VERSION = process.env.STATIC_ASSET_VERSION || Date.now().toString(36);
 
 // Paginas protegidas quando SHOWCASE_MODE=false. No modo vitrine (padrao
 // deste repositorio de demonstracao) nenhuma delas pede senha.
@@ -130,14 +131,21 @@ function serveStaticFile(filePath, res, options = {}) {
     if (path.extname(filePath) === '.html') {
       let html = data.toString('utf8');
       const dealerWorkspace = /<body\s+class="(?:admin-body|dos-body|settings-body)"/i.test(html);
+      const workspaceFont = dealerWorkspace && !html.includes('Material+Symbols+Rounded')
+        ? '  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap">\n'
+        : '';
       const workspaceStyle = dealerWorkspace ? '  <link rel="stylesheet" href="/css/admin-unified.css">\n' : '';
-      html = html.replace('</head>', `${workspaceStyle}  <script src="/js/branding.js" defer></script>\n</head>`);
+      html = html.replace('</head>', `${workspaceFont}${workspaceStyle}  <script src="/js/branding.js" defer></script>\n</head>`);
       if (options.bootstrap) {
         html = html.replace(
           'window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {}, operator: {} };',
           `window.DEALER_BOOTSTRAP = ${safeJsonForHtml(options.bootstrap)};`
         );
       }
+      html = html.replace(
+        /\b(href|src)=(["'])((?:\/(?!\/)|\.\.?\/)[^"'?#]+\.(?:css|js))(?:\?[^"']*)?\2/gi,
+        (_, attribute, quote, assetPath) => `${attribute}=${quote}${assetPath}?v=${STATIC_ASSET_VERSION}${quote}`
+      );
       res.writeHead(200, {
         'Content-Type': getMimeType(filePath),
         'Cache-Control': 'no-cache, must-revalidate'

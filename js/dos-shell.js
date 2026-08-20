@@ -438,26 +438,39 @@
 
   function normalizeDealerNavigation() {
     const labels = {
-      'dashboard.html': ['▦', 'Visão geral'],
-      'crm.html': ['●', 'Leads'],
-      'inventory.html': ['▤', 'Estoque'],
-      'appointments.html': ['◫', 'Agenda'],
-      'customers.html': ['○', 'Clientes'],
-      'analytics.html': ['▥', 'Relatórios'],
-      'staff-activity.html': ['◇', 'Equipe'],
-      'settings.html': ['◈', 'Personalizar site']
+      'dashboard.html': ['home', 'Visão geral'],
+      'crm.html': ['group', 'Leads'],
+      'inventory.html': ['directions_car', 'Estoque'],
+      'appointments.html': ['calendar_month', 'Agenda'],
+      'customers.html': ['person', 'Clientes'],
+      'analytics.html': ['bar_chart', 'Relatórios'],
+      'settings.html': ['palette', 'Personalizar site']
     };
+    const nav = document.querySelector('.dos-nav');
     document.querySelectorAll('.dos-nav-item, .dos-navitem').forEach((link) => {
       const page = (link.getAttribute('href') || '').split('/').pop().split('#')[0];
+      if (page === 'staff-activity.html') {
+        link.remove();
+        return;
+      }
       const item = labels[page];
       if (!item) return;
-      link.innerHTML = `<span aria-hidden="true">${item[0]}</span><span>${item[1]}</span>`;
+      link.innerHTML = `<span class="material-symbols-rounded" aria-hidden="true">${item[0]}</span><span>${item[1]}</span>`;
       link.setAttribute('aria-label', item[1]);
+      if (page === 'settings.html' && nav && link.parentElement !== nav) nav.appendChild(link);
     });
     const brand = document.querySelector('.dos-brand');
-    if (brand && !brand.querySelector('[data-runtime-logo]')) {
-      const currentName = brand.textContent.trim() || 'Sua Concessionária';
+    if (brand) {
+      const runtimeLogo = brand.querySelector('[data-runtime-logo]');
+      const currentName = brand.querySelector('.dos-brand-text')?.textContent.trim()
+        || runtimeLogo?.alt
+        || brand.textContent.trim()
+        || 'Sua Concessionária';
       brand.innerHTML = `<span class="dos-brand-mark" aria-hidden="true">3e</span><span><strong class="dos-brand-text">${esc(currentName)}</strong><small class="dos-brand-location">Localização da loja</small></span>`;
+      if (runtimeLogo) {
+        brand.prepend(runtimeLogo);
+        brand.querySelector('.dos-brand-mark').style.display = 'none';
+      }
     }
   }
 

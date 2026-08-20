@@ -80,7 +80,10 @@
     });
     const heroPhoto = document.querySelector('.hero-photo');
     if (heroPhoto && config.heroImageUrl) heroPhoto.src = config.heroImageUrl;
-    document.querySelectorAll('.dos-brand-location').forEach((element) => {
+    document.querySelectorAll('.admin-brand-name, .dos-brand-text, .settings-brand strong').forEach((element) => {
+      element.textContent = config.brandName;
+    });
+    document.querySelectorAll('.admin-brand-location, .dos-brand-location, .settings-brand-location').forEach((element) => {
       element.textContent = config.address || 'Localização da loja';
     });
   }
