@@ -91,6 +91,10 @@
     root.style.setProperty('--brand-accent', config.accentColor);
     root.style.setProperty('--brand-accent-deep', `color-mix(in oklch, ${config.accentColor} 72%, black)`);
     root.style.setProperty('--gradient-brand', config.primaryColor);
+    root.style.setProperty('--showroom-ink', config.primaryColor);
+    root.style.setProperty('--showroom-navy', `color-mix(in srgb, ${config.primaryColor} 88%, white)`);
+    root.style.setProperty('--showroom-blue', config.accentColor);
+    root.style.setProperty('--showroom-orange', config.accentColor);
     root.lang = config.locale || 'pt-BR';
     replaceBrandText(document.body, config.brandName);
     localizeCurrency(document.body, config);
