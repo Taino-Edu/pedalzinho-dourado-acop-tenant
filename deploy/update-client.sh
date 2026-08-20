@@ -17,6 +17,13 @@ git -C "$INSTALL_DIR" fetch origin "$DEPLOY_BRANCH"
 git -C "$INSTALL_DIR" checkout "$DEPLOY_BRANCH"
 git -C "$INSTALL_DIR" pull --ff-only origin "$DEPLOY_BRANCH"
 
+if ! git lfs version >/dev/null 2>&1; then
+  apt-get update
+  DEBIAN_FRONTEND=noninteractive apt-get install -y git-lfs
+fi
+git -C "$INSTALL_DIR" lfs install --local
+git -C "$INSTALL_DIR" lfs pull origin "$DEPLOY_BRANCH"
+
 set -a
 # shellcheck disable=SC1090
 . "$env_file"

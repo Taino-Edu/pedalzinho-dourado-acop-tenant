@@ -138,11 +138,21 @@ function serveStaticFile(filePath, res, options = {}) {
           `window.DEALER_BOOTSTRAP = ${safeJsonForHtml(options.bootstrap)};`
         );
       }
-      res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
+      res.writeHead(200, {
+        'Content-Type': getMimeType(filePath),
+        'Cache-Control': 'no-cache, must-revalidate'
+      });
       res.end(html);
       return;
     }
-    res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
+    const extension = path.extname(filePath);
+    const cacheControl = ['.js', '.css', '.json'].includes(extension)
+      ? 'no-cache, must-revalidate'
+      : 'public, max-age=86400';
+    res.writeHead(200, {
+      'Content-Type': getMimeType(filePath),
+      'Cache-Control': cacheControl
+    });
     res.end(data);
   });
 }

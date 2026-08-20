@@ -31,14 +31,14 @@
       });
       return;
     }
-    document.querySelectorAll('.logo, .dos-brand').forEach((host) => {
+    document.querySelectorAll('.logo, .dos-brand, .showroom-brand, .footer-brand, .admin-brand, .settings-brand').forEach((host) => {
       if (host.querySelector('[data-runtime-logo]')) return;
       const img = document.createElement('img');
       img.src = config.logoUrl;
       img.alt = config.brandName;
       img.dataset.runtimeLogo = 'true';
       img.style.cssText = 'max-width:160px;max-height:42px;object-fit:contain;display:block;';
-      host.querySelectorAll('.logo-mark,.logo-wordmark,.dos-brand-mark,.admin-brand-mark,.settings-brand-mark').forEach((el) => {
+      host.querySelectorAll('img:not([data-runtime-logo]),.logo-mark,.logo-wordmark,.dos-brand-mark,.admin-brand-mark,.settings-brand-mark').forEach((el) => {
         el.style.display = 'none';
       });
       host.prepend(img);
