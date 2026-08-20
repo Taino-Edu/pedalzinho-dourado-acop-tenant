@@ -22,7 +22,14 @@ if ! git lfs version >/dev/null 2>&1; then
   DEBIAN_FRONTEND=noninteractive apt-get install -y git-lfs
 fi
 git -C "$INSTALL_DIR" lfs install --local
-git -C "$INSTALL_DIR" lfs pull origin "$DEPLOY_BRANCH"
+git -C "$INSTALL_DIR" lfs pull --include="assets/web/**" origin
+
+for asset in assets/web/showroom-hero.png assets/web/autosuite-mark.png; do
+  if head -n 1 "$INSTALL_DIR/$asset" | grep -q '^version https://git-lfs.github.com/spec/v1$'; then
+    echo "Falha ao baixar imagem do Git LFS: $asset" >&2
+    exit 1
+  fi
+done
 
 set -a
 # shellcheck disable=SC1090
