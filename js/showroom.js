@@ -4,6 +4,7 @@
   let cars = [];
   let branding = {};
   const grid = document.getElementById('showroomGrid');
+  const typeSelect = document.getElementById('finderType');
   const makeSelect = document.getElementById('finderMake');
   const modelSelect = document.getElementById('finderModel');
   const priceSelect = document.getElementById('finderPrice');
@@ -46,7 +47,7 @@
       <article class="vehicle-card">
         <a class="vehicle-media" href="${detailUrl(car)}">
           <img src="${esc(imageUrl(car.image))}" alt="${esc(car.name)}" loading="lazy" onerror="this.onerror=null;this.src='assets/web/car-placeholder.svg'">
-          <span class="vehicle-year">${esc(car.year)}</span>
+          <span class="vehicle-year">${car.vehicleType === 'motorcycle' ? 'Moto' : 'Carro'} · ${esc(car.year)}</span>
         </a>
         <div class="vehicle-body">
           <h3>${esc(car.name)}</h3>
@@ -61,7 +62,7 @@
   }
 
   function populateMakes() {
-    [...new Set(cars.map((car) => car.brand))].sort().forEach((make) => {
+    [...new Set(cars.filter((car) => !typeSelect.value || (car.vehicleType || 'car') === typeSelect.value).map((car) => car.brand))].sort().forEach((make) => {
       makeSelect.insertAdjacentHTML('beforeend', `<option value="${esc(make)}">${esc(make)}</option>`);
     });
   }
@@ -69,7 +70,7 @@
   function populateModels() {
     const selectedMake = makeSelect.value;
     const selectedModel = modelSelect.value;
-    const models = [...new Set(cars.filter((car) => !selectedMake || car.brand === selectedMake).map((car) => car.name.replace(/^\d{4}\s+/, '')))].sort();
+    const models = [...new Set(cars.filter((car) => (!typeSelect.value || (car.vehicleType || 'car') === typeSelect.value) && (!selectedMake || car.brand === selectedMake)).map((car) => car.name.replace(/^\d{4}\s+/, '')))].sort();
     modelSelect.innerHTML = '<option value="">Todos os modelos</option>' + models.map((model) => `<option value="${esc(model)}">${esc(model)}</option>`).join('');
     if (models.includes(selectedModel)) modelSelect.value = selectedModel;
   }
@@ -78,7 +79,8 @@
     const maxPrice = Number(priceSelect.value) || Infinity;
     const list = cars.filter((car) => {
       const model = car.name.replace(/^\d{4}\s+/, '');
-      return (!makeSelect.value || car.brand === makeSelect.value)
+      return (!typeSelect.value || (car.vehicleType || 'car') === typeSelect.value)
+        && (!makeSelect.value || car.brand === makeSelect.value)
         && (!modelSelect.value || model === modelSelect.value)
         && normalizedPrice(car.price) <= maxPrice;
     });
@@ -88,6 +90,11 @@
   }
 
   document.getElementById('vehicleFinder').addEventListener('submit', (event) => { event.preventDefault(); filterCars(); });
+  typeSelect.addEventListener('change', () => {
+    makeSelect.innerHTML = '<option value="">Todas as marcas</option>';
+    populateMakes();
+    populateModels();
+  });
   makeSelect.addEventListener('change', populateModels);
 
   document.addEventListener('click', (event) => {

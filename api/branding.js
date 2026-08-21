@@ -9,6 +9,15 @@ const DEFAULT_BRANDING = Object.freeze({
   heroTitle: 'Seu pr\u00f3ximo carro',
   heroHighlight: 'come\u00e7a aqui',
   heroDescription: 'Ve\u00edculos selecionados, proced\u00eancia e um atendimento que acompanha voc\u00ea do primeiro clique at\u00e9 a entrega.',
+  heroBackgroundColor: '#08101d',
+  heroImagePosition: '63% 55%',
+  heroOverlay: 'balanced',
+  homepageIntroTitle: 'Ve\u00edculos em destaque',
+  homepageIntroText: 'Carros e motos selecionados para quem quer comprar com proced\u00eancia, atendimento claro e fotos bem apresentadas.',
+  homepageCtaText: 'Ver detalhes',
+  homepageCtaUrl: 'pages/cars.html',
+  cardImageFit: 'cover',
+  googleMapsUrl: '',
   primaryColor: '#2457d6',
   accentColor: '#e58a1f',
   whatsapp: '',
@@ -28,7 +37,9 @@ function parseSettings(value) {
 function publicBranding(settings) {
   const keys = [
     'brandName', 'tagline', 'logoUrl', 'heroImageUrl', 'heroKicker',
-    'heroTitle', 'heroHighlight', 'heroDescription', 'primaryColor', 'accentColor',
+    'heroTitle', 'heroHighlight', 'heroDescription', 'heroBackgroundColor',
+    'heroImagePosition', 'heroOverlay', 'homepageIntroTitle', 'homepageIntroText',
+    'homepageCtaText', 'homepageCtaUrl', 'cardImageFit', 'googleMapsUrl', 'primaryColor', 'accentColor',
     'whatsapp', 'instagram', 'locale', 'currency'
   ];
   return Object.fromEntries(keys.filter((key) => settings[key] !== undefined).map((key) => [key, settings[key]]));

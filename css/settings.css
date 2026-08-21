@@ -19,7 +19,7 @@ body.settings-body {
   background: var(--octus-bg);
   font-family: "DM Sans", sans-serif;
 }
-button, input { font: inherit; }
+button, input, select { font: inherit; }
 .material-symbols-rounded { font-size: 19px; line-height: 1; }
 
 .settings-shell {
@@ -313,7 +313,8 @@ button, input { font: inherit; }
 .settings-form label.full,
 .settings-form .full { grid-column: 1 / -1; }
 .settings-form input:not([type=color]),
-.settings-form textarea {
+.settings-form textarea,
+.settings-form select {
   width: 100%;
   min-height: 40px;
   padding: 9px 11px;
@@ -326,7 +327,8 @@ button, input { font: inherit; }
 }
 .settings-form textarea { resize: vertical; min-height: 76px; font-family: inherit; }
 .settings-form input:focus,
-.settings-form textarea:focus { outline: 3px solid rgba(53, 185, 230, .16); border-color: var(--octus-blue); }
+.settings-form textarea:focus,
+.settings-form select:focus { outline: 3px solid rgba(53, 185, 230, .16); border-color: var(--octus-blue); }
 .settings-form label small { color: var(--octus-muted); font-size: 9px; font-weight: 500; letter-spacing: 0; text-transform: none; }
 .form-actions { display: flex; justify-content: flex-end; }
 .settings-primary {

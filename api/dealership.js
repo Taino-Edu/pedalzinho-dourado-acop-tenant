@@ -7,7 +7,9 @@ const HEX_COLOR = /^#[0-9a-f]{6}$/i;
 const BRANDING_FIELDS = new Set([
   'brandName', 'tagline', 'logoUrl', 'heroImageUrl', 'heroKicker',
   'heroTitle', 'heroHighlight', 'heroDescription', 'primaryColor', 'accentColor',
-  'whatsapp', 'instagram', 'locale', 'currency'
+  'heroBackgroundColor', 'heroImagePosition', 'heroOverlay', 'homepageIntroTitle',
+  'homepageIntroText', 'homepageCtaText', 'homepageCtaUrl', 'cardImageFit',
+  'googleMapsUrl', 'whatsapp', 'instagram', 'locale', 'currency'
 ]);
 const IMAGE_FIELDS = new Set(['logoUrl', 'heroImageUrl']);
 
@@ -28,7 +30,9 @@ function sanitizeSettings(settings) {
       continue;
     }
     const shortValue = clean.slice(0, 300);
-    if ((key === 'primaryColor' || key === 'accentColor') && !HEX_COLOR.test(shortValue)) continue;
+    if ((key === 'primaryColor' || key === 'accentColor' || key === 'heroBackgroundColor') && !HEX_COLOR.test(shortValue)) continue;
+    if (key === 'heroOverlay' && !['balanced', 'strong', 'soft'].includes(shortValue)) continue;
+    if (key === 'cardImageFit' && !['cover', 'contain'].includes(shortValue)) continue;
     if (key === 'currency' && shortValue !== 'BRL') continue;
     if (key === 'locale' && shortValue !== 'pt-BR') continue;
     sanitized[key] = shortValue;

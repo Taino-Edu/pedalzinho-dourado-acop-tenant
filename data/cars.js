@@ -254,5 +254,47 @@ window.AUTOSUITE_CARS = [
     "bodyStyle": "Sedan",
     "overview": "The 5 Series is BMW's mid-size executive sedan, sitting between the compact 3 Series and the flagship 7 Series. This generation (G30, introduced for 2017) was praised for a refined ride, upscale cabin, and BMW's traditionally driver-focused handling.",
     "whatsNew": "Standard equipment expanded across trims, with updated infotainment software and additional driver-assistance options."
+  },
+  {
+    "id": "honda-cb500f-2024",
+    "vehicleType": "motorcycle",
+    "brand": "Honda",
+    "name": "2024 Honda CB 500F",
+    "year": 2024,
+    "price": 3890000,
+    "mileage": "2,900 km",
+    "engine": "471 cc bicilíndrico",
+    "horsepower": 50,
+    "drivetrain": "Corrente",
+    "featured": true,
+    "image": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "bodyStyle": "Street",
+    "overview": "Moto naked versátil para uso urbano e viagens curtas, com baixa quilometragem, documentação conferida e revisão pronta para entrega.",
+    "whatsNew": "Incluída no estoque demo para concessionárias que vendem carros e motos no mesmo site."
+  },
+  {
+    "id": "yamaha-mt07-2023",
+    "vehicleType": "motorcycle",
+    "brand": "Yamaha",
+    "name": "2023 Yamaha MT-07",
+    "year": 2023,
+    "price": 4490000,
+    "mileage": "5,600 km",
+    "engine": "689 cc CP2",
+    "horsepower": 74,
+    "drivetrain": "Corrente",
+    "featured": true,
+    "image": "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=1200&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1517846693594-1567da72af75?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "bodyStyle": "Naked",
+    "overview": "Naked média com motor forte, posição confortável e visual esportivo, preparada para atender clientes que procuram motos premium seminovas.",
+    "whatsNew": "Fotos e ficha adicionadas ao exemplo para demonstrar atendimento a motos."
   }
 ];

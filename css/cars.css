@@ -3,24 +3,34 @@
 ========================================================= */
 
 /* ---------- Inventory page shell ---------- */
+body {
+  background:
+    radial-gradient(circle at 8% 0%, rgba(36, 87, 214, .09), transparent 28rem),
+    linear-gradient(180deg, #f7f8fb 0%, #eef2f6 100%);
+}
+
 .inv-page {
   max-width: 1240px;
   margin: 0 auto;
-  padding: var(--space-6) var(--space-4) var(--space-8);
+  padding: clamp(2rem, 5vw, 4.5rem) var(--space-4) var(--space-8);
 }
 
 .inv-head {
+  max-width: 760px;
   margin-bottom: var(--space-5);
 }
 
 .inv-head h1 {
-  font-size: var(--text-2xl);
+  font-size: clamp(2.3rem, 5vw, 4rem);
+  line-height: .98;
+  letter-spacing: -.04em;
   margin: var(--space-1) 0 var(--space-2);
 }
 
 .inv-sub {
   color: var(--ink-soft);
-  font-size: var(--text-sm);
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  line-height: 1.65;
 }
 
 /* Mobile-first: single column (rail stacks above results). responsive.css
@@ -28,7 +38,7 @@
 .inv-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-5);
+  gap: clamp(1rem, 2vw, 1.5rem);
   align-items: start;
 }
 
@@ -55,7 +65,8 @@
   padding: var(--space-3) var(--space-4);
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, .07);
   list-style: none;
   margin-bottom: var(--space-4);
 }
@@ -75,11 +86,13 @@
    summary toggle is hidden (see responsive.css). */
 .inv-rail {
   flex-direction: column;
-  gap: var(--space-5);
-  background: var(--surface);
+  gap: 1.15rem;
+  background: rgba(255,255,255,.9);
   border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  padding: var(--space-5);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, .08);
+  backdrop-filter: blur(14px);
 }
 
 .inv-filters:not([open]) .inv-rail {
@@ -123,12 +136,19 @@
 }
 
 .rail-check {
+  min-height: 32px;
+  padding: .25rem .35rem;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   gap: var(--space-2);
   font-size: var(--text-sm);
   color: var(--ink);
   cursor: pointer;
+}
+
+.rail-check:hover {
+  background: var(--surface-sunken);
 }
 
 .rail-check input {
@@ -219,7 +239,7 @@
 .inv-results-bar {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: var(--space-4);
+  margin-bottom: .9rem;
 }
 
 .inv-sort {
@@ -231,6 +251,49 @@
   font-family: inherit;
   color: var(--ink);
   cursor: pointer;
+}
+
+.inv-results .car-card {
+  border-radius: 8px;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, .08);
+}
+
+.inv-results .car-card .car-card-media {
+  background: linear-gradient(135deg, #e9edf3, #f8fafc);
+}
+
+.inv-results .car-card .car-card-media {
+  aspect-ratio: 16 / 10;
+}
+
+.inv-results .car-card-body {
+  padding: 1rem;
+}
+
+.inv-results .car-card-body h3 {
+  line-height: 1.2;
+}
+
+.inv-results .car-card .specs {
+  gap: .25rem;
+}
+
+@media (max-width: 700px) {
+  .inv-page {
+    padding-top: 2rem;
+  }
+
+  .inv-results .car-card .car-card-media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .inv-results .car-card-body {
+    padding: .95rem;
+  }
+
+  .inv-results .car-card-actions {
+    margin-top: .8rem;
+  }
 }
 
 .inv-sort:focus {

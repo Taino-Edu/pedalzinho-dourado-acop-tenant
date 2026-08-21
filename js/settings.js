@@ -32,14 +32,17 @@
     const tagline = $('fieldTagline').value.trim() || 'Seu próximo carro começa aqui.';
     const primary = $('fieldPrimaryColor').value || '#2169f3';
     const accent = $('fieldAccentColor').value || '#3ed5c5';
+    const heroBackground = $('fieldHeroBackgroundColor').value || '#08101d';
     const logo = $('fieldLogoUrl').value;
     const heroImage = $('fieldHeroImageUrl').value;
     $('brandingPreviewName').textContent = name;
     $('brandingPreviewTagline').textContent = tagline;
     $('primaryColorValue').textContent = primary.toUpperCase();
     $('accentColorValue').textContent = accent.toUpperCase();
+    $('heroBackgroundColorValue').textContent = heroBackground.toUpperCase();
     $('brandingPreview').style.setProperty('--preview-primary', primary);
     $('brandingPreview').style.setProperty('--preview-accent', accent);
+    $('brandingPreview').style.background = `linear-gradient(180deg, color-mix(in srgb, ${heroBackground} 40%, transparent), ${heroBackground}), ${primary}`;
     $('brandingPreviewLogo').innerHTML = logo ? `<img src="${safe(logo)}" alt="Prévia do logotipo">` : '';
     $('logoPreview').innerHTML = logo ? `<img src="${safe(logo)}" alt="Logotipo selecionado">` : '<span class="material-symbols-rounded">image</span><small>Nenhum logo enviado</small>';
     $('heroImagePreview').innerHTML = heroImage ? `<img src="${safe(heroImage)}" alt="Foto de capa selecionada">` : '<span class="material-symbols-rounded">image</span><small>Usando foto padrão</small>';
@@ -83,6 +86,7 @@
     $('fieldEmail').value = d.email || '';
     $('fieldPhone').value = d.phone || '';
     $('fieldAddress').value = d.address || '';
+    $('fieldGoogleMapsUrl').value = s.googleMapsUrl || '';
     $('fieldBrandName').value = s.brandName || d.name || '';
     $('fieldTagline').value = s.tagline || '';
     $('fieldLogoUrl').value = s.logoUrl || '';
@@ -91,6 +95,14 @@
     $('fieldHeroTitle').value = s.heroTitle || 'Seu próximo carro';
     $('fieldHeroHighlight').value = s.heroHighlight || 'começa aqui';
     $('fieldHeroDescription').value = s.heroDescription || 'Veículos selecionados, procedência e um atendimento que acompanha você do primeiro clique até a entrega.';
+    $('fieldHeroBackgroundColor').value = s.heroBackgroundColor || '#08101d';
+    $('fieldHeroImagePosition').value = s.heroImagePosition || '63% 55%';
+    $('fieldHeroOverlay').value = s.heroOverlay || 'balanced';
+    $('fieldHomepageIntroTitle').value = s.homepageIntroTitle || 'Veículos em destaque';
+    $('fieldHomepageIntroText').value = s.homepageIntroText || 'Carros e motos selecionados para quem quer comprar com procedência, atendimento claro e fotos bem apresentadas.';
+    $('fieldHomepageCtaText').value = s.homepageCtaText || 'Ver detalhes';
+    $('fieldHomepageCtaUrl').value = s.homepageCtaUrl || 'pages/cars.html';
+    $('fieldCardImageFit').value = s.cardImageFit || 'cover';
     $('fieldWhatsapp').value = s.whatsapp || '';
     $('fieldInstagram').value = s.instagram || '';
     $('fieldPrimaryColor').value = s.primaryColor || '#2169f3';
@@ -117,7 +129,8 @@
       name: $('fieldName').value.trim(),
       email: $('fieldEmail').value.trim(),
       phone: $('fieldPhone').value.trim(),
-      address: $('fieldAddress').value.trim()
+      address: $('fieldAddress').value.trim(),
+      settings: { googleMapsUrl: $('fieldGoogleMapsUrl').value.trim() }
     };
     try {
       const payload = await api('/api/dealership', { method: 'PATCH', body: JSON.stringify(body) });
@@ -140,6 +153,15 @@
       heroTitle: $('fieldHeroTitle').value.trim(),
       heroHighlight: $('fieldHeroHighlight').value.trim(),
       heroDescription: $('fieldHeroDescription').value.trim(),
+      heroBackgroundColor: $('fieldHeroBackgroundColor').value,
+      heroImagePosition: $('fieldHeroImagePosition').value.trim(),
+      heroOverlay: $('fieldHeroOverlay').value,
+      homepageIntroTitle: $('fieldHomepageIntroTitle').value.trim(),
+      homepageIntroText: $('fieldHomepageIntroText').value.trim(),
+      homepageCtaText: $('fieldHomepageCtaText').value.trim(),
+      homepageCtaUrl: $('fieldHomepageCtaUrl').value.trim(),
+      cardImageFit: $('fieldCardImageFit').value,
+      googleMapsUrl: $('fieldGoogleMapsUrl').value.trim(),
       whatsapp: $('fieldWhatsapp').value.replace(/\D/g, ''),
       instagram: $('fieldInstagram').value.trim(),
       primaryColor: $('fieldPrimaryColor').value,
@@ -213,7 +235,7 @@
   }
 
   function exportConfiguration() {
-    const content = JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), profile: { name: $('fieldName').value, email: $('fieldEmail').value, phone: $('fieldPhone').value, address: $('fieldAddress').value }, branding: brandingPayload() }, null, 2);
+    const content = JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), profile: { name: $('fieldName').value, email: $('fieldEmail').value, phone: $('fieldPhone').value, address: $('fieldAddress').value, googleMapsUrl: $('fieldGoogleMapsUrl').value }, branding: brandingPayload() }, null, 2);
     const url = URL.createObjectURL(new Blob([content], { type: 'application/json' }));
     const link = document.createElement('a');
     link.href = url;
@@ -240,6 +262,15 @@
       $('fieldHeroTitle').value = b.heroTitle || '';
       $('fieldHeroHighlight').value = b.heroHighlight || '';
       $('fieldHeroDescription').value = b.heroDescription || '';
+      if (/^#[0-9a-f]{6}$/i.test(b.heroBackgroundColor || '')) $('fieldHeroBackgroundColor').value = b.heroBackgroundColor;
+      $('fieldHeroImagePosition').value = b.heroImagePosition || '';
+      $('fieldHeroOverlay').value = b.heroOverlay || 'balanced';
+      $('fieldHomepageIntroTitle').value = b.homepageIntroTitle || '';
+      $('fieldHomepageIntroText').value = b.homepageIntroText || '';
+      $('fieldHomepageCtaText').value = b.homepageCtaText || '';
+      $('fieldHomepageCtaUrl').value = b.homepageCtaUrl || '';
+      $('fieldCardImageFit').value = b.cardImageFit || 'cover';
+      $('fieldGoogleMapsUrl').value = b.googleMapsUrl || data.profile?.googleMapsUrl || '';
       $('fieldWhatsapp').value = b.whatsapp || '';
       $('fieldInstagram').value = b.instagram || '';
       if (/^#[0-9a-f]{6}$/i.test(b.primaryColor || '')) $('fieldPrimaryColor').value = b.primaryColor;
@@ -346,7 +377,7 @@
   $('removeHeroImage').addEventListener('click', () => { $('fieldHeroImageUrl').value = ''; $('fieldHeroImageFile').value = ''; updatePreview(); });
   $('exportBranding').addEventListener('click', exportConfiguration);
   $('importBranding').addEventListener('change', importConfiguration);
-  ['fieldBrandName', 'fieldTagline', 'fieldPrimaryColor', 'fieldAccentColor', 'fieldHeroKicker', 'fieldHeroTitle', 'fieldHeroHighlight', 'fieldHeroDescription'].forEach((id) => $(id).addEventListener('input', updatePreview));
+  ['fieldBrandName', 'fieldTagline', 'fieldPrimaryColor', 'fieldAccentColor', 'fieldHeroBackgroundColor', 'fieldHeroKicker', 'fieldHeroTitle', 'fieldHeroHighlight', 'fieldHeroDescription', 'fieldHeroImagePosition', 'fieldHeroOverlay', 'fieldHomepageIntroTitle', 'fieldHomepageIntroText', 'fieldHomepageCtaText', 'fieldHomepageCtaUrl', 'fieldCardImageFit'].forEach((id) => $(id).addEventListener('input', updatePreview));
   selectTab(location.hash.slice(1) || 'start');
   loadData();
   loadTeam();

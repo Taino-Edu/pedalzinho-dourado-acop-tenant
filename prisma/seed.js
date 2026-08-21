@@ -112,6 +112,50 @@ async function main() {
         status: 'featured',
       },
     }),
+    prisma.vehicle.create({
+      data: {
+        vin: 'MOTOHONDA500F24',
+        vehicleType: 'motorcycle',
+        make: 'Honda',
+        model: 'CB 500F',
+        year: 2024,
+        price: 3890000,
+        mileage: 2900,
+        color: 'Vermelha',
+        body: 'Street',
+        engine: '471 cc bicilíndrico',
+        transmission: '6 marchas',
+        drivetrain: 'Corrente',
+        mpg: 0,
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1200&q=80',
+        ]),
+        status: 'featured',
+      },
+    }),
+    prisma.vehicle.create({
+      data: {
+        vin: 'MOTOYAMAHA07MT23',
+        vehicleType: 'motorcycle',
+        make: 'Yamaha',
+        model: 'MT-07',
+        year: 2023,
+        price: 4490000,
+        mileage: 5600,
+        color: 'Cinza',
+        body: 'Naked',
+        engine: '689 cc CP2',
+        transmission: '6 marchas',
+        drivetrain: 'Corrente',
+        mpg: 0,
+        images: JSON.stringify([
+          'https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1517846693594-1567da72af75?auto=format&fit=crop&w=1200&q=80',
+        ]),
+        status: 'active',
+      },
+    }),
   ]);
 
   console.log(`✓ Created ${vehicles.length} vehicles`);

@@ -1,4 +1,6 @@
 const { prisma } = require('./_lib/db');
+const fs = require('fs');
+const path = require('path');
 
 const DEMO_MEDIA = {
   'Mercedes-Benz E450': {
@@ -40,6 +42,11 @@ function parseImages(value, fallback) {
   } catch {
     return fallback;
   }
+}
+
+function staticCatalog() {
+  const file = path.join(process.cwd(), 'data', 'cars.json');
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
 module.exports = async (req, res) => {
@@ -88,6 +95,11 @@ module.exports = async (req, res) => {
     return res.status(200).json({ cars });
   } catch (err) {
     console.error('api/catalog error:', err);
-    return res.status(500).json({ error: 'Erro interno do servidor' });
+    try {
+      return res.status(200).json({ cars: staticCatalog(), fallback: true });
+    } catch (fallbackErr) {
+      console.error('api/catalog fallback error:', fallbackErr);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
+    }
   }
 };

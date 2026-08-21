@@ -10,6 +10,15 @@
     heroTitle: 'Seu pr\u00f3ximo carro',
     heroHighlight: 'come\u00e7a aqui',
     heroDescription: 'Ve\u00edculos selecionados, proced\u00eancia e um atendimento que acompanha voc\u00ea do primeiro clique at\u00e9 a entrega.',
+    heroBackgroundColor: '#08101d',
+    heroImagePosition: '63% 55%',
+    heroOverlay: 'balanced',
+    homepageIntroTitle: 'Ve\u00edculos em destaque',
+    homepageIntroText: 'Carros e motos selecionados para quem quer comprar com proced\u00eancia, atendimento claro e fotos bem apresentadas.',
+    homepageCtaText: 'Ver detalhes',
+    homepageCtaUrl: 'pages/cars.html',
+    cardImageFit: 'cover',
+    googleMapsUrl: '',
     primaryColor: '#2457d6',
     accentColor: '#e58a1f',
     whatsapp: '',
@@ -72,7 +81,9 @@
       heroKickerText: config.heroKicker,
       heroTitleMain: config.heroTitle,
       heroTitleHighlight: config.heroHighlight,
-      heroDescription: config.heroDescription
+      heroDescription: config.heroDescription,
+      showroomInventoryTitle: config.homepageIntroTitle,
+      showroomInventoryText: config.homepageIntroText
     };
     Object.entries(values).forEach(([id, value]) => {
       const element = document.getElementById(id);
@@ -80,11 +91,31 @@
     });
     const heroPhoto = document.querySelector('.hero-photo');
     if (heroPhoto && config.heroImageUrl) heroPhoto.src = config.heroImageUrl;
+    if (heroPhoto && config.heroImagePosition) heroPhoto.style.objectPosition = config.heroImagePosition;
+    document.body.dataset.heroOverlay = config.heroOverlay || 'balanced';
+    document.body.dataset.cardImageFit = config.cardImageFit === 'contain' ? 'contain' : 'cover';
+    const inventoryLink = document.getElementById('showroomInventoryCta');
+    if (inventoryLink) {
+      if (config.homepageCtaText) inventoryLink.firstChild.nodeValue = config.homepageCtaText + ' ';
+      if (config.homepageCtaUrl) inventoryLink.href = config.homepageCtaUrl;
+    }
     document.querySelectorAll('.admin-brand-name, .dos-brand-text, .settings-brand strong').forEach((element) => {
       element.textContent = config.brandName;
     });
     document.querySelectorAll('.admin-brand-location, .dos-brand-location, .settings-brand-location').forEach((element) => {
       element.textContent = config.address || 'Localização da loja';
+    });
+    document.querySelectorAll('[data-store-address]').forEach((element) => {
+      element.textContent = config.address || 'Endereço da loja';
+    });
+    document.querySelectorAll('[data-google-maps-link]').forEach((element) => {
+      const url = config.googleMapsUrl || (config.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(config.address)}` : '');
+      if (!url) {
+        element.hidden = true;
+        return;
+      }
+      element.hidden = false;
+      element.href = url;
     });
   }
 
@@ -119,8 +150,9 @@
     root.style.setProperty('--brand-accent', config.accentColor);
     root.style.setProperty('--brand-accent-deep', `color-mix(in oklch, ${config.accentColor} 72%, black)`);
     root.style.setProperty('--gradient-brand', config.primaryColor);
-    root.style.setProperty('--showroom-ink', config.primaryColor);
-    root.style.setProperty('--showroom-navy', `color-mix(in srgb, ${config.primaryColor} 88%, white)`);
+    root.style.setProperty('--showroom-ink', config.heroBackgroundColor || config.primaryColor);
+    root.style.setProperty('--showroom-navy', `color-mix(in srgb, ${config.heroBackgroundColor || '#08101d'} 84%, ${config.primaryColor})`);
+    root.style.setProperty('--showroom-panel', `color-mix(in srgb, ${config.heroBackgroundColor || '#08101d'} 90%, white)`);
     root.style.setProperty('--showroom-blue', config.accentColor);
     root.style.setProperty('--showroom-orange', config.accentColor);
     root.lang = config.locale || 'pt-BR';

@@ -185,6 +185,7 @@
   box-shadow: var(--shadow-lg);
   aspect-ratio: 16/10;
   object-fit: cover;
+  object-position: center;
 }
 
 .photo-expand {
@@ -442,6 +443,7 @@
   width: 100%;
   aspect-ratio: 4/3;
   object-fit: cover;
+  object-position: center;
   border-radius: var(--radius-sm);
   display: block;
 }

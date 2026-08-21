@@ -74,6 +74,7 @@
             <label>E-mail de atendimento<input id="fieldEmail" type="email" required placeholder="vendas@sualoja.com.br"></label>
             <label>Telefone<input id="fieldPhone" type="tel" placeholder="(11) 4000-0000"></label>
             <label class="full">Endereço<input id="fieldAddress" type="text" placeholder="Rua, número, bairro, cidade e UF"></label>
+            <label class="full">Link do Google Maps<input id="fieldGoogleMapsUrl" type="url" placeholder="https://maps.google.com/?q=sua+loja"><small>Use o link de compartilhamento do Google Maps para o botão “Como chegar”.</small></label>
             <div class="form-actions full"><button class="settings-primary" type="submit">Salvar dados da loja</button></div>
           </form>
         </section>
@@ -92,11 +93,15 @@
                 </div>
                 <input id="fieldLogoUrl" type="hidden">
               </div>
-              <div class="settings-section-title full"><strong>Conteúdo da capa</strong><p>Defina o que o cliente vê primeiro ao abrir o site.</p></div>
+              <div class="settings-section-title full"><strong>Frente do site</strong><p>Defina a capa, imagem de fundo, contraste e chamada principal que o cliente vê primeiro.</p></div>
               <label>Chamada pequena<input id="fieldHeroKicker" type="text" maxlength="60" placeholder="Seu novo carro está aqui"></label>
               <label>Título principal<input id="fieldHeroTitle" type="text" maxlength="90" placeholder="Seu próximo carro"></label>
               <label class="full">Trecho destacado<input id="fieldHeroHighlight" type="text" maxlength="60" placeholder="começa aqui"></label>
               <label class="full">Descrição da capa<textarea id="fieldHeroDescription" maxlength="240" rows="3" placeholder="Veículos selecionados, procedência e atendimento completo."></textarea></label>
+              <div class="color-field"><label for="fieldHeroBackgroundColor">Cor atrás da foto de fundo</label><span><input id="fieldHeroBackgroundColor" type="color" value="#08101d"><output id="heroBackgroundColorValue" for="fieldHeroBackgroundColor">#08101D</output></span></div>
+              <label>Enquadramento da capa<input id="fieldHeroImagePosition" type="text" maxlength="24" placeholder="63% 55%"><small>Ex.: centro, 50% 45% ou 70% centro.</small></label>
+              <label>Contraste do texto<select id="fieldHeroOverlay"><option value="balanced">Equilibrado</option><option value="strong">Mais escuro</option><option value="soft">Mais claro</option></select></label>
+              <label>Fotos dos cards<select id="fieldCardImageFit"><option value="cover">Preencher card</option><option value="contain">Mostrar veículo inteiro</option></select></label>
               <div class="logo-uploader full">
                 <div class="logo-copy"><strong>Foto de capa</strong><p>JPG, PNG ou WebP horizontal. Recomendado: <b>1920 × 1080 px</b>, até 4 MB.</p></div>
                 <div class="logo-row">
@@ -105,6 +110,11 @@
                 </div>
                 <input id="fieldHeroImageUrl" type="hidden">
               </div>
+              <div class="settings-section-title full"><strong>Textos da página principal</strong><p>Ajuste o bloco de destaque e o botão principal da vitrine.</p></div>
+              <label class="full">Título do estoque em destaque<input id="fieldHomepageIntroTitle" type="text" maxlength="90" placeholder="Veículos em destaque"></label>
+              <label class="full">Texto do estoque em destaque<textarea id="fieldHomepageIntroText" maxlength="220" rows="3" placeholder="Carros e motos selecionados com procedência."></textarea></label>
+              <label>Texto do botão<input id="fieldHomepageCtaText" type="text" maxlength="40" placeholder="Ver detalhes"></label>
+              <label>Link do botão<input id="fieldHomepageCtaUrl" type="text" maxlength="120" placeholder="pages/cars.html"></label>
               <label>WhatsApp com DDI<input id="fieldWhatsapp" type="tel" inputmode="numeric" placeholder="5511999999999"><small>Somente números, incluindo 55 e DDD.</small></label>
               <label>Instagram<input id="fieldInstagram" type="text" placeholder="@minhaloja"></label>
               <div class="color-field"><label for="fieldPrimaryColor">Cor principal</label><span><input id="fieldPrimaryColor" type="color" value="#2169f3"><output id="primaryColorValue" for="fieldPrimaryColor">#2169F3</output></span></div>
