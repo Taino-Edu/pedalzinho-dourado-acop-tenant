@@ -1,5 +1,5 @@
 /**
- * AutoSuite Dealer OS — shared shell behavior.
+ * AutoSuite Gestão da concessionária — shared shell behavior.
  * Included by every dos-shell page. Provides:
  *  - A single EventSource connection per page (window.DosShell.onEvent)
  *  - Command palette (Cmd/Ctrl+K, or click the sidebar search box)
@@ -8,14 +8,14 @@
  */
 (function () {
   const NAV_ITEMS = [
-    { label: 'Overview', href: 'dashboard.html', icon: '▦' },
+    { label: 'Visão geral', href: 'dashboard.html', icon: '▦' },
     { label: 'CRM', href: 'crm.html', icon: '☎' },
-    { label: 'Inventory', href: 'inventory.html', icon: '▤' },
-    { label: 'Appointments', href: 'appointments.html', icon: '◔' },
-    { label: 'Customers', href: 'customers.html', icon: '✎' },
-    { label: 'Analytics', href: 'analytics.html', icon: '▲' },
-    { label: 'Staff Activity', href: 'staff-activity.html', icon: '◫' },
-    { label: 'Settings', href: 'settings.html', icon: '⚙' }
+    { label: 'Estoque', href: 'inventory.html', icon: '▤' },
+    { label: 'Agenda', href: 'appointments.html', icon: '◔' },
+    { label: 'Clientes', href: 'customers.html', icon: '✎' },
+    { label: 'Relatórios', href: 'analytics.html', icon: '▲' },
+    { label: 'Equipe', href: 'staff-activity.html', icon: '◫' },
+    { label: 'Configurações', href: 'settings.html', icon: '⚙' }
   ];
 
   function authHeader() {
@@ -334,14 +334,14 @@
   function textFor(evt) {
     const p = evt.payload || {};
     switch (evt.type) {
-      case 'lead.created': return `New lead: ${p.name} — ${p.carName}`;
-      case 'lead.updated': return `${p.name} moved to ${p.status}`;
-      case 'appointment.created': return 'New appointment scheduled';
-      case 'appointment.updated': return `Appointment marked ${p.status}`;
-      case 'vehicle.created': return `Vehicle added: ${p.make} ${p.model}`;
-      case 'vehicle.updated': return `Vehicle updated: ${(p.make || '') + ' ' + (p.model || '')}`.trim();
-      case 'vehicle.deleted': return 'Vehicle removed from inventory';
-      case 'customer.created': return `New customer: ${p.name}`;
+      case 'lead.created': return `Novo lead: ${p.name} — ${p.carName}`;
+      case 'lead.updated': return `${p.name || 'Lead'} atualizado para ${p.status}`;
+      case 'appointment.created': return 'Novo agendamento recebido';
+      case 'appointment.updated': return `Agendamento atualizado para ${p.status}`;
+      case 'vehicle.created': return `Veículo cadastrado: ${p.make} ${p.model}`;
+      case 'vehicle.updated': return `Veículo atualizado: ${(p.make || '') + ' ' + (p.model || '')}`.trim();
+      case 'vehicle.deleted': return 'Veículo removido do estoque';
+      case 'customer.created': return `Novo cliente: ${p.name}`;
       default: return evt.type;
     }
   }
@@ -350,7 +350,7 @@
     if (!notifPanel) return;
     const body = notifPanel.querySelector('[data-notif-body]');
     if (notifications.length === 0) {
-      body.innerHTML = '<div style="padding:20px;text-align:center;color:oklch(50% 0.01 260);font:400 13px sans-serif;">No notifications yet</div>';
+      body.innerHTML = '<div style="padding:20px;text-align:center;color:oklch(50% 0.01 260);font:400 13px sans-serif;">Nenhuma notificação por enquanto.</div>';
       return;
     }
     body.innerHTML = notifications.map((n) => `
@@ -377,18 +377,18 @@
     bellWrap.style.cursor = 'pointer';
     bellWrap.setAttribute('role', 'button');
     bellWrap.setAttribute('tabindex', '0');
-    bellWrap.setAttribute('aria-label', 'Notifications');
+    bellWrap.setAttribute('aria-label', 'Notificações');
     notifBadge = bellWrap.querySelector('[data-dos-bell-dot]');
     if (notifBadge) notifBadge.style.display = 'none';
 
     notifPanel = document.createElement('div');
     notifPanel.setAttribute('role', 'region');
-    notifPanel.setAttribute('aria-label', 'Notifications list');
+    notifPanel.setAttribute('aria-label', 'Lista de notificações');
     notifPanel.style.cssText = 'position:absolute;top:24px;right:0;width:320px;max-height:420px;overflow-y:auto;background:#fff;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,0.18);display:none;z-index:1001;';
     notifPanel.innerHTML = `
       <div style="padding:14px 16px;border-bottom:1px solid oklch(93% 0.005 260);display:flex;justify-content:space-between;align-items:center;">
-        <div style="font:600 14px 'Space Grotesk',sans-serif;">Notifications</div>
-        <button type="button" data-mark-all style="font:500 12px 'IBM Plex Sans',sans-serif;color:oklch(45% 0.16 260);background:none;border:none;cursor:pointer;padding:0;">Mark all read</button>
+        <div style="font:600 14px 'Space Grotesk',sans-serif;">Notificações</div>
+        <button type="button" data-mark-all style="font:500 12px 'IBM Plex Sans',sans-serif;color:oklch(45% 0.16 260);background:none;border:none;cursor:pointer;padding:0;">Marcar como lidas</button>
       </div>
       <div data-notif-body></div>
     `;
@@ -436,21 +436,59 @@
     });
   }
 
+  function normalizeDealerNavigation() {
+    const labels = {
+      'dashboard.html': ['home', 'Visão geral'],
+      'crm.html': ['group', 'Leads'],
+      'inventory.html': ['directions_car', 'Estoque'],
+      'appointments.html': ['calendar_month', 'Agenda'],
+      'customers.html': ['person', 'Clientes'],
+      'analytics.html': ['bar_chart', 'Relatórios'],
+      'settings.html': ['palette', 'Personalizar site']
+    };
+    const nav = document.querySelector('.dos-nav');
+    document.querySelectorAll('.dos-nav-item, .dos-navitem').forEach((link) => {
+      const page = (link.getAttribute('href') || '').split('/').pop().split('#')[0];
+      if (page === 'staff-activity.html') {
+        link.remove();
+        return;
+      }
+      const item = labels[page];
+      if (!item) return;
+      link.innerHTML = `<span class="material-symbols-rounded" aria-hidden="true">${item[0]}</span><span>${item[1]}</span>`;
+      link.setAttribute('aria-label', item[1]);
+      if (page === 'settings.html' && nav && link.parentElement !== nav) nav.appendChild(link);
+    });
+    const brand = document.querySelector('.dos-brand');
+    if (brand) {
+      const runtimeLogo = brand.querySelector('[data-runtime-logo]');
+      const currentName = brand.querySelector('.dos-brand-text')?.textContent.trim()
+        || runtimeLogo?.alt
+        || brand.textContent.trim()
+        || 'Sua Concessionária';
+      brand.innerHTML = `<span class="dos-brand-mark" aria-hidden="true">3e</span><span><strong class="dos-brand-text">${esc(currentName)}</strong><small class="dos-brand-location">Localização da loja</small></span>`;
+      if (runtimeLogo) {
+        brand.prepend(runtimeLogo);
+        brand.querySelector('.dos-brand-mark').style.display = 'none';
+      }
+    }
+  }
+
   // ---------- Mobile bottom tab bar ----------
   // Scoped to floor tasks only (Home / Leads / Inventory / Calendar);
   // Analytics/Settings/Staff Activity stay desktop-only, reached via a
   // "More" overflow from here.
   const MOBILE_TABS = [
-    { label: 'Home', href: 'dashboard.html', glyph: '▦' },
+    { label: 'Início', href: 'dashboard.html', glyph: '▦' },
     { label: 'Leads', href: 'crm.html', glyph: '☎' },
-    { label: 'Inventory', href: 'inventory.html', glyph: '▤' },
-    { label: 'Calendar', href: 'appointments.html', glyph: '◔' }
+    { label: 'Estoque', href: 'inventory.html', glyph: '▤' },
+    { label: 'Agenda', href: 'appointments.html', glyph: '◔' }
   ];
   const MOBILE_MORE_ITEMS = [
-    { label: 'Customers', href: 'customers.html', glyph: '✎' },
-    { label: 'Analytics', href: 'analytics.html', glyph: '▲' },
-    { label: 'Staff Activity', href: 'staff-activity.html', glyph: '◫' },
-    { label: 'Settings', href: 'settings.html', glyph: '⚙' }
+    { label: 'Clientes', href: 'customers.html', glyph: '✎' },
+    { label: 'Relatórios', href: 'analytics.html', glyph: '▲' },
+    { label: 'Equipe', href: 'staff-activity.html', glyph: '◫' },
+    { label: 'Configurações', href: 'settings.html', glyph: '⚙' }
   ];
 
   function currentPage() {
@@ -467,7 +505,7 @@
     // link semantics (Tab + Enter) already make these fully keyboard-usable.
     const sheet = document.createElement('div');
     sheet.className = 'dos-mobile-more-sheet';
-    sheet.setAttribute('aria-label', 'More pages');
+    sheet.setAttribute('aria-label', 'Mais páginas');
     sheet.innerHTML = MOBILE_MORE_ITEMS.map((item) => `
       <a class="dos-mobile-more-item" href="${item.href}"><span class="glyph">${item.glyph}</span>${esc(item.label)}</a>
     `).join('');
@@ -475,7 +513,7 @@
 
     const bar = document.createElement('nav');
     bar.className = 'dos-mobile-tabbar';
-    bar.setAttribute('aria-label', 'Dealer OS mobile navigation');
+    bar.setAttribute('aria-label', 'Navegação móvel da gestão da concessionária');
     const isMoreActive = MOBILE_MORE_ITEMS.some((i) => i.href === page);
     bar.innerHTML = MOBILE_TABS.map((tab) => `
       <a class="dos-mobile-tab${tab.href === page ? ' active' : ''}" href="${tab.href}" aria-current="${tab.href === page ? 'page' : 'false'}">
@@ -483,7 +521,7 @@
       </a>
     `).join('') + `
       <button type="button" class="dos-mobile-tab${isMoreActive ? ' active' : ''}" id="dosMobileMoreBtn" aria-haspopup="true" aria-expanded="false">
-        <span class="glyph">☰</span>More
+        <span class="glyph">☰</span>Mais
       </button>
     `;
     document.body.appendChild(bar);
@@ -503,6 +541,7 @@
   }
 
   function init() {
+    normalizeDealerNavigation();
     initSearchBox();
     initBell();
     initMobileTabBar();

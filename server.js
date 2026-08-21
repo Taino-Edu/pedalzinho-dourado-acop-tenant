@@ -11,7 +11,9 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const { emitter } = require('./api/_lib/events');
-const { checkAuth } = require('./api/_lib/auth');
+const { checkAuth, createSessionCookie } = require('./api/_lib/auth');
+const { checkPlatformAuth, platformSessionCookie } = require('./api/_lib/platformAuth');
+const { showcaseMode } = require('./api/_lib/showcase');
 
 // Simulated API handlers (normally Vercel functions). leads/appointments/
 // vehicles each merge their bare-collection and by-id routes into a single
@@ -32,7 +34,10 @@ const handlers = {
   analytics: require('./api/analytics.js'),
   customers: require('./api/customers.js'),
   team: require('./api/team.js'),
-  dealership: require('./api/dealership.js')
+  dealership: require('./api/dealership.js'),
+  integrations: require('./api/integrations.js'),
+  'market-data': require('./api/market-data.js'),
+  'platform-admin': require('./api/platform-admin.js')
 };
 
 // Collections whose /api/<name>/:id path routes to the bare handler above,
@@ -41,7 +46,10 @@ const idRewriteCollections = new Set(['leads', 'vehicles', 'appointments']);
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
+const STATIC_ASSET_VERSION = process.env.STATIC_ASSET_VERSION || Date.now().toString(36);
 
+// Paginas protegidas quando SHOWCASE_MODE=false. No modo vitrine (padrao
+// deste repositorio de demonstracao) nenhuma delas pede senha.
 const protectedDashboardPages = new Set([
   '/pages/dashboard.html',
   '/pages/dashboard',
@@ -61,6 +69,42 @@ const protectedDashboardPages = new Set([
   '/pages/settings'
 ]);
 
+const protectedPlatformPages = new Set([
+  '/pages/superadmin.html',
+  '/pages/superadmin',
+]);
+
+function safeJsonForHtml(value) {
+  return JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+}
+
+async function dashboardBootstrap() {
+  const { prisma } = require('./api/_lib/db');
+  const [leads, vehicles, appointments, dealership, operator] = await Promise.all([
+    prisma.lead.findMany({ orderBy: { createdAt: 'desc' }, include: { assignedTo: true } }),
+    prisma.vehicle.findMany({ orderBy: { createdAt: 'desc' } }),
+    prisma.appointment.findMany({ orderBy: { dateTime: 'asc' }, include: { lead: true, vehicle: true } }),
+    prisma.dealership.findFirst({ select: { name: true, address: true, settings: true } }),
+    prisma.teamMember.findFirst({
+      where: { deactivatedAt: null, role: { in: ['owner', 'manager'] } },
+      orderBy: { joinedAt: 'asc' },
+      select: { name: true, role: true },
+    }),
+  ]);
+  let settings = {};
+  try { settings = JSON.parse(dealership?.settings || '{}'); } catch {}
+  const { webmotorsStatus, santanderStatus } = require('./api/_lib/integrations');
+  const lastWebmotorsSync = await prisma.integrationEvent.findFirst({ where: { provider: 'webmotors' }, orderBy: { createdAt: 'desc' } });
+  return {
+    leads,
+    vehicles,
+    appointments,
+    branding: { ...settings, brandName: settings.brandName || dealership?.name || 'Sua Concessionária', address: dealership?.address || '' },
+    operator: operator || { name: 'Administrador da loja', role: 'owner' },
+    integrations: { webmotors: { ...webmotorsStatus(), lastSync: lastWebmotorsSync }, santander: santanderStatus() },
+  };
+}
+
 // MIME types
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -77,7 +121,7 @@ function getMimeType(filePath) {
   return mimeTypes[path.extname(filePath)] || 'application/octet-stream';
 }
 
-function serveStaticFile(filePath, res) {
+function serveStaticFile(filePath, res, options = {}) {
   fs.readFile(filePath, (err, data) => {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/html' });
@@ -85,15 +129,38 @@ function serveStaticFile(filePath, res) {
       return;
     }
     if (path.extname(filePath) === '.html') {
-      const html = data.toString('utf8').replace(
-        '</head>',
-        '  <script src="/js/branding.js" defer></script>\n</head>'
+      let html = data.toString('utf8');
+      const dealerWorkspace = /<body\s+class="(?:admin-body|dos-body|settings-body)"/i.test(html);
+      const workspaceFont = dealerWorkspace && !html.includes('Material+Symbols+Rounded')
+        ? '  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap">\n'
+        : '';
+      const workspaceStyle = dealerWorkspace ? '  <link rel="stylesheet" href="/css/admin-unified.css">\n' : '';
+      html = html.replace('</head>', `${workspaceFont}${workspaceStyle}  <script src="/js/branding.js" defer></script>\n</head>`);
+      if (options.bootstrap) {
+        html = html.replace(
+          'window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {}, operator: {} };',
+          `window.DEALER_BOOTSTRAP = ${safeJsonForHtml(options.bootstrap)};`
+        );
+      }
+      html = html.replace(
+        /\b(href|src)=(["'])((?:\/(?!\/)|\.\.?\/)[^"'?#]+\.(?:css|js))(?:\?[^"']*)?\2/gi,
+        (_, attribute, quote, assetPath) => `${attribute}=${quote}${assetPath}?v=${STATIC_ASSET_VERSION}${quote}`
       );
-      res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
+      res.writeHead(200, {
+        'Content-Type': getMimeType(filePath),
+        'Cache-Control': 'no-cache, must-revalidate'
+      });
       res.end(html);
       return;
     }
-    res.writeHead(200, { 'Content-Type': getMimeType(filePath) });
+    const extension = path.extname(filePath);
+    const cacheControl = ['.js', '.css', '.json'].includes(extension)
+      ? 'no-cache, must-revalidate'
+      : 'public, max-age=86400';
+    res.writeHead(200, {
+      'Content-Type': getMimeType(filePath),
+      'Cache-Control': cacheControl
+    });
     res.end(data);
   });
 }
@@ -116,13 +183,30 @@ const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   let pathname = parsedUrl.pathname;
 
-  if (protectedDashboardPages.has(pathname) && !checkAuth(req)) {
-    res.writeHead(401, {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'WWW-Authenticate': 'Basic realm="Dealer Dashboard"'
-    });
-    res.end('Authentication required');
-    return;
+  if (!showcaseMode() && protectedDashboardPages.has(pathname)) {
+    if (!checkAuth(req)) {
+      res.writeHead(401, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'WWW-Authenticate': 'Basic realm="Dealer Dashboard"'
+      });
+      res.end('Authentication required');
+      return;
+    }
+    const sessionCookie = createSessionCookie(req);
+    if (sessionCookie) res.setHeader('Set-Cookie', sessionCookie);
+  }
+
+  if (!showcaseMode() && protectedPlatformPages.has(pathname)) {
+    if (!checkPlatformAuth(req)) {
+      res.writeHead(401, {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'WWW-Authenticate': 'Basic realm="3esysten Administracao Geral"'
+      });
+      res.end('Autenticacao obrigatoria');
+      return;
+    }
+    const platformCookie = platformSessionCookie(req);
+    if (platformCookie) res.setHeader('Set-Cookie', platformCookie);
   }
 
   // Set CORS headers for API
@@ -284,7 +368,11 @@ const server = http.createServer((req, res) => {
           serveStaticFile(fullPath, res);
         });
       } else {
-        serveStaticFile(fullPath, res);
+        if (pathname === '/pages/dashboard.html' || pathname === '/pages/dashboard') {
+          dashboardBootstrap().then((bootstrap) => serveStaticFile(fullPath, res, { bootstrap })).catch(() => serveStaticFile(fullPath, res));
+        } else {
+          serveStaticFile(fullPath, res);
+        }
       }
     });
   });
@@ -304,7 +392,7 @@ server.listen(PORT, HOST, () => {
 ║  Dashboard: http://${HOST}:${PORT}/pages/dashboard.html ║
 ║  CRM:       http://${HOST}:${PORT}/pages/crm.html    ║
 ║                                        ║
-║  Auth: configured by environment     ║
+║  Modo vitrine: acesso livre (sem senha) ║
 ║                                        ║
 ║  Press Ctrl+C to stop                 ║
 ║                                        ║

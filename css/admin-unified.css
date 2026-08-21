@@ -1,0 +1,145 @@
+:root {
+  --admin-shell-navy: #0b1524;
+  --admin-shell-navy-2: #101d2f;
+  --admin-shell-blue: #1768e5;
+  --admin-shell-bg: #f7f6f2;
+  --admin-shell-line: #dfe3e8;
+  --admin-shell-muted: #93a1b3;
+}
+
+/* Shared dealer workspace shell. Page-specific content keeps its own layout. */
+.dos-body,
+.settings-body { background: var(--admin-shell-bg) !important; font-family: "IBM Plex Sans", sans-serif !important; }
+
+.dos-shell,
+.settings-shell { grid-template-columns: 212px minmax(0, 1fr) !important; }
+
+.dos-sidebar,
+.settings-sidebar {
+  position: sticky !important;
+  top: 0;
+  height: 100vh;
+  padding: 0 !important;
+  border: 0 !important;
+  color: #dce5ef;
+  background: var(--admin-shell-navy) !important;
+  overflow: hidden !important;
+}
+
+.dos-brand,
+.settings-brand {
+  min-height: 72px !important;
+  margin: 0 !important;
+  padding: 0 20px !important;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  text-decoration: none;
+}
+
+.dos-brand > img,
+.settings-brand > img { width: 34px; height: 34px; border-radius: 6px; object-fit: contain; flex: none; }
+.dos-brand-mark,
+.settings-brand-mark,
+.dos-brand .is-97083f3d { width: 34px !important; height: 34px !important; border-radius: 6px !important; display: grid; place-items: center; flex: none; background: var(--admin-shell-blue) !important; color: #fff !important; }
+.dos-brand > span:last-child,
+.settings-brand > span:last-child { min-width: 0; display: flex !important; flex-direction: column; }
+.dos-brand strong,
+.settings-brand strong,
+.dos-brand-text,
+.dos-brand .is-dc3e742f { color: #fff !important; font: 700 14px Manrope, sans-serif !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dos-brand small,
+.settings-brand small { color: var(--admin-shell-muted) !important; font: 400 11px "IBM Plex Sans", sans-serif !important; letter-spacing: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.dos-sidebar [data-dos-search] { min-height: 42px; margin: 14px 10px 6px !important; padding: 0 12px !important; display: flex; align-items: center; border: 1px solid rgba(255,255,255,.15) !important; border-radius: 7px !important; color: #9aa8ba !important; }
+.dos-nav,
+.settings-sidebar nav { padding: 10px !important; display: flex !important; flex-direction: column; gap: 4px !important; }
+.settings-nav-label { display: none !important; }
+.dos-nav-item,
+.dos-navitem,
+.settings-sidebar nav a,
+.settings-sidebar-foot a {
+  min-height: 48px !important;
+  padding: 0 14px !important;
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center;
+  gap: 13px !important;
+  color: #d2dbe6 !important;
+  background: transparent !important;
+  font: 500 14px "IBM Plex Sans", sans-serif !important;
+  text-decoration: none;
+}
+.dos-nav-item .material-symbols-rounded,
+.dos-navitem .material-symbols-rounded { width: 20px; font-size: 20px; line-height: 1; }
+.dos-nav-item:hover,
+.dos-navitem:hover,
+.settings-sidebar nav a:hover,
+.settings-sidebar-foot a:hover { color: #fff !important; background: rgba(255,255,255,.07) !important; }
+.dos-nav-item.active,
+.dos-navitem.active,
+.settings-sidebar nav a.active { color: #fff !important; background: var(--admin-shell-blue) !important; box-shadow: 0 8px 18px rgba(23,104,229,.25); }
+.settings-sidebar nav a .material-symbols-rounded,
+.settings-sidebar nav a.active .material-symbols-rounded,
+.settings-sidebar-foot a .material-symbols-rounded { color: inherit !important; }
+
+.settings-sidebar-foot { margin-top: auto; padding: 10px !important; border-top: 1px solid rgba(255,255,255,.08) !important; }
+.dos-sidebar-foot,
+.dos-sidebar .is-df55b60c { margin-top: auto !important; padding: 10px !important; border-top: 1px solid rgba(255,255,255,.08) !important; }
+.dos-sidebar .is-df55b60c:empty { display: none !important; }
+.settings-user { min-height: 58px !important; padding: 8px 10px !important; border: 0 !important; border-radius: 6px !important; color: #fff; background: rgba(255,255,255,.05); }
+.settings-user > .material-symbols-rounded { color: #fff !important; background: #34445a !important; }
+.settings-user small { color: #b9c5d3 !important; background: transparent !important; padding: 0 !important; }
+.settings-collapse { order: 5; position: static !important; width: auto !important; min-height: 44px; margin: 0 10px 10px; border: 0 !important; border-radius: 6px !important; color: #d2dbe6 !important; background: transparent !important; }
+.settings-collapse:hover { background: rgba(255,255,255,.07) !important; }
+
+.settings-topbar,
+.dos-topbar,
+.dos-shell .is-aa8ddd09 {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  min-height: 72px !important;
+  padding: 0 26px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  color: #fff;
+  background: var(--admin-shell-navy-2) !important;
+}
+.settings-title h1,
+.dos-topbar h1,
+.dos-shell .is-aa8ddd09 h1 { color: #fff !important; }
+.settings-title p,
+.dos-subtitle,
+.dos-shell .is-aa8ddd09 .is-fef4eb97 { color: #9cabbc !important; }
+.settings-title > .material-symbols-rounded { color: #69a8ff !important; }
+.settings-refresh { color: #fff !important; border-color: rgba(255,255,255,.18) !important; background: transparent !important; }
+.settings-site-link { color: #fff !important; border-color: var(--admin-shell-blue) !important; background: var(--admin-shell-blue) !important; }
+
+.dos-shell > main,
+.settings-main { min-width: 0; background: var(--admin-shell-bg) !important; }
+.dos-content { max-width: none !important; }
+.settings-workspace { padding: 18px 26px 50px !important; }
+.dos-shell .is-02c24281 { background: var(--admin-shell-blue) !important; }
+.dos-shell .is-13948eb4 { padding-top: 24px; }
+
+.settings-shell.sidebar-collapsed { grid-template-columns: 72px minmax(0,1fr) !important; }
+.sidebar-collapsed .settings-brand { justify-content: center; padding: 0 !important; }
+.sidebar-collapsed .settings-brand > span:last-child { display: none !important; }
+.sidebar-collapsed .settings-collapse { margin-inline: 10px; font-size: 0; }
+
+@media (max-width: 900px) {
+  .dos-shell { display: block !important; }
+  .dos-sidebar { display: none !important; }
+  .dos-shell .is-aa8ddd09 { position: sticky; padding: 12px 18px !important; }
+}
+
+@media (max-width: 720px) {
+  .settings-shell,
+  .settings-shell.sidebar-collapsed { display: block !important; }
+  .settings-sidebar { position: fixed !important; width: 240px !important; }
+  .settings-topbar { min-height: 64px !important; padding: 0 12px !important; }
+  .settings-workspace { padding: 14px 12px 40px !important; }
+}

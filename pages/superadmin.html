@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Central 3esysten | Administração geral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/superadmin.css">
+  <link rel="stylesheet" href="../css/superadmin-domains.css">
+</head>
+<body>
+  <div class="sa-shell" id="saShell">
+    <aside class="sa-sidebar" id="saSidebar">
+      <a class="sa-brand" href="superadmin.html"><span class="sa-brand-mark">3e</span><span><strong>3esysten</strong><small>Central de operações</small></span></a>
+      <nav aria-label="Navegacao principal">
+        <a class="active" href="#visao-geral">Visao geral</a>
+        <a href="#clientes">Clientes</a>
+        <a href="#servicos">Servicos</a>
+        <a href="#instalacoes">Instalações</a>
+      </nav>
+      <div class="sa-sidebar-foot"><span class="sa-online"></span><span>Operacao online</span><small>Sem credenciais salvas aqui</small></div>
+    </aside>
+
+    <header class="sa-topbar" aria-label="Cabeçalho da central de operações">
+      <button class="sa-menu" id="saMenu" type="button" aria-label="Abrir menu">Menu</button>
+      <div><span class="sa-eyebrow">Painel do fornecedor</span><strong>Administração geral</strong></div>
+      <a class="sa-view-demo" href="../index.html" target="_blank" rel="noopener">Abrir demonstração</a>
+    </header>
+
+    <main class="sa-main" id="visao-geral">
+      <section class="sa-intro">
+        <div><span class="sa-eyebrow">Controle comercial + operacional</span><h1>Clientes, receita e serviços em um só lugar.</h1><p>Gerencie a oferta white-label sem expor senhas, chaves ou bancos das concessionárias.</p></div>
+        <button class="sa-primary" type="button" data-open="clientDialog" aria-label="Novo cliente" title="Novo cliente">+ Novo cliente</button>
+      </section>
+
+      <section class="sa-kpis" aria-label="Indicadores">
+        <article><span>Receita mensal recorrente</span><strong id="mrr">R$ 0</strong><small>Planos e adicionais ativos</small></article>
+        <article><span>Clientes ativos</span><strong id="activeClients">0</strong><small id="totalClients">0 na carteira</small></article>
+        <article><span>Em implantação</span><strong id="onboardingClients">0</strong><small>Próximos a faturar</small></article>
+        <article><span>Instalações saudáveis</span><strong id="healthyDeployments">0</strong><small>Último estado informado</small></article>
+        <article><span>Domínios ativos</span><strong id="activeDomains">0</strong><small>Endereços publicados</small></article>
+      </section>
+
+      <div class="sa-board" id="saBoard">
+        <section class="sa-card sa-wide" id="clientes" data-widget="clients">
+          <header class="sa-card-head"><div><button class="sa-drag" type="button" title="Arrastar">::</button><span><strong>Carteira de clientes</strong><small>Do primeiro contato até a operação ativa</small></span></div><div><button type="button" data-open="clientDialog">Adicionar</button><button class="sa-collapse" type="button" aria-label="Recolher">−</button></div></header>
+          <div class="sa-card-body sa-table-wrap">
+            <table><thead><tr><th scope="col">Cliente</th><th scope="col">Domínio ativo</th><th scope="col">DNS</th><th scope="col">Status</th><th scope="col">Mensalidade</th><th scope="col" aria-label="Ações"></th></tr></thead><tbody id="clientsRows"><tr><td colspan="6" class="sa-empty">Carregando clientes...</td></tr></tbody></table>
+          </div>
+        </section>
+
+        <section class="sa-card" id="servicos" data-widget="services">
+          <header class="sa-card-head"><div><button class="sa-drag" type="button" title="Arrastar">::</button><span><strong>Catálogo de serviços</strong><small>O que você pode vender além do sistema</small></span></div><div><button type="button" data-open="serviceDialog">Adicionar</button><button class="sa-collapse" type="button" aria-label="Recolher">−</button></div></header>
+          <div class="sa-card-body"><div class="sa-service-list" id="serviceList"><p class="sa-empty">Carregando serviços...</p></div></div>
+        </section>
+
+        <section class="sa-card" id="instalacoes" data-widget="deployments">
+          <header class="sa-card-head"><div><button class="sa-drag" type="button" title="Arrastar">::</button><span><strong>Instalações</strong><small>Domínio e saúde de cada ambiente</small></span></div><div><button type="button" data-open="deploymentDialog">Preparar</button><button class="sa-collapse" type="button" aria-label="Recolher">−</button></div></header>
+          <div class="sa-card-body"><div class="sa-deploy-list" id="deploymentList"><p class="sa-empty">Carregando instalações...</p></div></div>
+        </section>
+
+        <section class="sa-card" data-widget="domains">
+          <header class="sa-card-head"><div><button class="sa-drag" type="button" title="Arrastar">::</button><span><strong>Domínios</strong><small>Publicação dos endereços das lojas</small></span></div><button class="sa-collapse" type="button" aria-label="Recolher">−</button></header>
+          <div class="sa-card-body"><div class="sa-domain-list" id="domainList"><p class="sa-empty">Carregando domínios...</p></div></div>
+        </section>
+
+        <section class="sa-card sa-wide" data-widget="offer">
+          <header class="sa-card-head"><div><button class="sa-drag" type="button" title="Arrastar">::</button><span><strong>Pacote comercial sugerido</strong><small>Uma oferta simples para fechar os primeiros contratos</small></span></div><button class="sa-collapse" type="button" aria-label="Recolher">−</button></header>
+          <div class="sa-card-body sa-offer">
+            <article class="featured"><span>Primeira venda</span><strong>R$ 800</strong><p>Implantação, identidade, estoque e treinamento.</p></article>
+            <article><span>Manutenção opcional</span><strong>R$ 97/mês</strong><p>Atualizações, backup assistido e suporte.</p></article>
+            <article><span>Domínio próprio</span><strong>Cliente paga</strong><p>Ou use o subdomínio 3esysten incluído.</p></article>
+          </div>
+        </section>
+      </div>
+      <p class="sa-layout-note">Arraste os cabeçalhos para reorganizar. O seu layout fica salvo neste navegador.</p>
+    </main>
+  </div>
+
+  <dialog id="clientDialog">
+    <form method="dialog" data-form="client">
+      <header aria-label="Cabeçalho do cadastro de cliente"><strong>Novo cliente</strong><button type="submit" value="cancel" aria-label="Fechar">×</button></header>
+      <div class="sa-form-grid">
+        <label>Empresa<input type="text" name="name" required autocomplete="organization"></label>
+        <label>Identificador<input type="text" name="slug" placeholder="loja-exemplo" pattern="[a-z0-9-]+"><small>Usado no endereço e na instalação.</small></label>
+        <fieldset class="sa-domain-choice full"><legend>Endereço da loja</legend><label><input type="radio" name="domainMode" value="platform" checked><span><strong>Endereço 3esysten</strong><small id="platformDomainPreview">loja.3esysten.com.br</small></span></label><label><input type="radio" name="domainMode" value="custom"><span><strong>Domínio próprio</strong><small>Endereço informado pelo cliente</small></span></label></fieldset>
+        <label class="full" id="customDomainField" hidden>Domínio próprio<input type="text" name="customDomain" placeholder="estoque.concessionaria.com.br" inputmode="url"></label>
+        <label>Status<select name="status"><option value="lead">Lead</option><option value="onboarding">Implantação</option><option value="active">Ativo</option></select></label>
+        <label>Contato<input type="text" name="contactName" autocomplete="name"></label>
+        <label>E-mail<input type="email" name="contactEmail" autocomplete="email"></label>
+        <label>WhatsApp<input type="tel" name="contactPhone" autocomplete="tel"></label>
+        <label>Mensalidade base (R$)<input name="monthlyFee" type="number" min="0" step="0.01"></label>
+        <label>Implantação (R$)<input name="setupFee" type="number" min="0" step="0.01"></label>
+      </div>
+      <footer aria-label="Ações do cadastro de cliente"><button type="submit" value="cancel">Cancelar</button><button type="submit" class="sa-primary" value="default">Salvar cliente</button></footer>
+    </form>
+  </dialog>
+  <dialog id="manageClientDialog">
+    <form method="dialog" data-form="client-update">
+      <header aria-label="Cabeçalho da concessionária"><span><strong id="manageClientName">Concessionária</strong><small id="manageClientPlatformDomain"></small></span><button type="submit" value="cancel" aria-label="Fechar">×</button></header>
+      <input type="hidden" name="id">
+      <div class="sa-form-grid">
+        <label>Status comercial<select name="status"><option value="lead">Lead</option><option value="onboarding">Implantação</option><option value="active">Ativo</option><option value="suspended">Suspenso</option><option value="cancelled">Cancelado</option></select></label>
+        <label>Endereço ativo<select name="domainMode"><option value="platform">Subdomínio 3esysten</option><option value="custom">Domínio próprio</option></select></label>
+        <label class="full" data-custom-domain>Domínio próprio<input type="text" name="customDomain" placeholder="estoque.concessionaria.com.br" inputmode="url"></label>
+        <label>Estado do domínio<select name="domainStatus"><option value="pending">Pendente</option><option value="dns_required">Aguardando DNS</option><option value="verifying">Verificando</option><option value="active">Ativo</option><option value="error">Com erro</option></select></label>
+        <label>Mensalidade (R$)<input name="monthlyFee" type="number" min="0" step="0.01"></label>
+        <label>Contato<input type="text" name="contactName" autocomplete="name"></label>
+        <label>E-mail<input type="email" name="contactEmail" autocomplete="email"></label>
+        <label>WhatsApp<input type="tel" name="contactPhone" autocomplete="tel"></label>
+        <label class="full">Observações<textarea name="notes" rows="3"></textarea></label>
+      </div>
+      <footer aria-label="Ações da concessionária"><button type="submit" value="cancel">Cancelar</button><button type="submit" class="sa-primary" value="default">Salvar alterações</button></footer>
+    </form>
+  </dialog>
+  <dialog id="serviceDialog">
+    <form method="dialog" data-form="service">
+      <header aria-label="Cabeçalho do cadastro de serviço"><strong>Novo serviço</strong><button type="submit" value="cancel" aria-label="Fechar">×</button></header>
+      <div class="sa-form-grid"><label>Nome<input type="text" name="name" required placeholder="Gestão de tráfego"></label><label>Código<input type="text" name="code" placeholder="trafego-pago"></label><label>Cobrança<select name="billingType"><option value="monthly">Mensal</option><option value="one_time">Única</option></select></label><label>Preço (R$)<input name="price" required type="number" min="0" step="0.01"></label><label class="full">Descrição<textarea name="description" rows="3"></textarea></label></div>
+      <footer aria-label="Ações do cadastro de serviço"><button type="submit" value="cancel">Cancelar</button><button type="submit" class="sa-primary" value="default">Salvar serviço</button></footer>
+    </form>
+  </dialog>
+  <dialog id="deploymentDialog">
+    <form method="dialog" data-form="deployment">
+      <header aria-label="Cabeçalho da preparação de instalação"><strong>Preparar instalação</strong><button type="submit" value="cancel" aria-label="Fechar">×</button></header>
+      <div class="sa-form-grid"><label class="full">Cliente<select name="clientId" id="deploymentClient" required></select></label><label>Domínio<input type="text" name="domain" required></label><label>Nome do projeto<input type="text" name="projectName" required></label><label>Porta da aplicação<input type="number" name="appPort" min="1024" max="65535"></label><label>Porta do PostgreSQL<input type="number" name="postgresPort" min="1024" max="65535"></label><label class="full">Pasta no VPS<input type="text" name="installPath" placeholder="/opt/concessionarias/loja-exemplo"></label><div class="full sa-command-preview"><span>Comando para executar no VPS</span><code id="provisionCommand">Selecione um cliente</code><button type="button" id="copyProvisionCommand">Copiar comando</button></div></div>
+      <footer aria-label="Ações da preparação de instalação"><button type="submit" value="cancel">Cancelar</button><button type="submit" class="sa-primary" value="default">Criar registro</button></footer>
+    </form>
+  </dialog>
+
+  <div class="sa-toast" id="saToast" role="status" aria-live="polite"></div>
+  <script src="../js/superadmin.js"></script>
+</body>
+</html>

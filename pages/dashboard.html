@@ -1,349 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | AutoSuite Dealer OS</title>
+  <title>Visão geral | AutoSuite Gestão</title>
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#0b1220">
+  <meta name="theme-color" content="#0b1422">
   <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/dashboard.css">
-  <link rel="stylesheet" href="../css/dos-inline.css">
-  <style>
-    .kpi-card {
-      background: #fff;
-      border: 1px solid oklch(91% 0.005 260);
-      border-radius: 12px;
-      padding: 20px;
-    }
-    .kpi-label {
-      font: 500 12px 'IBM Plex Mono', monospace;
-      color: oklch(50% 0.01 260);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 10px;
-    }
-    .kpi-value {
-      font: 600 30px 'Space Grotesk', sans-serif;
-      margin-bottom: 4px;
-    }
-    .kpi-trend {
-      font: 500 12px;
-      color: oklch(55% 0.13 145);
-    }
-  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap">
+  <link rel="stylesheet" href="../css/dashboard-home.css">
 </head>
-<body class="dos-body">
-
-<div class="dos-shell">
-  <!-- SIDEBAR -->
-  <aside class="dos-sidebar">
-    <div class="dos-brand">
-      <span class="dos-brand-mark is-bb36f19f" aria-hidden="true"></span>
-      <span class="dos-brand-text">AutoSuite</span>
-    </div>
-    <div data-dos-search class="is-4330c69b">
-      <span>⌘K Search everything</span>
-    </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item active">▦ Overview</a>
-      <a href="crm.html" class="dos-nav-item">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item">◫ Staff Activity</a>
-    </nav>
-    <div class="is-df55b60c">
-      <a href="settings.html" class="dos-nav-item">⚙ Settings</a>
-      <div class="is-134698af">
-        <div class="is-3d056148"></div>
-        <div class="is-3258b918">Derek Owusu</div>
+<body class="admin-body">
+  <a href="#dashboardMain" class="admin-skip">Ir para o conteúdo</a>
+  <div class="admin-shell" id="adminShell">
+    <aside class="admin-sidebar" id="adminSidebar" aria-label="Menu lateral">
+      <a class="admin-brand" href="dashboard.html"><span class="admin-brand-mark material-symbols-rounded" aria-hidden="true">storefront</span><span><strong class="admin-brand-name">AutoSuite</strong><small class="admin-brand-location">Localização da loja</small></span></a>
+      <nav class="admin-nav" aria-label="Gestão da concessionária">
+        <a class="active" href="dashboard.html"><span class="material-symbols-rounded">home</span><span>Visão geral</span></a>
+        <a href="crm.html"><span class="material-symbols-rounded">group</span><span>Leads</span></a>
+        <a href="inventory.html"><span class="material-symbols-rounded">directions_car</span><span>Estoque</span></a>
+        <a href="appointments.html"><span class="material-symbols-rounded">calendar_month</span><span>Agenda</span></a>
+        <a href="customers.html"><span class="material-symbols-rounded">person</span><span>Clientes</span></a>
+        <a href="analytics.html"><span class="material-symbols-rounded">bar_chart</span><span>Relatórios</span></a>
+        <a href="settings.html"><span class="material-symbols-rounded">palette</span><span>Personalizar site</span></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <a href="../index.html"><span class="material-symbols-rounded">help</span><span>Ajuda</span></a>
+        <button type="button" id="sidebarToggle" aria-expanded="true"><span class="material-symbols-rounded">chevron_left</span><span>Recolher menu</span></button>
       </div>
-    </div>
-  </aside>
+    </aside>
 
-  <!-- MAIN -->
-  <main class="is-cc38790d">
-    <!-- TOP BAR -->
-    <div class="is-aa8ddd09">
-      <h1 class="is-6f08c733">Overview</h1>
-      <div class="is-5d07dfa7">
-        <div class="is-105a0715">+ Quick action</div>
-        <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
-      </div>
-    </div>
-
-    <!-- CONTENT -->
-    <div class="is-6febab96">
-
-      <!-- KPI ROW -->
-      <div class="is-2f8dc584">
-        <div class="kpi-card">
-          <div class="kpi-label">New Leads Today</div>
-          <div class="kpi-value" id="kpiNewLeads">0</div>
-          <div class="kpi-trend">Live</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Test Drives Booked</div>
-          <div class="kpi-value" id="kpiTestDrives">0</div>
-          <div class="kpi-trend">Upcoming</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Revenue MTD</div>
-          <div class="kpi-value" id="kpiRevenue">₦0</div>
-          <div class="kpi-trend">From sold inventory</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Open Leads</div>
-          <div class="kpi-value" id="kpiOpenLeads">0</div>
-          <div class="kpi-trend">Not yet sold or lost</div>
+    <header class="admin-topbar">
+      <button type="button" class="mobile-menu" id="mobileMenu" aria-label="Abrir navegação"><span class="material-symbols-rounded">menu</span></button>
+      <label class="admin-search"><span class="material-symbols-rounded">Buscar</span><input type="search" id="dashboardSearch" placeholder="Buscar leads, clientes, veículos, placas…"><kbd>Ctrl K</kbd></label>
+      <div class="topbar-actions">
+        <a href="../index.html" target="_blank">Ver site <span class="material-symbols-rounded">open_in_new</span></a>
+        <button type="button" data-dos-bell class="notification-button" aria-label="Notificações"><span class="material-symbols-rounded">notifications</span><i data-dos-bell-dot hidden></i></button>
+        <div class="profile-menu-wrap">
+          <button type="button" class="profile-button" id="profileMenuButton" aria-expanded="false" aria-controls="profileMenu"><span data-operator-initials>AD</span><span class="profile-copy"><strong data-operator-name>Administrador da loja</strong><small data-operator-role>Admin</small></span><span class="material-symbols-rounded">expand_more</span></button>
+          <div class="profile-menu" id="profileMenu" hidden><a href="settings.html"><span class="material-symbols-rounded">palette</span>Aparência</a><a href="inventory.html"><span class="material-symbols-rounded">directions_car</span>Gerenciar estoque</a><a href="superadmin.html"><span class="material-symbols-rounded">admin_panel_settings</span>Central 3esysten</a></div>
         </div>
       </div>
+    </header>
 
-      <!-- LEAD PIPELINE + APPOINTMENTS -->
-      <div class="is-fcd6c7cc">
-        <!-- Lead Pipeline -->
-        <div class="kpi-card">
-          <div class="is-6bc63b2c">
-            <div class="is-140a247e">Lead Pipeline</div>
-            <div class="is-05327109">This month ▾</div>
-          </div>
-          <div id="pipelineContainer" class="is-e4b1745b">
-            <!-- Stages will be populated by JS -->
-          </div>
-        </div>
-
-        <!-- Upcoming Appointments -->
-        <div class="kpi-card">
-          <div class="is-00af1200">Upcoming Appointments</div>
-          <div id="appointmentsContainer" class="is-f4b1613e">
-            <p class="empty-state">Loading…</p>
-          </div>
-        </div>
+    <main class="admin-main" id="dashboardMain">
+      <div class="admin-heading">
+        <div><h1 id="dashboardGreeting">Bom dia</h1><p id="todayLabel">Aqui está o resumo do seu dia.</p></div>
+        <a href="crm.html" class="primary-action"><span class="material-symbols-rounded">add_circle</span>Novo atendimento<span class="material-symbols-rounded">expand_more</span></a>
       </div>
 
-      <!-- RECENT ACTIVITY -->
-      <div class="is-309f7e45">
-        <!-- Recently Added Vehicles -->
-        <div class="kpi-card">
-          <div class="is-1d04847a">Recently Added Vehicles</div>
-          <div class="is-578b24de" id="recentVehiclesContainer">
-            <p class="empty-state">Loading…</p>
-          </div>
+      <section class="kpi-strip" aria-label="Indicadores principais">
+        <article><span class="kpi-icon blue material-symbols-rounded">group_add</span><div><small>Novos leads (7 dias)</small><strong id="kpiLeads">0</strong><em>Atualizado agora</em></div></article>
+        <article><span class="kpi-icon green material-symbols-rounded">payments</span><div><small>Receita em estoque</small><strong id="kpiRevenue">R$ 0</strong><em>Veículos ativos</em></div></article>
+        <article><span class="kpi-icon orange material-symbols-rounded">trending_up</span><div><small>Vendas no mês</small><strong id="kpiSales">0</strong><em>Negócios concluídos</em></div></article>
+        <article><span class="kpi-icon purple material-symbols-rounded">directions_car</span><div><small>Veículos em estoque</small><strong id="kpiStock">0</strong><em id="kpiFeatured">0 em destaque</em></div></article>
+      </section>
+
+      <div class="dashboard-layout">
+        <div class="dashboard-modules" id="dashboardModules">
+          <section class="admin-module pipeline-module" data-module="pipeline" draggable="true">
+            <header class="module-head"><div><button class="drag-handle" type="button" aria-label="Arrastar módulo"><span class="material-symbols-rounded">drag_indicator</span></button><h2>Pipeline de atendimentos</h2></div><div class="module-tools"><label>Todos os consultores <span class="material-symbols-rounded">filter_alt</span></label><button class="collapse-module" type="button" aria-expanded="true" aria-label="Recolher pipeline"><span class="material-symbols-rounded">expand_less</span></button></div></header>
+            <div class="module-content"><div class="pipeline-board" id="pipelineBoard" tabindex="0" aria-label="Funil de atendimentos"><p class="loading-row">Carregando atendimentos…</p></div></div>
+          </section>
+
+          <section class="admin-module inventory-module" data-module="inventory" draggable="true">
+            <header class="module-head"><div><button class="drag-handle" type="button" aria-label="Arrastar módulo"><span class="material-symbols-rounded">drag_indicator</span></button><div><h2>Estoque e oportunidades</h2><p>Veículos prontos para criar oportunidades</p></div></div><div class="module-tools"><a href="inventory.html">Ver estoque completo <span class="material-symbols-rounded">open_in_new</span></a><button class="collapse-module" type="button" aria-expanded="true" aria-label="Recolher estoque"><span class="material-symbols-rounded">expand_less</span></button></div></header>
+            <div class="module-content table-scroll"><table class="inventory-table"><thead><tr><th scope="col">Veículo</th><th scope="col">Ano</th><th scope="col">KM</th><th scope="col">Preço</th><th scope="col">Situação</th><th scope="col">Ações</th></tr></thead><tbody id="inventoryRows"><tr><td colspan="6">Carregando estoque…</td></tr></tbody></table></div>
+          </section>
+
+          <section class="admin-module simulator-module" data-module="simulator" draggable="true">
+            <header class="module-head"><div><button class="drag-handle" type="button" aria-label="Arrastar módulo"><span class="material-symbols-rounded">drag_indicator</span></button><div><h2>Simulador de financiamento</h2><p>FIPE, taxa média e parcelas em uma tela simples</p></div></div><a class="integration-action secondary" href="financing-calculator.html"><span class="material-symbols-rounded">calculate</span>Abrir simulador</a></header>
+          </section>
+
+          <section class="admin-module team-module is-collapsed" data-module="team" draggable="true">
+            <header class="module-head"><div><button class="drag-handle" type="button" aria-label="Arrastar módulo"><span class="material-symbols-rounded">drag_indicator</span></button><h2>Desempenho da equipe</h2></div><button class="collapse-module" type="button" aria-expanded="false" aria-label="Expandir desempenho"><span class="material-symbols-rounded">expand_more</span></button></header>
+            <div class="module-content"><p class="team-placeholder">Os indicadores da equipe aparecem aqui conforme os atendimentos avançam.</p></div>
+          </section>
         </div>
 
-        <!-- Recent Customer Activity -->
-        <div class="kpi-card">
-          <div class="is-1d04847a">Recent Customer Activity</div>
-          <div class="is-f4b1613e" id="activityContainer">
-            <p class="empty-state">Loading…</p>
-          </div>
-        </div>
-
-        <!-- Inventory Health -->
-        <div class="kpi-card">
-          <div class="is-1d04847a">Inventory Health</div>
-          <div class="is-578b24de">
-            <div class="is-3b72cfd2">
-              <span class="is-024dc74f">Active listings</span>
-              <span class="is-db117290" id="statActiveListings">0</span>
-            </div>
-            <div class="is-3b72cfd2">
-              <span class="is-024dc74f">Avg. days on lot</span>
-              <span class="is-db117290" id="statAvgDaysOnLot">0</span>
-            </div>
-            <div class="is-3b72cfd2">
-              <span class="is-024dc74f">Draft listings</span>
-              <span class="is-db117290" id="statDraftListings">0</span>
-            </div>
-            <div class="is-3b72cfd2">
-              <span class="is-024dc74f">Sold this month</span>
-              <span class="is-43213dcc" id="statSoldThisMonth">0</span>
-            </div>
-          </div>
-        </div>
+        <aside class="activity-drawer" id="activityDrawer" aria-label="Atividades do dia">
+          <section class="drawer-section">
+            <header><div><span class="material-symbols-rounded">drag_indicator</span><h2>Agenda de hoje</h2></div><button type="button" class="drawer-collapse" aria-expanded="true"><span class="material-symbols-rounded">expand_less</span></button></header>
+            <div class="drawer-content" id="agendaList"><p class="loading-row">Carregando agenda…</p></div>
+            <a href="appointments.html" class="drawer-link">Ver agenda completa <span class="material-symbols-rounded">open_in_new</span></a>
+          </section>
+          <section class="drawer-section whatsapp-section">
+            <header><div><span class="material-symbols-rounded whatsapp">chat</span><h2>Contatos por WhatsApp</h2></div><button type="button" class="drawer-collapse" aria-expanded="true"><span class="material-symbols-rounded">expand_less</span></button></header>
+            <div class="drawer-content" id="whatsappList"><p class="loading-row">Carregando contatos…</p></div>
+            <a href="crm.html" class="drawer-link">Ver todos os leads <span class="material-symbols-rounded">open_in_new</span></a>
+          </section>
+          <footer><span>Última atualização: agora</span><strong><i></i> Online</strong></footer>
+        </aside>
       </div>
-
-    </div>
-  </main>
-</div>
-
-<script src="../js/dos-shell.js"></script>
-<script>
-  function esc(s) {
-    return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  }
-
-  function fmtNairaShort(n) {
-    if (n >= 1000000) return '₦' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-    if (n >= 1000) return '₦' + Math.round(n / 1000) + 'K';
-    return '₦' + Math.round(n);
-  }
-
-  function fmtTime(dateTime) {
-    const d = new Date(dateTime);
-    let h = d.getHours();
-    const m = String(d.getMinutes()).padStart(2, '0');
-    const ampm = h >= 12 ? 'p' : 'a';
-    h = h % 12 || 12;
-    return `${h}:${m}${ampm}`;
-  }
-
-  function fmtRelativeTime(dateTime) {
-    const diffMs = Date.now() - new Date(dateTime).getTime();
-    const mins = Math.round(diffMs / 60000);
-    if (mins < 1) return 'just now';
-    if (mins < 60) return `${mins} min ago`;
-    const hrs = Math.round(mins / 60);
-    if (hrs < 24) return `${hrs} hr ago`;
-    return `${Math.round(hrs / 24)}d ago`;
-  }
-
-  const APPT_TYPE_LABEL = { 'test-drive': 'Test drive', 'inspection': 'Inspection', 'consultation': 'Consultation', 'maintenance': 'Maintenance' };
-
-  // Fetch real data from API with timeout
-  async function loadDashboard() {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for DB init
-
-      const [leadsRes, vehiclesRes, appointmentsRes] = await Promise.all([
-        fetch('/api/leads', { signal: controller.signal }),
-        fetch('/api/vehicles', { signal: controller.signal }),
-        fetch('/api/appointments', { signal: controller.signal })
-      ]);
-      clearTimeout(timeoutId);
-
-      if (!leadsRes.ok || !vehiclesRes.ok || !appointmentsRes.ok) throw new Error('Failed to fetch dashboard data');
-
-      const leads = (await leadsRes.json()).leads || [];
-      const vehicles = (await vehiclesRes.json()).vehicles || [];
-      const appointments = (await appointmentsRes.json()).appointments || [];
-
-      const now = new Date();
-      const isToday = (d) => new Date(d).toDateString() === now.toDateString();
-      const isThisMonth = (d) => { const dt = new Date(d); return dt.getMonth() === now.getMonth() && dt.getFullYear() === now.getFullYear(); };
-
-      const newLeadsToday = leads.filter(l => isToday(l.createdAt)).length;
-      document.getElementById('kpiNewLeads').textContent = newLeadsToday;
-
-      const testDrivesBooked = appointments.filter(a => a.type === 'test-drive' && a.status === 'scheduled').length;
-      document.getElementById('kpiTestDrives').textContent = testDrivesBooked;
-
-      const revenueMTD = vehicles.filter(v => v.status === 'sold' && isThisMonth(v.updatedAt)).reduce((sum, v) => sum + v.price, 0);
-      document.getElementById('kpiRevenue').textContent = fmtNairaShort(revenueMTD);
-
-      const openLeads = leads.filter(l => !['SOLD', 'LOST'].includes(l.status || 'NEW')).length;
-      document.getElementById('kpiOpenLeads').textContent = openLeads;
-
-      // Upcoming appointments
-      const upcoming = appointments
-        .filter(a => a.status === 'scheduled' && new Date(a.dateTime) >= now)
-        .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
-        .slice(0, 3);
-      const appointmentsContainer = document.getElementById('appointmentsContainer');
-      appointmentsContainer.innerHTML = upcoming.length === 0
-        ? '<p class="empty-state">No upcoming appointments.</p>'
-        : upcoming.map(a => `
-          <div class="is-8512dd41">
-            <div class="is-ddf2f4a7">${fmtTime(a.dateTime)}</div>
-            <div class="is-49cdf874">
-              <div class="is-8fc07565">${esc(a.lead ? a.lead.name : 'Unknown lead')}</div>
-              <div class="is-41b12b7b">${a.vehicle ? esc(`${a.vehicle.year} ${a.vehicle.make} ${a.vehicle.model}`) : ''}</div>
-            </div>
-            <div class="is-fce65e5e">${esc(APPT_TYPE_LABEL[a.type] || a.type)}</div>
-          </div>
-        `).join('');
-
-      // Recently added vehicles
-      const recentVehicles = [...vehicles].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
-      const recentVehiclesContainer = document.getElementById('recentVehiclesContainer');
-      recentVehiclesContainer.innerHTML = recentVehicles.length === 0
-        ? '<p class="empty-state">No vehicles yet.</p>'
-        : recentVehicles.map(v => `
-          <div class="is-c6235d4d">
-            <div class="is-15d8b6b2"></div>
-            <div class="is-49cdf874">
-              <div class="is-8fc07565">${esc(`${v.year} ${v.make} ${v.model}`)}</div>
-              <div class="is-41b12b7b">${fmtNairaShort(v.price)}</div>
-            </div>
-            <div class="is-2c46940c"></div>
-          </div>
-        `).join('');
-
-      // Recent activity — derived from real leads + appointments, newest first
-      const activity = [
-        ...leads.map(l => ({ at: l.createdAt, name: l.name, text: `submitted an inquiry for the ${l.carName}` })),
-        ...appointments.map(a => ({ at: a.createdAt, name: a.lead ? a.lead.name : 'A customer', text: `booked a${a.type === 'inspection' ? 'n' : ''} ${APPT_TYPE_LABEL[a.type] ? APPT_TYPE_LABEL[a.type].toLowerCase() : a.type}${a.vehicle ? ` for the ${a.vehicle.make} ${a.vehicle.model}` : ''}` }))
-      ].sort((a, b) => new Date(b.at) - new Date(a.at)).slice(0, 4);
-      const activityContainer = document.getElementById('activityContainer');
-      activityContainer.innerHTML = activity.length === 0
-        ? '<p class="empty-state">No recent activity.</p>'
-        : activity.map(a => `
-          <div class="is-a5035a9d">
-            <span class="is-db117290">${esc(a.name)}</span> ${esc(a.text)}
-            <div class="is-749d71d0">${fmtRelativeTime(a.at)}</div>
-          </div>
-        `).join('');
-
-      // Inventory health
-      const activeVehicles = vehicles.filter(v => v.status === 'active' || v.status === 'featured');
-      document.getElementById('statActiveListings').textContent = activeVehicles.length;
-      document.getElementById('statDraftListings').textContent = vehicles.filter(v => v.status === 'draft').length;
-      document.getElementById('statSoldThisMonth').textContent = vehicles.filter(v => v.status === 'sold' && isThisMonth(v.updatedAt)).length;
-      const avgDaysOnLot = activeVehicles.length
-        ? Math.round(activeVehicles.reduce((sum, v) => sum + (now - new Date(v.createdAt)) / 86400000, 0) / activeVehicles.length)
-        : 0;
-      document.getElementById('statAvgDaysOnLot').textContent = avgDaysOnLot;
-
-      const STAGES = [
-        { name: 'New', key: 'NEW', color: 'oklch(45% 0.16 260)' },
-        { name: 'Contacted', key: 'CONTACTED', color: 'oklch(50% 0.12 235)' },
-        { name: 'Qualified', key: 'QUALIFIED', color: 'oklch(55% 0.1 190)' },
-        { name: 'Appt. Scheduled', key: 'APPT_SCHEDULED', color: 'oklch(60% 0.12 155)' },
-        { name: 'Negotiating', key: 'NEGOTIATING', color: 'oklch(65% 0.14 55)' },
-        { name: 'Sold', key: 'SOLD', color: 'oklch(60% 0.14 145)' }
-      ];
-
-      const pipelineContainer = document.getElementById('pipelineContainer');
-      const pipelineCounts = STAGES.map(stage => ({
-        name: stage.name,
-        color: stage.color,
-        count: leads.filter(l => (l.status || 'NEW') === stage.key).length
-      }));
-      pipelineContainer.innerHTML = pipelineCounts.map(stage => {
-        const width = stage.count > 0 ? Math.max(stage.count * 5, 20) : 5;
-        return `
-          <div class="is-1c20bbe6">
-            <div class="is-15cb806b">${stage.name}</div>
-            <div class="is-24851e63">
-              <div style="height: 100%; border-radius: 5px; background: ${stage.color}; width: ${Math.min(width, 100)}%;"></div>
-            </div>
-            <div class="is-8250b786">${stage.count}</div>
-          </div>
-        `;
-      }).join('') + `
-        <table class="visually-hidden">
-          <caption>Lead pipeline by stage</caption>
-          <thead><tr><th scope="col">Stage</th><th scope="col">Count</th></tr></thead>
-          <tbody>${pipelineCounts.map(s => `<tr><th scope="row">${s.name}</th><td>${s.count}</td></tr>`).join('')}</tbody>
-        </table>
-      `;
-
-    } catch (err) {
-      console.log('Dashboard: API unavailable (expected in dev mode without database)');
-    }
-  }
-
-  loadDashboard();
-  DosShell.onEvent(['lead.created', 'lead.updated', 'appointment.created', 'appointment.updated', 'vehicle.created', 'vehicle.updated', 'vehicle.deleted'], loadDashboard);
-  setInterval(loadDashboard, 30000);
-</script>
-
+      <p class="layout-hint"><span class="material-symbols-rounded">drag_indicator</span> Personalize sua visão: arraste seções e recolha o que não precisa agora. <button type="button" id="resetLayout">Reverter layout</button></p>
+    </main>
+  </div>
+  <div class="admin-live" id="adminLive" role="status" aria-live="polite"></div>
+  <script>
+    window.DEALER_BOOTSTRAP = { leads: [], vehicles: [], appointments: [], branding: {}, operator: {} };
+  </script>
+  <script src="../js/dos-shell.js?v=3"></script>
+  <script src="../js/dashboard-home.js?v=3"></script>
 </body>
 </html>

@@ -1460,3 +1460,4 @@
     animation: none;
   }
 }
+.pf-page .reveal-pending { opacity: 1; }

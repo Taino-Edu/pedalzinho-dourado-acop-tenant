@@ -1,4 +1,6 @@
 const { prisma } = require('./_lib/db');
+const fs = require('fs');
+const path = require('path');
 
 const DEMO_MEDIA = {
   'Mercedes-Benz E450': {
@@ -42,10 +44,15 @@ function parseImages(value, fallback) {
   }
 }
 
+function staticCatalog() {
+  const file = path.join(process.cwd(), 'data', 'cars.json');
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Método não permitido' });
   }
 
   try {
@@ -60,6 +67,7 @@ module.exports = async (req, res) => {
       const gallery = parseImages(vehicle.images, media.gallery);
       return {
         id: vehicle.id,
+        vehicleType: vehicle.vehicleType,
         brand: vehicle.make,
         name: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
         year: vehicle.year,
@@ -71,11 +79,15 @@ module.exports = async (req, res) => {
         transmission: vehicle.transmission,
         color: vehicle.color,
         featured: vehicle.status === 'featured',
-        image: gallery[0] || 'car-placeholder.jpg',
+        image: gallery[0] || 'car-placeholder.svg',
         gallery,
         bodyStyle: vehicle.body,
         overview: vehicle.history || `${vehicle.make} ${vehicle.model} dispon\u00edvel para visita e test-drive. Entre em contato para confirmar condi\u00e7\u00f5es e disponibilidade.`,
         whatsNew: '',
+        fipeCode: vehicle.fipeCode,
+        fipePrice: vehicle.fipePrice,
+        fipeModel: vehicle.fipeModel,
+        fipeReferenceMonth: vehicle.fipeReferenceMonth,
       };
     });
 
@@ -83,6 +95,11 @@ module.exports = async (req, res) => {
     return res.status(200).json({ cars });
   } catch (err) {
     console.error('api/catalog error:', err);
-    return res.status(500).json({ error: 'Internal server error' });
+    try {
+      return res.status(200).json({ cars: staticCatalog(), fallback: true });
+    } catch (fallbackErr) {
+      console.error('api/catalog fallback error:', fallbackErr);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
+    }
   }
 };

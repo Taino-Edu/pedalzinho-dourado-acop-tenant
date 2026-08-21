@@ -1,440 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AutoSuite | The Dealership Operating System</title>
-  <meta name="description" content="AutoSuite connects vehicle discovery, financing, CRM, inventory and analytics in one platform — browse the showroom, or open the live dealer dashboard.">
+  <title>AutoSuite | Seu próximo carro começa aqui</title>
+  <meta name="description" content="Encontre veículos selecionados, simule seu financiamento e agende uma visita em poucos minutos.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="AutoSuite | The Dealership Operating System">
-  <meta property="og:description" content="One connected platform for vehicle discovery, financing, CRM, inventory and analytics — every customer action reaches your team instantly.">
-  <meta property="og:image" content="assets/web/e450-hero.jpg">
+  <meta property="og:title" content="AutoSuite | Seu próximo carro começa aqui">
+  <meta property="og:description" content="Estoque atualizado, atendimento rápido e as melhores condições para você trocar de carro.">
+  <meta property="og:image" content="assets/web/2024-x6-exterior1.jpg">
   <meta name="theme-color" content="#0b1220">
-  <link rel="canonical" href="https://autosuite.ng/index.html">
   <link rel="icon" type="image/png" href="assets/web/favicon-32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/home.css">
-  <link rel="stylesheet" href="css/responsive.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "AutoDealer",
-    "name": "AutoSuite",
-    "description": "Dealership operating system and premium vehicle showroom in Abuja, Nigeria.",
-    "url": "https://autosuite.ng/index.html",
-    "telephone": "+234-800-123-4567",
-    "email": "hello@autosuite.ng",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Abuja",
-      "addressCountry": "NG"
-    }
-  }
-  </script>
+  <link rel="stylesheet" href="css/showroom.css">
 </head>
-<body>
+<body class="showroom-body">
+  <a href="#conteudo" class="skip-link">Ir para o conteúdo</a>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="logo">
-      <a href="index.html">
-        <img src="assets/web/autosuite-mark.png" alt="">
-        <span class="logo-wordmark">Auto<span>Suite</span></span>
-      </a>
-    </div>
-    <nav class="nav-links" id="primaryNav" aria-label="Primary">
-      <a href="pages/dashboard.html">Dashboard</a>
-      <a href="pages/cars.html">Inventory</a>
-      <a href="pages/financing-calculator.html">Financing</a>
-      <a href="pages/appointments.html">Appointments</a>
-      <button type="button" class="btn small" data-open-test-drive>Book a Test Drive</button>
+  <header class="showroom-nav">
+    <a class="showroom-brand" href="index.html" aria-label="Página inicial">
+      <img src="assets/web/autosuite-mark.png" alt="" width="34" height="34">
+      <span><strong class="logo-wordmark">AutoSuite</strong><small id="showroomBrandTagline">Confiança em cada escolha.</small></span>
+    </a>
+    <nav class="nav-links" id="primaryNav" aria-label="Navegação principal">
+      <a href="#veiculos">Veículos</a>
+      <a href="pages/financing-calculator.html">Financiamento</a>
+      <a href="pages/trade-in-estimator.html">Venda seu carro</a>
+      <a href="#sobre">Sobre</a>
+      <a href="pages/dashboard.html" class="store-access"><span class="material-symbols-rounded" aria-hidden="true">lock</span>Área da loja</a>
     </nav>
-    <button type="button" class="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
+    <button type="button" class="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="primaryNav">
+      <span class="material-symbols-rounded" aria-hidden="true">menu</span>
+    </button>
   </header>
 
-  <main id="main-content">
-
-  <!-- Hero Section -->
-  <section class="hero panel panel-dark panel-flush-top">
-    <div class="hero-grid" aria-hidden="true"></div>
-    <div class="hero-scanline" aria-hidden="true"></div>
-    <div class="hero-content">
-      <span class="hero-status"><span class="pulse-dot"></span>LIVE DEMO — REAL-TIME LEAD SYNC</span>
-      <h1>The dealership <span class="hero-glow">operating system</span>, not another car marketplace.</h1>
-      <p>One connected platform for vehicle discovery, financing, CRM, inventory and analytics — every customer action reaches your team instantly.</p>
-      <div class="hero-ctas">
-        <a href="pages/dashboard.html" class="btn accent">Open Dealer Dashboard</a>
-        <a href="pages/cars.html" class="btn outline">Browse Inventory</a>
-      </div>
-      <div class="hero-proof">
-        <div class="hero-proof-avatars" aria-hidden="true">
-          <span class="hero-proof-avatar">JM</span>
-          <span class="hero-proof-avatar">AO</span>
-          <span class="hero-proof-avatar">TK</span>
-        </div>
-        <p>Trusted by sales teams at dealership groups nationwide</p>
-      </div>
-    </div>
-    <!-- Customer -> sync line -> dealer. Everything here is code-generated:
-         CSS device frames, inline SVG art, CSS avatars. No raster assets. -->
-    <div class="sim" id="heroSim">
-      <div class="sim-side sim-customer">
-        <span class="sim-cap">Customer</span>
-        <div class="sim-device">
-          <div class="sim-device-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-          <div class="sim-listing">
-            <svg class="sim-car" viewBox="0 0 120 54" aria-hidden="true">
-              <path class="c-body" d="M10 40 Q13 22 32 19 L46 8 Q54 3 70 3 L92 8 Q102 12 110 24 L114 40 Z"/>
-              <path class="c-glass" d="M50 18 L58 9 Q64 5 72 5 L88 9 Q94 12 98 18 Z"/>
-              <rect class="c-sill" x="6" y="36" width="110" height="8" rx="4"/>
-              <circle class="c-tyre" cx="34" cy="43" r="8"/>
-              <circle class="c-tyre" cx="92" cy="43" r="8"/>
-            </svg>
-            <div class="sim-listing-meta">
-              <strong>2024 BMW X6</strong>
-              <span>&#8358;52,000,000 &middot; 6,200 km</span>
-            </div>
-          </div>
-          <button type="button" class="sim-book" id="simBook">Book Test Drive</button>
-        </div>
-        <p class="sim-who"><span class="sim-avatar" aria-hidden="true">D</span>David is browsing</p>
+  <main id="conteudo">
+    <section class="showroom-hero" aria-labelledby="hero-title">
+      <img class="hero-photo" src="assets/web/showroom-hero.png" alt="SUV premium preto em frente a uma casa contemporânea" fetchpriority="high">
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <span class="hero-kicker"><i></i><span id="heroKickerText">Seu novo carro está aqui</span></span>
+        <h1 id="hero-title"><span id="heroTitleMain">Seu próximo carro</span><br><em id="heroTitleHighlight">começa aqui</em></h1>
+        <p id="heroDescription">Veículos selecionados, procedência e um atendimento que acompanha você do primeiro clique até a entrega.</p>
       </div>
 
-      <div class="sim-link" aria-hidden="true">
-        <span class="sim-wire"></span>
-        <span class="sim-packet" id="simPacket"></span>
+      <form class="vehicle-finder" id="vehicleFinder">
+        <label>
+          <span>Tipo</span>
+          <select id="finderType" name="type">
+            <option value="">Carros e motos</option>
+            <option value="car">Carros</option>
+            <option value="motorcycle">Motos</option>
+          </select>
+        </label>
+        <label>
+          <span>Marca</span>
+          <select id="finderMake" name="make">
+            <option value="">Todas as marcas</option>
+          </select>
+        </label>
+        <label>
+          <span>Modelo</span>
+          <select id="finderModel" name="model">
+            <option value="">Todos os modelos</option>
+          </select>
+        </label>
+        <label>
+          <span>Faixa de preço</span>
+          <select id="finderPrice" name="price">
+            <option value="">Qualquer valor</option>
+            <option value="150000">Até R$ 150 mil</option>
+            <option value="300000">Até R$ 300 mil</option>
+            <option value="500000">Até R$ 500 mil</option>
+            <option value="1000000">Até R$ 1 milhão</option>
+          </select>
+        </label>
+        <button type="submit" class="finder-submit">Encontrar veículos<span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></button>
+      </form>
+    </section>
+
+    <section class="showroom-inventory" id="veiculos" aria-labelledby="inventory-title">
+      <div class="showroom-heading">
+        <div><span>DESTAQUES DA LOJA</span><h2 id="inventory-title"><span id="showroomInventoryTitle">Veículos selecionados para você</span></h2><p id="showroomInventoryText">Carros e motos selecionados para quem quer comprar com procedência, atendimento claro e fotos bem apresentadas.</p></div>
+        <a id="showroomInventoryCta" href="pages/cars.html">Ver todos os veículos <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></a>
       </div>
+      <p class="finder-feedback" id="finderFeedback" role="status" aria-live="polite"></p>
+      <div class="showroom-cards" id="showroomGrid"><p class="showroom-loading">Carregando veículos…</p></div>
+    </section>
 
-      <div class="sim-side sim-dealer">
-        <span class="sim-cap">Dealer OS</span>
-        <div class="sim-board">
-          <div class="sim-board-head">
-            <span>Lead pipeline</span>
-            <span class="sim-live"><span class="pulse-dot pulse-dot-sm"></span>Live</span>
-          </div>
-          <div class="sim-slot" id="simSlot">
-            <p class="sim-empty" id="simEmpty">Waiting for a booking&hellip;</p>
-            <article class="sim-lead" id="simLead" hidden>
-              <div class="sim-lead-top">
-                <span class="sim-avatar" aria-hidden="true">D</span>
-                <div>
-                  <strong>David M.</strong>
-                  <span class="sim-lead-car">2024 BMW X6</span>
-                </div>
-                <span class="sim-badge" id="simBadge">New</span>
-              </div>
-              <ol class="sim-log" id="simLog"></ol>
-            </article>
-          </div>
-        </div>
-        <p class="sim-who"><span class="sim-avatar sim-avatar-alt" aria-hidden="true">S</span>Sarah picks it up</p>
+    <section class="showroom-benefits" id="sobre" aria-labelledby="benefits-title">
+      <div class="benefit-intro"><span>UMA COMPRA MAIS TRANQUILA</span><h2 id="benefits-title">Confiança para decidir.<br>Agilidade para sair dirigindo.</h2></div>
+      <div class="benefit-list">
+        <article><span class="material-symbols-rounded" aria-hidden="true">verified_user</span><div><h3>Procedência verificada</h3><p>Informações claras sobre cada veículo e acompanhamento em todas as etapas.</p></div></article>
+        <article><span class="material-symbols-rounded" aria-hidden="true">calculate</span><div><h3>Financiamento do seu jeito</h3><p>Simule parcelas e encontre uma condição que cabe no seu momento.</p></div></article>
+        <article><span class="material-symbols-rounded" aria-hidden="true">chat</span><div><h3>Atendimento sem enrolação</h3><p>Fale com a loja pelo WhatsApp, tire dúvidas e agende sua visita.</p></div></article>
       </div>
-    </div>
+    </section>
 
-    <p class="hero-flowline">
-      <button type="button" class="hero-replay" id="heroReplay">
-        <span aria-hidden="true">&#8635;</span> Replay
-      </button>
-      <span class="hero-flowline-text">Watch David go from browsing to <strong>Sold</strong> in 4 days &mdash; every step landing on Sarah&rsquo;s board as it happens.</span>
-    </p>
-  </section>
+    <section class="showroom-actions" aria-label="Serviços da concessionária">
+      <a href="pages/financing-calculator.html" class="action-panel action-finance"><span class="material-symbols-rounded" aria-hidden="true">payments</span><div><small>PLANEJE SUA COMPRA</small><h2>Simule seu financiamento</h2><p>Veja uma estimativa de entrada e parcelas antes de falar com a equipe.</p><strong>Fazer simulação <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></strong></div></a>
+      <a href="pages/trade-in-estimator.html" class="action-panel action-trade"><span class="material-symbols-rounded" aria-hidden="true">swap_horiz</span><div><small>USE SEU CARRO NA TROCA</small><h2>Descubra quanto ele vale</h2><p>Envie os dados do seu veículo e receba uma avaliação inicial.</p><strong>Avaliar meu carro <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></strong></div></a>
+    </section>
 
-  <!-- Trust strip -->
-  <section class="trust-strip" aria-label="Trusted by dealership groups nationwide" data-reveal>
-    <p>Trusted by dealership groups nationwide</p>
-    <div class="trust-logos">
-      <span class="trust-logo">Westgate Motors</span>
-      <span class="trust-logo">Apex Auto Group</span>
-      <span class="trust-logo">Northbridge Dealers</span>
-      <span class="trust-logo">Prime Fleet NG</span>
-      <span class="trust-logo">Summit Autoworks</span>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section id="about" class="intro panel panel-light" aria-labelledby="about-heading">
-    <div class="section-heading">
-      <span class="data-chip eyebrow">How it works</span>
-      <h2 id="about-heading">Every stage of the funnel, captured automatically</h2>
-      <p>AutoSuite turns anonymous traffic into assigned leads and closed deals — no stage falls through the cracks, and every drop-off is visible so your team can act on it.</p>
-    </div>
-    <div class="funnel-grid">
-      <div class="funnel-card" data-reveal>
-        <h3>Site-to-sale funnel</h3>
-        <p class="funnel-sub">Last 30 days · all connected stores</p>
-        <div class="funnel-rows">
-          <div class="funnel-row">
-            <span class="funnel-label">Visitors</span>
-            <div class="funnel-bar-track"><div class="funnel-bar funnel-w-100">4,820</div></div>
-          </div>
-          <p class="funnel-drop">↓ 62% run a financing estimate</p>
-          <div class="funnel-row">
-            <span class="funnel-label">Financing estimates</span>
-            <div class="funnel-bar-track"><div class="funnel-bar funnel-w-62">2,980</div></div>
-          </div>
-          <p class="funnel-drop">↓ 55% book a test drive</p>
-          <div class="funnel-row">
-            <span class="funnel-label">Test drives</span>
-            <div class="funnel-bar-track"><div class="funnel-bar funnel-w-34">1,640</div></div>
-          </div>
-          <p class="funnel-drop">↓ 100% captured as CRM leads</p>
-          <div class="funnel-row">
-            <span class="funnel-label">Leads assigned</span>
-            <div class="funnel-bar-track"><div class="funnel-bar funnel-w-34">1,640</div></div>
-          </div>
-          <p class="funnel-drop">↓ 56% close</p>
-        </div>
+    <section class="showroom-cta">
+      <div><span>AINDA ESTÁ EM DÚVIDA?</span><h2>Conte para a gente o carro que você procura.</h2><p>Nossa equipe ajuda a encontrar a melhor opção no estoque.</p><p class="showroom-address-line"><span class="material-symbols-rounded" aria-hidden="true">location_on</span><span data-store-address>Endereço da loja</span></p></div>
+      <div class="showroom-cta-actions">
+        <button type="button" class="cta-button" data-open-test-drive>Falar com um consultor<span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span></button>
+        <a class="maps-button" data-google-maps-link href="https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Paulo%2C%20SP" target="_blank" rel="noopener noreferrer"><span class="material-symbols-rounded" aria-hidden="true">map</span>Como chegar</a>
       </div>
-
-      <div class="funnel-card" data-reveal>
-        <h3>Site-to-sale conversion</h3>
-        <p class="funnel-sub">Before vs. after AutoSuite · 6 months</p>
-        <svg class="conversion-chart" viewBox="0 0 440 240" role="img" aria-label="Line chart: site-to-sale conversion rate was flat around 7% before AutoSuite, then rose steadily to 19% over the six months after launch">
-          <line class="cv-grid" x1="40" y1="20" x2="420" y2="20"></line>
-          <line class="cv-grid" x1="40" y1="70" x2="420" y2="70"></line>
-          <line class="cv-grid" x1="40" y1="120" x2="420" y2="120"></line>
-          <line class="cv-grid" x1="40" y1="170" x2="420" y2="170"></line>
-          <text class="cv-axis-y" x="32" y="24" text-anchor="end">20%</text>
-          <text class="cv-axis-y" x="32" y="74" text-anchor="end">15%</text>
-          <text class="cv-axis-y" x="32" y="124" text-anchor="end">10%</text>
-          <text class="cv-axis-y" x="32" y="174" text-anchor="end">5%</text>
-          <text class="cv-axis-x" x="40" y="212" text-anchor="middle">Feb</text>
-          <text class="cv-axis-x" x="116" y="212" text-anchor="middle">Mar</text>
-          <text class="cv-axis-x" x="192" y="212" text-anchor="middle">Apr</text>
-          <text class="cv-axis-x" x="268" y="212" text-anchor="middle">May</text>
-          <text class="cv-axis-x" x="344" y="212" text-anchor="middle">Jun</text>
-          <text class="cv-axis-x" x="420" y="212" text-anchor="middle">Jul</text>
-          <line class="cv-marker" x1="192" y1="10" x2="192" y2="190"></line>
-          <text class="cv-marker-label" x="198" y="24" text-anchor="start">AutoSuite live</text>
-          <defs>
-            <linearGradient id="cvAreaFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="var(--brand-blue)" stop-opacity="0.22"></stop>
-              <stop offset="100%" stop-color="var(--brand-blue)" stop-opacity="0"></stop>
-            </linearGradient>
-          </defs>
-          <path class="cv-area" d="M192,150 L268,110 L344,70 L420,30 L420,190 L192,190 Z" fill="url(#cvAreaFill)"></path>
-          <polyline class="cv-line-before" points="40,150 116,150 192,150"></polyline>
-          <polyline class="cv-line-after" points="192,150 268,110 344,70 420,30"></polyline>
-          <circle class="cv-dot" cx="420" cy="30" r="5"></circle>
-          <text class="cv-label-start" x="40" y="138" text-anchor="middle">7%</text>
-          <text class="cv-label-end" x="420" y="18" text-anchor="end">19%</text>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <!-- Car Highlights -->
-  <section id="cars" class="featured" aria-labelledby="featured-heading">
-    <div class="section-heading">
-      <span class="data-chip eyebrow">Inventory</span>
-      <h2 id="featured-heading">Featured vehicles</h2>
-      <p>Live from the same inventory your sales team manages in the Dealer OS.</p>
-    </div>
-    <div class="car-grid" id="featuredGrid">
-      <p class="empty-state">Loading inventory…</p>
-    </div>
-    <div class="featured-footer">
-      <a href="pages/cars.html" class="btn ghost">View all inventory</a>
-    </div>
-  </section>
-
-  <!-- Core Features -->
-  <section id="roadmap" class="roadmap panel panel-dark" aria-labelledby="roadmap-heading">
-    <div class="roadmap-inner">
-      <div class="section-heading">
-        <span class="data-chip eyebrow">Core features</span>
-        <h2 id="roadmap-heading">Everything a dealership needs, connected</h2>
-      </div>
-      <div class="roadmap-grid">
-        <div class="roadmap-card" data-reveal>
-          <div class="roadmap-card-art" aria-hidden="true">
-            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b2" x="4" y="6" width="52" height="24" rx="4"/><rect class="b1" x="64" y="6" width="52" height="24" rx="4"/><rect class="b1" x="4" y="36" width="52" height="22" rx="4"/><rect class="ac" x="64" y="36" width="52" height="22" rx="4"/></svg>
-          </div>
-          <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>Dashboard</span>
-          <div class="roadmap-card-body">
-            <h3>Dealer Dashboard</h3>
-            <p>Real-time KPIs, pipeline and today's activity.</p>
-            <a href="pages/dashboard.html" class="btn outline small">Open Dashboard &rarr;</a>
-          </div>
-        </div>
-        <div class="roadmap-card" data-reveal>
-          <div class="roadmap-card-art" aria-hidden="true">
-            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b2" x="4" y="6" width="32" height="13" rx="4"/><rect class="b1" x="4" y="24" width="32" height="13" rx="4"/><rect class="b1" x="4" y="42" width="32" height="13" rx="4"/><rect class="b1" x="44" y="6" width="32" height="13" rx="4"/><rect class="ac" x="44" y="24" width="32" height="13" rx="4"/><rect class="b1" x="44" y="42" width="32" height="13" rx="4"/><rect class="b1" x="84" y="6" width="32" height="13" rx="4"/><rect class="b1" x="84" y="24" width="32" height="13" rx="4"/></svg>
-          </div>
-          <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c0-4 3-6.5 6.5-6.5s6.5 2.5 6.5 6.5"></path><circle cx="18" cy="9" r="2.5"></circle><path d="M15 13.5c2.8 0.3 5 2.5 5.5 6"></path></svg>CRM</span>
-          <div class="roadmap-card-body">
-            <h3>CRM &amp; Leads</h3>
-            <p>Kanban or table pipeline, full timeline, notes and tasks.</p>
-            <a href="pages/crm.html" class="btn outline small">Open CRM &rarr;</a>
-          </div>
-        </div>
-        <div class="roadmap-card" data-reveal>
-          <div class="roadmap-card-art" aria-hidden="true">
-            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b2" x="4" y="10" width="62" height="11" rx="4"/><rect class="b1" x="4" y="27" width="46" height="11" rx="4"/><rect class="b1" x="4" y="44" width="30" height="11" rx="4"/><circle class="ln" cx="94" cy="32" r="18"/><path class="ln ln-ac" d="M94 14 a18 18 0 0 1 15.6 27"/></svg>
-          </div>
-          <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"></rect><rect x="7.5" y="4.5" width="9" height="4" rx="0.5"></rect><path d="M7.5 12.5h1M12 12.5h1M16.5 12.5h1M7.5 16.5h1M12 16.5h1M16.5 16.5h1"></path></svg>Finance</span>
-          <div class="roadmap-card-body">
-            <h3>Financing Calculator</h3>
-            <p>Interactive monthly payment estimator.</p>
-            <a href="pages/financing-calculator.html" class="btn outline small">Calculate Now &rarr;</a>
-          </div>
-        </div>
-        <div class="roadmap-card" data-reveal>
-          <div class="roadmap-card-art" aria-hidden="true">
-            <svg class="rc-art" viewBox="0 0 120 64"><path class="ln" d="M12 21 H98 l-13 -11"/><path class="ln ln-ac" d="M108 43 H22 l13 11"/></svg>
-          </div>
-          <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h12l-4-4M19 17H7l4 4"></path></svg>Trade-in</span>
-          <div class="roadmap-card-body">
-            <h3>Trade-in Estimator</h3>
-            <p>Instant vehicle valuation range.</p>
-            <a href="pages/trade-in-estimator.html" class="btn outline small">Get Estimate &rarr;</a>
-          </div>
-        </div>
-        <div class="roadmap-card" data-reveal>
-          <div class="roadmap-card-art" aria-hidden="true">
-            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b2" x="4" y="5" width="112" height="12" rx="4"/><rect class="b1" x="4" y="23" width="24" height="14" rx="4"/><rect class="b1" x="34" y="23" width="24" height="14" rx="4"/><rect class="ac" x="64" y="23" width="24" height="14" rx="4"/><rect class="b1" x="94" y="23" width="22" height="14" rx="4"/><rect class="b1" x="4" y="43" width="24" height="14" rx="4"/><rect class="b1" x="34" y="43" width="24" height="14" rx="4"/><rect class="b1" x="64" y="43" width="24" height="14" rx="4"/><rect class="b1" x="94" y="43" width="22" height="14" rx="4"/></svg>
-          </div>
-          <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Scheduling</span>
-          <div class="roadmap-card-body">
-            <h3>Appointments</h3>
-            <p>Calendar-based test drive &amp; inspection booking.</p>
-            <a href="pages/appointments.html" class="btn outline small">View Schedule &rarr;</a>
-          </div>
-        </div>
-        <div class="roadmap-card" data-reveal>
-          <div class="roadmap-card-art" aria-hidden="true">
-            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b1" x="6" y="38" width="16" height="20" rx="4"/><rect class="b1" x="28" y="30" width="16" height="28" rx="4"/><rect class="b2" x="50" y="34" width="16" height="24" rx="4"/><rect class="b2" x="72" y="22" width="16" height="36" rx="4"/><rect class="ac" x="94" y="12" width="16" height="46" rx="4"/><path class="ln" d="M14 24 L36 18 L58 21 L80 10"/></svg>
-          </div>
-          <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V9M11 19V5M18 19v-7"></path></svg>Analytics</span>
-          <div class="roadmap-card-body">
-            <h3>Analytics</h3>
-            <p>Sales funnel, conversion and revenue charts.</p>
-            <a href="pages/analytics.html" class="btn outline small">View Stats &rarr;</a>
-          </div>
-        </div>
-        <div class="roadmap-card" data-reveal>
-          <div class="roadmap-card-art" aria-hidden="true">
-            <svg class="rc-art" viewBox="0 0 120 64"><circle class="b2" cx="22" cy="22" r="14"/><circle class="b1" cx="60" cy="22" r="14"/><circle class="ac" cx="98" cy="22" r="14"/><rect class="b1" x="6" y="46" width="32" height="11" rx="4"/><rect class="b1" x="44" y="46" width="32" height="11" rx="4"/><rect class="b1" x="82" y="46" width="32" height="11" rx="4"/></svg>
-          </div>
-          <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"></path></svg>Team</span>
-          <div class="roadmap-card-body">
-            <h3>Team Performance</h3>
-            <p>Assign leads, track activity, see who's closing.</p>
-            <a href="pages/staff-activity.html" class="btn outline small">View Activity &rarr;</a>
-          </div>
-        </div>
-      </div>
-      <p class="roadmap-link"><a href="pages/platform.html">See the full platform &rarr;</a></p>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="contact panel panel-dark" aria-labelledby="contact-heading" data-reveal>
-    <div class="contact-inner">
-      <span class="eyebrow">Get started</span>
-      <h2 id="contact-heading">Run your dealership on software that keeps up.</h2>
-      <p>Request access or book a walkthrough with your team.</p>
-      <div class="contact-links">
-        <a href="mailto:hello@autosuite.ng" class="btn accent crown" data-crown>
-          <svg class="crown-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3 8 L7 12 L12 5 L17 12 L21 8 L19.5 17 Q19.3 18.5 17.8 18.5 L6.2 18.5 Q4.7 18.5 4.5 17 Z" fill="oklch(30% 0.06 55)"></path>
-            <circle cx="3" cy="7" r="1.6" fill="oklch(30% 0.06 55)"></circle><circle cx="12" cy="4" r="1.6" fill="oklch(30% 0.06 55)"></circle><circle cx="21" cy="7" r="1.6" fill="oklch(30% 0.06 55)"></circle>
-          </svg>
-          Get Early Access
-        </a>
-        <a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a>
-        <a href="tel:+2348001234567">+234 800 123 4567</a>
-      </div>
-    </div>
-  </section>
-
+    </section>
   </main>
 
-  <!-- Shared Test Drive Modal -->
   <div id="testDriveModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="testDriveTitle">
-    <div class="modal-content">
-      <button type="button" class="close" aria-label="Close">&times;</button>
-      <h2 id="testDriveTitle">Book a Test Drive</h2>
-      <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
+    <div class="modal-content showroom-modal">
+      <button type="button" class="close" aria-label="Fechar">&times;</button>
+      <span class="modal-kicker">ATENDIMENTO PERSONALIZADO</span>
+      <h2 id="testDriveTitle">Agende uma visita</h2>
+      <p class="modal-sub">Deixe seus dados e a equipe entra em contato para confirmar o melhor horário.</p>
       <form id="testDriveForm" novalidate>
-        <div class="field">
-          <label for="td-car">Car<span class="required-mark" aria-hidden="true">*</span></label>
-          <input type="text" id="td-car" name="car" placeholder="Which car?" required>
-          <span class="field-error">Let us know which car you're interested in.</span>
-        </div>
-        <div class="field">
-          <label for="td-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
-          <input type="email" id="td-email" name="email" placeholder="you@example.com" required>
-          <span class="field-error">Enter a valid email address.</span>
-        </div>
+        <div class="field"><label for="td-car">Veículo de interesse<span class="required-mark" aria-hidden="true">*</span></label><input type="text" id="td-car" name="car" placeholder="Ex.: BMW X6" required><span class="field-error">Informe o veículo desejado.</span></div>
+        <div class="field"><label for="td-email">E-mail<span class="required-mark" aria-hidden="true">*</span></label><input type="email" id="td-email" name="email" placeholder="voce@email.com" required><span class="field-error">Informe um e-mail válido.</span></div>
         <div class="field-row">
-          <div class="field">
-            <label for="td-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
-            <input type="text" id="td-name" name="name" placeholder="Full name" required>
-            <span class="field-error">Enter your name.</span>
-          </div>
-          <div class="field">
-            <label for="td-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
-            <input type="tel" id="td-phone" name="phone" placeholder="+234" inputmode="tel" required>
-            <span class="field-error">Enter a phone number.</span>
-          </div>
+          <div class="field"><label for="td-name">Nome<span class="required-mark" aria-hidden="true">*</span></label><input type="text" id="td-name" name="name" placeholder="Seu nome" required><span class="field-error">Informe seu nome.</span></div>
+          <div class="field"><label for="td-phone">WhatsApp<span class="required-mark" aria-hidden="true">*</span></label><input type="tel" id="td-phone" name="phone" placeholder="(11) 99999-9999" inputmode="tel" required><span class="field-error">Informe seu telefone.</span></div>
         </div>
-        <button type="submit" class="btn">Submit Request</button>
-        <p class="form-status" id="td-status" role="status" aria-live="polite">
-          <span class="status-icon" aria-hidden="true">&check;</span>
-          <span class="status-text"></span>
-        </p>
+        <button type="submit" class="btn">Quero falar com a loja</button>
+        <p class="form-status" id="td-status" role="status" aria-live="polite"><span class="status-icon" aria-hidden="true">&check;</span><span class="status-text"></span></p>
       </form>
     </div>
   </div>
 
-  <footer class="footer">
-    <div class="footer-grid">
-      <div class="footer-col">
-        <div class="footer-brand">
-          <img src="assets/web/autosuite-mark.png" alt="" width="22" height="22">
-          AutoSuite
-        </div>
-        <p>Dealership Operating System</p>
-        <p>Abuja, Nigeria</p>
-      </div>
-
-      <div class="footer-col">
-        <h3>Quick Links</h3>
-        <nav class="footer-links" aria-label="Footer">
-          <a href="index.html">Home</a>
-          <a href="pages/cars.html">Inventory</a>
-          <a href="pages/dashboard.html">Dashboard</a>
-          <a href="pages/favorites.html">Favorites</a>
-          <a href="#about">About</a>
-          <a href="pages/platform.html">Platform</a>
-          <a href="pages/locations.html">Locations</a>
-          <a href="#contact">Contact</a>
-        </nav>
-      </div>
-
-      <div class="footer-col">
-        <h3>Contact</h3>
-        <p><a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a></p>
-        <p><a href="tel:+2348001234567">+234 800 123 4567</a></p>
-      </div>
+  <footer class="showroom-footer">
+    <div class="footer-main">
+      <div class="footer-identity"><div class="footer-brand"><img src="assets/web/autosuite-mark.png" alt="" width="32" height="32"><strong class="logo-wordmark">AutoSuite</strong></div><p id="showroomFooterTagline">Seu próximo carro começa aqui.</p></div>
+      <nav aria-label="Links do rodapé"><a href="#veiculos">Veículos</a><a href="pages/financing-calculator.html">Financiamento</a><a href="pages/trade-in-estimator.html">Venda seu carro</a><a href="pages/dashboard.html">Área da loja</a></nav>
+      <div class="footer-contact"><strong>Atendimento</strong><a href="mailto:contato@concessionaria.local">contato@concessionaria.local</a><span data-store-address>São Paulo, SP</span><a data-google-maps-link href="https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Paulo%2C%20SP" target="_blank" rel="noopener noreferrer">Abrir no Google Maps</a></div>
     </div>
-
-    <div class="footer-bottom">
-      &copy; <span id="year"></span> AutoSuite. All rights reserved.
-    </div>
+    <div class="footer-bottom"><span>&copy; <span id="year"></span> <span class="footer-brand-name">AutoSuite</span>. Todos os direitos reservados.</span><span>Estoque sujeito a disponibilidade.</span></div>
   </footer>
 
-  <script src="data/cars.js" defer></script>
   <script src="js/script.js" defer></script>
-  <script src="js/lib/inventory.js" defer></script>
-  <script src="js/favorites.js" defer></script>
-  <script src="js/cars-data.js" defer></script>
-  <script src="js/home-hero.js" defer></script>
+  <script src="js/showroom.js" defer></script>
 </body>
 </html>

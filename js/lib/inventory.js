@@ -12,11 +12,17 @@
     root.AutoSuiteInventory = lib;
   }
 })(typeof window !== 'undefined' ? window : undefined, function () {
-  function formatNaira(amount) {
+  /** Every monetary value in the app (API, cars.json, seeds) is stored in
+   *  cents, so display always divides by 100. */
+  function formatPrice(cents) {
     if (typeof window !== 'undefined' && window.AutoBrand) {
-      return window.AutoBrand.formatCurrency(amount);
+      return window.AutoBrand.formatCurrency(cents);
     }
-    return 'R$ ' + Number(amount).toLocaleString('pt-BR');
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      maximumFractionDigits: 0,
+    }).format((Number(cents) || 0) / 100);
   }
 
   function sortCars(cars, sortBy) {
@@ -58,5 +64,5 @@
     });
   }
 
-  return { formatNaira, sortCars, filterCars, parseMileageKm };
+  return { formatPrice, sortCars, filterCars, parseMileageKm };
 });

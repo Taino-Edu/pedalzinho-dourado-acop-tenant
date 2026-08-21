@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trade-in Estimator | AutoSuite</title>
+  <title>Avaliação do usado | AutoSuite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
@@ -38,12 +38,12 @@
 <body>
   <main class="container">
     <div class="card">
-      <h1>Trade-in Estimator</h1>
-      <p class="subtitle">Get an instant valuation for your current vehicle</p>
+      <h1>Avaliação do usado</h1>
+      <p class="subtitle">Receba uma avaliação imediata do seu veículo atual</p>
 
       <div class="form-grid">
         <div>
-          <label for="year">Vehicle Year</label>
+          <label for="year">Ano do veículo</label>
           <select id="year" onchange="calculateEstimate()">
             <option value="2024">2024</option>
             <option value="2023">2023</option>
@@ -54,7 +54,7 @@
         </div>
 
         <div>
-          <label for="make">Make</label>
+          <label for="make">Marca</label>
           <select id="make" onchange="calculateEstimate()">
             <option value="BMW">BMW</option>
             <option value="Mercedes">Mercedes-Benz</option>
@@ -65,17 +65,17 @@
         </div>
 
         <div>
-          <label for="model">Model</label>
+          <label for="model">Modelo</label>
           <input type="text" id="model" placeholder="e.g., X7, S-Class" value="X7" oninput="calculateEstimate()">
         </div>
 
         <div>
-          <label for="mileage">Mileage (km)</label>
+          <label for="mileage">Quilometragem (km)</label>
           <input type="number" id="mileage" placeholder="e.g., 50000" value="30000" oninput="calculateEstimate()">
         </div>
 
         <div class="form-full">
-          <label for="condition">Condition</label>
+          <label for="condition">Estado de conservação</label>
           <input type="range" id="condition" min="1" max="5" step="1" value="4" class="condition-slider" oninput="calculateEstimate()">
           <div class="condition-labels">
             <span>Poor</span>
@@ -88,7 +88,7 @@
       </div>
 
       <div class="estimate-section">
-        <div class="estimate-title">Estimated Trade-in Value</div>
+        <div class="estimate-title">Valor estimado do usado</div>
         <div class="estimate-value" id="estimateValue">₦28,500,000</div>
         <div class="estimate-label">Based on current market rates</div>
 
@@ -98,11 +98,11 @@
             <div class="factor-value" id="marketValue">₦32M</div>
           </div>
           <div class="factor">
-            <div class="factor-label">Mileage Deduction</div>
+            <div class="factor-label">Desconto por quilometragem</div>
             <div class="factor-value" id="mileageDeduction">-₦2M</div>
           </div>
           <div class="factor">
-            <div class="factor-label">Condition Factor</div>
+            <div class="factor-label">Estado de conservação Factor</div>
             <div class="factor-value" id="conditionFactor">-₦1.5M</div>
           </div>
           <div class="factor">
@@ -112,35 +112,35 @@
         </div>
       </div>
 
-      <button type="button" class="button" id="submitEstimateBtn">Get Appraisal &amp; Trade-in Offer</button>
+      <button type="button" class="button" id="submitEstimateBtn">Solicitar avaliação e oferta</button>
     </div>
   </main>
 
   <!-- Trade-in Offer Modal -->
   <div id="tradeInModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="tradeInModalTitle">
     <div class="modal-content">
-      <button type="button" class="close" aria-label="Close">&times;</button>
-      <h2 id="tradeInModalTitle">Get Your Trade-in Offer</h2>
-      <p class="modal-sub">Share your contact info and a dealer will follow up to schedule an in-person appraisal.</p>
+      <button type="button" class="close" aria-label="Fechar">&times;</button>
+      <h2 id="tradeInModalTitle">Receba sua oferta pelo usado</h2>
+      <p class="modal-sub">Deixe seu contato e a equipe da loja retorna para agendar a avaliação presencial.</p>
       <form id="tradeInForm" novalidate>
         <div class="field">
-          <label for="ti-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
-          <input type="email" id="ti-email" name="email" placeholder="you@example.com" required>
-          <span class="field-error">Enter a valid email address.</span>
+          <label for="ti-email">E-mail<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="email" id="ti-email" name="email" placeholder="voce@email.com" required>
+          <span class="field-error">Digite um e-mail válido.</span>
         </div>
         <div class="field-row">
           <div class="field">
-            <label for="ti-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
-            <input type="text" id="ti-name" name="name" placeholder="Full name" required>
-            <span class="field-error">Enter your name.</span>
+            <label for="ti-name">Seu nome<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="text" id="ti-name" name="name" placeholder="Nome completo" required>
+            <span class="field-error">Digite seu nome.</span>
           </div>
           <div class="field">
-            <label for="ti-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
-            <input type="tel" id="ti-phone" name="phone" placeholder="+234" inputmode="tel" required>
-            <span class="field-error">Enter a phone number.</span>
+            <label for="ti-phone">Telefone<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="tel" id="ti-phone" name="phone" placeholder="(11) 90000-0000" inputmode="tel" required>
+            <span class="field-error">Digite um telefone válido.</span>
           </div>
         </div>
-        <button type="submit" class="button">Submit Request</button>
+        <button type="submit" class="button">Enviar solicitação</button>
         <p class="form-status" id="ti-status" role="status" aria-live="polite">
           <span class="status-icon" aria-hidden="true">&check;</span>
           <span class="status-text"></span>
@@ -305,7 +305,7 @@
           });
           if (!res.ok) throw new Error((await res.json()).error || 'Submission failed');
 
-          if (statusText) statusText.textContent = `Your trade-in value: ${estimateText}. Thanks, ${name}! A dealer will contact you at ${email} to schedule an in-person appraisal.`;
+          if (statusText) statusText.textContent = `Estimativa do seu veículo: ${estimateText}. Obrigado, ${name}! A loja entrará em contato pelo e-mail ${email} para agendar a avaliação presencial.`;
           status?.classList.add('visible');
 
           setTimeout(() => {

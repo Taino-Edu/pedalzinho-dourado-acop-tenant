@@ -68,8 +68,8 @@
      The summary toggle is hidden — the rail is always shown, even if a mobile
      user had collapsed the <details> before resizing up. */
   .inv-layout {
-    grid-template-columns: 260px 1fr;
-    gap: var(--space-6);
+    grid-template-columns: 288px minmax(0, 1fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
   }
 
   .inv-filters-summary {

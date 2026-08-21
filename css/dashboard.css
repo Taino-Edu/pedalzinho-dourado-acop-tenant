@@ -7,9 +7,14 @@
 
 .dos-shell {
   display: grid;
-  grid-template-columns: 236px 1fr;
+  /* minmax(0,...) keeps the workspace column from being forced wider than the
+     viewport by wide children (kanban board, data tables), which would push the
+     whole document into a horizontal scroll instead of scrolling in place. */
+  grid-template-columns: 236px minmax(0, 1fr);
   min-height: 100vh;
 }
+
+.dos-shell > main { min-width: 0; }
 
 /* ---------- Sidebar ---------- */
 .dos-sidebar {

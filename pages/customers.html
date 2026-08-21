@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customers | AutoSuite Dealer OS</title>
+  <title>Clientes | AutoSuite Gestão</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
@@ -18,24 +18,24 @@
       <div class="is-dc3e742f">AutoSuite</div>
     </div>
     <div data-dos-search class="is-4330c69b">
-      <span>⌘K Search everything</span>
+      <span>⌘K Buscar em tudo</span>
     </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Overview</a>
+    <nav class="dos-nav" aria-label="Gestão da concessionária">
+      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Visão geral</a>
       <a href="crm.html" class="dos-nav-item is-3fa6ef03">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item is-3fa6ef03">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item active is-1cd5d92b">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item is-3fa6ef03">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Staff Activity</a>
+      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Estoque</a>
+      <a href="appointments.html" class="dos-nav-item is-3fa6ef03">◔ Agenda</a>
+      <a href="customers.html" class="dos-nav-item active is-1cd5d92b">✎ Clientes</a>
+      <a href="analytics.html" class="dos-nav-item is-3fa6ef03">▲ Relatórios</a>
+      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Atividade da equipe</a>
     </nav>
     <div class="is-df55b60c">
-      <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Settings</a>
+      <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Configurações</a>
     </div>
   </aside>
   <main class="is-cc38790d">
     <div class="is-aa8ddd09">
-      <h1 class="is-6f08c733">Customers</h1>
+      <h1 class="is-6f08c733">Clientes</h1>
       <div class="is-dc310e06">
         <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
@@ -43,29 +43,29 @@
     <div class="is-80ba7097">
       <div class="is-b899bea0">
         <div class="is-bc958880">
-          <div class="is-0e874e4b">Total Customers</div>
+          <div class="is-0e874e4b">Total de clientes</div>
           <div id="statTotal" class="is-28765d2d">-</div>
         </div>
         <div class="is-bc958880">
-          <div class="is-0e874e4b">With Purchase History</div>
+          <div class="is-0e874e4b">Já compraram</div>
           <div id="statPurchased" class="is-28765d2d">-</div>
         </div>
         <div class="is-bc958880">
-          <div class="is-0e874e4b">Referred</div>
+          <div class="is-0e874e4b">Vieram por indicação</div>
           <div id="statReferred" class="is-28765d2d">-</div>
         </div>
       </div>
 
       <div class="is-3153fb4e">
-        <button type="button" onclick="promptAddCustomer()" class="is-199df281">+ Add customer</button>
+        <button type="button" onclick="promptAddCustomer()" class="is-199df281">+ Adicionar cliente</button>
       </div>
 
       <div class="is-3c773fe7">
         <div class="is-5f2df640">
-          <div>Name</div><div>Contact</div><div>Preferred Makes</div><div>Address</div><div>Purchases</div><div>Referral</div>
+          <div>Nome</div><div>Contato</div><div>Marcas preferidas</div><div>Endereço</div><div>Compras</div><div>Indicação</div>
         </div>
         <div id="customerList"></div>
-        <div id="emptyState" class="is-76756bd7">No customers yet</div>
+        <div id="emptyState" class="is-76756bd7">Nenhum cliente cadastrado</div>
       </div>
     </div>
   </main>
@@ -123,31 +123,31 @@
 
   async function promptAddCustomer() {
     const result = await DosShell.openModal({
-      title: 'Add customer',
-      confirmLabel: 'Add customer',
+      title: 'Adicionar cliente',
+      confirmLabel: 'Salvar cliente',
       focusSelector: '#acName',
       bodyHtml: `
         <div style="margin-bottom: 14px;">
-          <label for="acName" class="dos-field-label">Name</label>
+          <label for="acName" class="dos-field-label">Nome</label>
           <input id="acName" type="text" class="dos-field-input">
         </div>
         <div style="margin-bottom: 14px;">
-          <label for="acEmail" class="dos-field-label">Email</label>
+          <label for="acEmail" class="dos-field-label">E-mail</label>
           <input id="acEmail" type="email" class="dos-field-input">
         </div>
         <div style="margin-bottom: 14px;">
-          <label for="acPhone" class="dos-field-label">Phone (optional)</label>
+          <label for="acPhone" class="dos-field-label">Telefone (opcional)</label>
           <input id="acPhone" type="text" class="dos-field-input">
         </div>
         <div>
-          <label for="acReferral" class="dos-field-label">Referral code (optional)</label>
+          <label for="acReferral" class="dos-field-label">Código de indicação (opcional)</label>
           <input id="acReferral" type="text" class="dos-field-input">
         </div>
       `,
       onConfirm: async (overlay) => {
         const name = overlay.querySelector('#acName').value.trim();
         const email = overlay.querySelector('#acEmail').value.trim();
-        if (!name || !email) throw new Error('Name and email are required');
+        if (!name || !email) throw new Error('Informe nome e e-mail.');
         const res = await fetch('/api/customers', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -157,12 +157,12 @@
             referralCode: overlay.querySelector('#acReferral').value.trim() || undefined
           })
         });
-        if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+        if (!res.ok) throw new Error((await res.json()).error || 'Não foi possível cadastrar o cliente.');
         return true;
       }
     });
     if (!result) return;
-    DosShell.toast('Customer added');
+    DosShell.toast('Cliente adicionado.');
     await fetchCustomers();
   }
 

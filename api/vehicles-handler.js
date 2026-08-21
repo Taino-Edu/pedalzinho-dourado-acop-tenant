@@ -3,6 +3,17 @@ const { requireAuth } = require('./_lib/auth');
 const { broadcast } = require('./_lib/events');
 
 const VALID_STATUSES = ['draft', 'active', 'featured', 'sold'];
+const VALID_LOCATIONS = ['patio', 'garagem', 'showroom', 'oficina', 'terceiros'];
+const VALID_VEHICLE_TYPES = ['car', 'motorcycle'];
+const MAX_IMAGES = 5;
+const MAX_IMAGE_LENGTH = 2_000_000;
+
+function validImages(value) {
+  if (!Array.isArray(value) || value.length > MAX_IMAGES) return null;
+  const images = value.map((item) => String(item || '').trim()).filter(Boolean);
+  if (images.some((item) => item.length > MAX_IMAGE_LENGTH || !/^(data:image\/(jpeg|png|webp);base64,|https?:\/\/|\/|[\w.-]+$)/i.test(item))) return null;
+  return images;
+}
 
 // Handles both /api/vehicles and /api/vehicles/:id (Vercel optional
 // catch-all) — merged into one function to stay under the Hobby plan's
@@ -25,28 +36,38 @@ module.exports = async (req, res) => {
 
       if (req.method === 'POST') {
         if (!requireAuth(req, res)) return;
-        const { vin, make, model, year, price, mileage, color, body, engine, transmission, drivetrain, mpg, images, status } = req.body || {};
+        const { vin, vehicleType, make, model, year, price, mileage, color, body, engine, transmission, drivetrain, mpg, images, status, location, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
 
         if (!vin || !make || !model || !year || !price) {
           return res.status(400).json({ error: 'Missing required fields: vin, make, model, year, price' });
         }
 
+        const sanitizedImages = images === undefined ? [] : validImages(images);
+        if (sanitizedImages === null) return res.status(400).json({ error: 'Envie no máximo 5 imagens JPG, PNG ou WebP válidas.' });
+
         const vehicle = await prisma.vehicle.create({
           data: {
             vin,
+            vehicleType: VALID_VEHICLE_TYPES.includes(vehicleType) ? vehicleType : 'car',
             make,
             model,
             year: parseInt(year),
             price: parseInt(price),
             mileage: parseInt(mileage) || 0,
             color: color || 'Unknown',
-            body: body || 'Sedan',
+            body: body || (vehicleType === 'motorcycle' ? 'Street' : 'Sedan'),
             engine: engine || 'N/A',
             transmission: transmission || 'Automatic',
             drivetrain: drivetrain || 'FWD',
             mpg: mpg ? parseFloat(mpg) : null,
-            images: JSON.stringify(images || []),
+            images: JSON.stringify(sanitizedImages),
             status: VALID_STATUSES.includes(status) ? status : 'active',
+            location: VALID_LOCATIONS.includes(location) ? location : 'patio',
+            fipeCode: fipeCode || null,
+            fipePrice: fipePrice ? parseInt(fipePrice) : null,
+            fipeModel: fipeModel || null,
+            fipeReferenceMonth: fipeReferenceMonth || null,
+            fipeUpdatedAt: fipePrice ? new Date() : null,
           },
         });
         broadcast('vehicle.created', { id: vehicle.id, make: vehicle.make, model: vehicle.model, price: vehicle.price });
@@ -60,17 +81,34 @@ module.exports = async (req, res) => {
     if (!requireAuth(req, res)) return;
 
     if (req.method === 'PATCH') {
-      const { price, mileage, status, color, dealerNotes, history } = req.body || {};
+      const { vehicleType, price, mileage, status, location, color, dealerNotes, history, images, fipeCode, fipePrice, fipeModel, fipeReferenceMonth } = req.body || {};
       const data = {};
 
+      if (vehicleType !== undefined) {
+        if (!VALID_VEHICLE_TYPES.includes(vehicleType)) return res.status(400).json({ error: 'Tipo de veículo inválido' });
+        data.vehicleType = vehicleType;
+      }
       if (price !== undefined) data.price = parseInt(price);
       if (mileage !== undefined) data.mileage = parseInt(mileage);
       if (color !== undefined) data.color = color;
       if (dealerNotes !== undefined) data.dealerNotes = dealerNotes;
       if (history !== undefined) data.history = history;
+      if (images !== undefined) {
+        const sanitizedImages = validImages(images);
+        if (sanitizedImages === null) return res.status(400).json({ error: 'Envie no máximo 5 imagens JPG, PNG ou WebP válidas.' });
+        data.images = JSON.stringify(sanitizedImages);
+      }
+      if (fipeCode !== undefined) data.fipeCode = fipeCode || null;
+      if (fipePrice !== undefined) { data.fipePrice = fipePrice ? parseInt(fipePrice) : null; data.fipeUpdatedAt = fipePrice ? new Date() : null; }
+      if (fipeModel !== undefined) data.fipeModel = fipeModel || null;
+      if (fipeReferenceMonth !== undefined) data.fipeReferenceMonth = fipeReferenceMonth || null;
       if (status !== undefined) {
         if (!VALID_STATUSES.includes(status)) return res.status(400).json({ error: 'Invalid status' });
         data.status = status;
+      }
+      if (location !== undefined) {
+        if (!VALID_LOCATIONS.includes(location)) return res.status(400).json({ error: 'Localização inválida' });
+        data.location = location;
       }
       if (Object.keys(data).length === 0) {
         return res.status(400).json({ error: 'No valid fields to update' });

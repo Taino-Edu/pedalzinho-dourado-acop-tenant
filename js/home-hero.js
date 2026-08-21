@@ -4,7 +4,7 @@
  * The hero doesn't illustrate the product claim, it runs it. Pressing "Book
  * Test Drive" on the customer device spawns a packet that travels the sync
  * line, lands on the dealer board as a real lead card, then walks that card
- * through the pipeline — New -> Assigned -> Contacted -> Sold — stamping a
+ * through the pipeline — New -> Assigned -> Contacted -> Vendido — stamping a
  * timestamped log line at each step.
  *
  * The whole thing is a small state machine over STEPS below. Nothing here
@@ -41,7 +41,7 @@
     { badge: 'New', cls: '', time: '10:42 AM', text: 'Booked by David M.', after: 0 },
     { badge: 'Assigned', cls: 'is-assigned', time: '10:45 AM', text: 'Assigned to Sarah O.', after: 1500 },
     { badge: 'Contacted', cls: 'is-contacted', time: '11:07 AM', text: 'Sarah called — confirmed', after: 1500 },
-    { badge: 'Sold', cls: 'is-sold', time: 'Day 4', text: 'Closed — ₦52,000,000', after: 1800 },
+    { badge: 'Vendido', cls: 'is-sold', time: 'Day 4', text: 'Closed — ₦52,000,000', after: 1800 },
   ];
 
   const BADGE_CLASSES = ['is-assigned', 'is-contacted', 'is-sold'];

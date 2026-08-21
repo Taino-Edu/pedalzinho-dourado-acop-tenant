@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Appointments | AutoSuite Dealer OS</title>
+  <title>Agenda | AutoSuite Gestão</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,12 +12,12 @@
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/dos-inline.css">
   <style>
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; margin-bottom: 24px; }
     .stat-card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid oklch(91% 0.005 260); }
     .stat-label { font: 500 11px 'IBM Plex Mono', monospace; color: oklch(50% 0.01 260); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
     .stat-value { font: 600 24px 'Space Grotesk', sans-serif; }
     .cal-card { background: #fff; border-radius: 12px; border: 1px solid oklch(91% 0.005 260); overflow: hidden; }
-    .cal-toolbar { display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid oklch(91% 0.005 260); }
+    .cal-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid oklch(91% 0.005 260); }
     .cal-nav-btn { display: inline-flex; align-items: center; justify-content: center; border: none; background: oklch(97% 0.004 90); min-width: 44px; min-height: 44px; border-radius: 6px; font: 500 13px; color: oklch(45% 0.01 260); cursor: pointer; }
     .cal-view-toggle { display: flex; gap: 4px; background: oklch(96% 0.004 260); padding: 4px; border-radius: 8px; }
     .cal-view-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 7px 12px; border-radius: 6px; font: 500 12px; border: none; cursor: pointer; background: transparent; color: oklch(50% 0.01 260); }
@@ -42,47 +42,47 @@
       <div class="is-dc3e742f">AutoSuite</div>
     </div>
     <div data-dos-search class="is-4330c69b">
-      <span>⌘K Search everything</span>
+      <span>⌘K Buscar em tudo</span>
     </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Overview</a>
+    <nav class="dos-nav" aria-label="Gestão da concessionária">
+      <a href="dashboard.html" class="dos-nav-item is-3fa6ef03">▦ Visão geral</a>
       <a href="crm.html" class="dos-nav-item is-3fa6ef03">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item active is-1cd5d92b">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item is-3fa6ef03">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item is-3fa6ef03">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Staff Activity</a>
+      <a href="inventory.html" class="dos-nav-item is-3fa6ef03">▤ Estoque</a>
+      <a href="appointments.html" class="dos-nav-item active is-1cd5d92b">◔ Agenda</a>
+      <a href="customers.html" class="dos-nav-item is-3fa6ef03">✎ Clientes</a>
+      <a href="analytics.html" class="dos-nav-item is-3fa6ef03">▲ Relatórios</a>
+      <a href="staff-activity.html" class="dos-nav-item is-3fa6ef03">◫ Atividade da equipe</a>
     </nav>
     <div class="is-df55b60c">
-      <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Settings</a>
+      <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Configurações</a>
     </div>
   </aside>
   <main class="is-cc38790d">
     <div class="is-aa8ddd09">
-      <h1 class="is-6f08c733">Appointments</h1>
+      <h1 class="is-6f08c733">Agenda</h1>
       <div class="is-dc310e06">
         <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
     </div>
     <div class="is-80ba7097">
       <div class="stats">
-        <div class="stat-card"><div class="stat-label">Total Scheduled</div><div class="stat-value" id="statScheduled">-</div></div>
-        <div class="stat-card"><div class="stat-label">Upcoming</div><div class="stat-value" id="statUpcoming">-</div></div>
-        <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value" id="statCompleted">-</div></div>
-        <div class="stat-card"><div class="stat-label">No-Shows</div><div class="stat-value" id="statNoShow">-</div></div>
+        <div class="stat-card"><div class="stat-label">Total de agendamentos</div><div class="stat-value" id="statScheduled">-</div></div>
+        <div class="stat-card"><div class="stat-label">Próximos</div><div class="stat-value" id="statUpcoming">-</div></div>
+        <div class="stat-card"><div class="stat-label">Concluídos</div><div class="stat-value" id="statCompleted">-</div></div>
+        <div class="stat-card"><div class="stat-label">Não compareceram</div><div class="stat-value" id="statNoShow">-</div></div>
       </div>
 
       <div class="cal-card">
         <div class="cal-toolbar">
           <div id="calRangeLabel" class="is-3146e5eb">—</div>
-          <button type="button" class="cal-nav-btn" onclick="shiftWeek(-1)" aria-label="Previous week">‹</button>
-          <button type="button" class="cal-nav-btn" onclick="shiftWeek(1)" aria-label="Next week">›</button>
-          <button type="button" class="cal-nav-btn is-d162d34a"  onclick="goToday()">Today</button>
+          <button type="button" class="cal-nav-btn" onclick="shiftWeek(-1)" aria-label="Semana anterior">‹</button>
+          <button type="button" class="cal-nav-btn" onclick="shiftWeek(1)" aria-label="Próxima semana">›</button>
+          <button type="button" class="cal-nav-btn is-d162d34a"  onclick="goToday()">Hoje</button>
           <div class="cal-view-toggle is-dc310e06">
-            <button type="button" class="cal-view-btn active" data-view="week">Week</button>
-            <button type="button" class="cal-view-btn" data-view="list">List</button>
+            <button type="button" class="cal-view-btn active" data-view="week">Semana</button>
+            <button type="button" class="cal-view-btn" data-view="list">Lista</button>
           </div>
-          <button type="button" onclick="promptNewAppointment()" class="is-872b78c6">+ New appointment</button>
+          <button type="button" onclick="promptNewAppointment()" class="is-872b78c6">+ Novo agendamento</button>
         </div>
 
         <div id="calGridWrap">
@@ -158,9 +158,13 @@
   }
 
   function apptLabel(a) {
-    const customerName = a.lead ? a.lead.name : 'Unknown';
+    const customerName = a.lead ? a.lead.name : 'Cliente não informado';
     const vehicleName = a.vehicle ? `${a.vehicle.make} ${a.vehicle.model}` : (a.lead ? a.lead.carName : '');
     return { customerName, vehicleName };
+  }
+
+  function appointmentStatusLabel(status) {
+    return ({ scheduled: 'Agendado', completed: 'Concluído', no_show: 'Não compareceu' }[status] || status);
   }
 
   function renderCurrentView() {
@@ -178,17 +182,17 @@
     const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
     document.getElementById('calRangeLabel').textContent =
-      `${days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${days[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+      `${days[0].toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' })} – ${days[6].toLocaleDateString('pt-BR', { month: 'short', day: 'numeric', year: 'numeric' })}`;
 
     const grid = document.getElementById('calGrid');
     let html = '<div class="cal-head cal-head-corner"></div>';
     days.forEach(d => {
       const isToday = d.toDateString() === new Date().toDateString();
-      html += `<div class="cal-head" style="${isToday ? 'color: oklch(45% 0.16 260);' : ''}">${d.toLocaleDateString('en-US', { weekday: 'short' })}<br>${d.getDate()}</div>`;
+      html += `<div class="cal-head" style="${isToday ? 'color: oklch(45% 0.16 260);' : ''}">${d.toLocaleDateString('pt-BR', { weekday: 'short' })}<br>${d.getDate()}</div>`;
     });
 
     hours.forEach(hour => {
-      html += `<div class="cal-hour-label">${hour % 12 === 0 ? 12 : hour % 12}${hour < 12 ? 'am' : 'pm'}</div>`;
+      html += `<div class="cal-hour-label">${String(hour).padStart(2, '0')}:00</div>`;
       days.forEach(d => {
         const cellAppts = allAppointments.filter(a => {
           const dt = new Date(a.dateTime);
@@ -199,7 +203,7 @@
         } else {
           const a = cellAppts[0];
           const { customerName, vehicleName } = apptLabel(a);
-          html += `<div class="cal-cell"><div class="cal-appt type-${typeClassFor(a.type)}" onclick="alert('${esc(customerName)} — ${esc(vehicleName)} (${esc(a.status)})')">
+          html += `<div class="cal-cell"><div class="cal-appt type-${typeClassFor(a.type)}" onclick="alert('${esc(customerName)} — ${esc(vehicleName)} (${esc(appointmentStatusLabel(a.status))})')">
             <div class="is-db117290">${esc(customerName)}</div>
             <div class="is-602a9b5e">${esc(vehicleName)}</div>
           </div></div>`;
@@ -217,21 +221,21 @@
   function renderList() {
     const content = document.getElementById('listContent');
     if (allAppointments.length === 0) {
-      content.innerHTML = '<div class="is-577b8940">No appointments scheduled</div>';
+      content.innerHTML = '<div class="is-577b8940">Nenhum compromisso agendado</div>';
       return;
     }
     const sorted = [...allAppointments].sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
     content.innerHTML = sorted.map(a => {
       const dt = new Date(a.dateTime);
-      const timeStr = dt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+      const timeStr = dt.toLocaleString('pt-BR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       const { customerName, vehicleName } = apptLabel(a);
       return `
         <div class="is-14afaecd">
           <div class="is-103f41a5">${timeStr}</div>
           <div>
-            <div class="event-type type-${typeClassFor(a.type)} is-77a05f9e">${a.type.replace('-', ' ')}</div>
+            <div class="event-type type-${typeClassFor(a.type)} is-77a05f9e">${({ 'test-drive': 'Test-drive', consultation: 'Atendimento', inspection: 'Vistoria', maintenance: 'Manutenção' }[a.type] || a.type)}</div>
             <div class="is-d8666e5c">${esc(vehicleName) || a.type}</div>
-            <div class="is-ce79f797">${esc(customerName)} · ${a.status.replace('_', ' ')}</div>
+            <div class="is-ce79f797">${esc(customerName)} · ${appointmentStatusLabel(a.status)}</div>
           </div>
         </div>
       `;
@@ -264,18 +268,18 @@
       const data = await res.json();
       leads = data.leads || [];
     } catch (err) {
-      DosShell.toast('Could not load leads: ' + err.message, 'error');
+      DosShell.toast('Não foi possível carregar os leads: ' + err.message, 'error');
       return;
     }
     if (leads.length === 0) {
-      DosShell.toast('No leads available to schedule. Create a lead first.', 'error');
+      DosShell.toast('Não há leads disponíveis. Cadastre um atendimento primeiro.', 'error');
       return;
     }
 
     const today = new Date().toISOString().slice(0, 10);
     const result = await DosShell.openModal({
-      title: 'New appointment',
-      confirmLabel: 'Schedule',
+      title: 'Novo agendamento',
+      confirmLabel: 'Agendar',
       focusSelector: '#naLead',
       bodyHtml: `
         <div style="margin-bottom: 14px;">
@@ -286,21 +290,21 @@
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
           <div>
-            <label for="naDate" class="dos-field-label">Date</label>
+            <label for="naDate" class="dos-field-label">Data</label>
             <input id="naDate" type="date" value="${today}" class="dos-field-input">
           </div>
           <div>
-            <label for="naTime" class="dos-field-label">Time</label>
+            <label for="naTime" class="dos-field-label">Horário</label>
             <input id="naTime" type="time" value="10:00" class="dos-field-input">
           </div>
         </div>
         <div>
-          <label for="naType" class="dos-field-label">Type</label>
+          <label for="naType" class="dos-field-label">Tipo</label>
           <select id="naType" class="dos-field-input">
-            <option value="test-drive">Test drive</option>
-            <option value="consultation">Consultation</option>
-            <option value="inspection">Inspection</option>
-            <option value="maintenance">Maintenance</option>
+            <option value="test-drive">Test-drive</option>
+            <option value="consultation">Atendimento</option>
+            <option value="inspection">Vistoria</option>
+            <option value="maintenance">Manutenção</option>
           </select>
         </div>
       `,
@@ -308,19 +312,19 @@
         const leadId = overlay.querySelector('#naLead').value;
         const dateStr = overlay.querySelector('#naDate').value;
         const timeStr = overlay.querySelector('#naTime').value;
-        if (!dateStr || !timeStr) throw new Error('Date and time are required');
+        if (!dateStr || !timeStr) throw new Error('Informe a data e o horário.');
         const dateTime = new Date(`${dateStr}T${timeStr}:00`).toISOString();
         const res = await fetch('/api/appointments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ leadId, dateTime, type: overlay.querySelector('#naType').value })
         });
-        if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+        if (!res.ok) throw new Error((await res.json()).error || 'Não foi possível criar o agendamento.');
         return true;
       }
     });
     if (!result) return;
-    DosShell.toast('Appointment scheduled');
+    DosShell.toast('Agendamento criado.');
     await fetchAppointments();
   }
 

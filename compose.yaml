@@ -17,6 +17,7 @@ services:
       retries: 12
 
   app:
+    container_name: concessionaria_${CLIENT_SLUG:-local}_app
     build: .
     restart: unless-stopped
     depends_on:
@@ -27,10 +28,33 @@ services:
       HOST: 0.0.0.0
       PORT: 3000
       DATABASE_URL: postgresql://${POSTGRES_USER:-autosuite}:${POSTGRES_PASSWORD:-change-this-database-password}@db:5432/${POSTGRES_DB:-autosuite}?schema=public
+      # Vitrine publica por padrao. Defina SHOWCASE_MODE=false no .env para
+      # exigir as credenciais abaixo.
+      SHOWCASE_MODE: ${SHOWCASE_MODE:-true}
+      PLATFORM_BASE_DOMAIN: ${PLATFORM_BASE_DOMAIN:-3esysten.com.br}
       DASHBOARD_USER: ${DASHBOARD_USER:-dealer}
       DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:-change-this-dashboard-password}
+      DASHBOARD_SESSION_SECRET: ${DASHBOARD_SESSION_SECRET:-change-this-session-secret}
+      PLATFORM_ADMIN_USER: ${PLATFORM_ADMIN_USER:-admin-geral}
+      PLATFORM_ADMIN_PASSWORD: ${PLATFORM_ADMIN_PASSWORD:-change-this-platform-password}
+      PLATFORM_ADMIN_SESSION_SECRET: ${PLATFORM_ADMIN_SESSION_SECRET:-change-this-platform-session-secret}
     ports:
-      - "${APP_PORT:-3000}:3000"
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+    networks:
+      default:
+      proxy:
+        aliases:
+          - concessionaria_${CLIENT_SLUG:-local}_app
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3000/api/branding"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
 
 volumes:
   autosuite_postgres_data:
+
+networks:
+  proxy:
+    name: ${PROXY_NETWORK:-deploy_cardgame_network}
+    external: true

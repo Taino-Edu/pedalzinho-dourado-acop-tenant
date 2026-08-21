@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Financing Calculator | AutoSuite</title>
+  <title>Simulador de financiamento | AutoSuite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="../css/responsive.css">
   <link rel="stylesheet" href="../css/dos-inline.css">
   <style>
+    .calculator-intro { margin: -10px 0 24px; color: #64748b; }
+
     body {
       background: linear-gradient(135deg, oklch(97% 0.005 260) 0%, oklch(95% 0.008 300) 100%);
       min-height: 100vh;
@@ -228,11 +230,14 @@
         font-size: 24px;
       }
     }
+    .market-panel{border:1px solid #dbe5f0;background:#f8fbff;border-radius:14px;padding:20px;margin-bottom:26px}.market-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}.market-heading span:first-child{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:700}.market-heading h2{font-size:20px;margin:2px 0 0}.market-live{font-size:12px;color:#15803d;display:flex;align-items:center;gap:6px}.market-live i{width:7px;height:7px;border-radius:50%;background:#22c55e}.finance-choice{padding:14px;border:1px solid #dce5f0;border-radius:11px;background:#fff}.finance-choice+.finance-choice{margin-top:12px}.finance-choice-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}.finance-choice-head b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#dff5fb;color:#087aa6;font-size:12px}.finance-choice-head strong,.finance-choice-head small{display:block}.finance-choice-head small{margin-top:2px;color:#64748b;font-size:11px}.popular-cars{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin-bottom:10px;scroll-snap-type:x proximity;scrollbar-width:thin}.popular-car{position:relative;flex:0 0 146px;scroll-snap-align:start;border:1px solid #dce5f0;background:#fff;border-radius:10px;padding:11px;text-align:left;cursor:pointer;transition:.15s}.popular-car:hover,.popular-car.active{border-color:#2457d6;background:#eef4ff;transform:translateY(-1px)}.popular-car.active:after{content:'Selecionado';position:absolute;right:7px;top:6px;padding:2px 5px;border-radius:999px;color:#fff;background:#2457d6;font-size:8px;font-weight:700}.popular-car small,.popular-car strong,.popular-car span{display:block}.popular-car small{font-size:10px;color:#64748b}.popular-car strong{font-size:13px;margin:3px 0}.popular-car span{font-size:11px;color:#174da8}.popular-reference{font-size:11px;color:#64748b;margin:-3px 0 0}.market-vehicle-label{display:block;font-size:12px;font-weight:700;margin-bottom:6px}.market-select{width:100%;min-height:44px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:0 12px}.selected-choice{margin:12px 0;padding:10px 12px;border-radius:9px;background:#e7f8f2;color:#116b57;font-size:12px;font-weight:700}.selected-choice.empty{background:#fff7e6;color:#8a5a00}.finance-step-title{display:flex;align-items:center;gap:10px;margin:24px 0 14px;font-size:17px}.finance-step-title b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;background:#2457d6;font-size:13px}.market-metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.market-metrics article{background:#fff;border:1px solid #e2e8f0;border-radius:9px;padding:12px;min-width:0}.market-metrics small,.market-metrics span{display:block;color:#64748b;font-size:11px}.market-metrics strong{display:block;font-size:15px;margin:4px 0;white-space:nowrap}.market-metrics .positive{color:#15803d}.market-metrics .negative{color:#b91c1c}.risk-pill{width:max-content;padding:3px 7px;border-radius:999px;background:#eef2f7}.risk-pill.low{background:#dcfce7;color:#166534}.risk-pill.medium{background:#fef3c7;color:#92400e}.risk-pill.high{background:#fee2e2;color:#991b1b}.market-notice{font-size:11px;color:#64748b;margin:12px 0 0}.term-comparison{margin:18px 0}.term-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.term-grid button{border:1px solid #dbe3ed;background:#fff;border-radius:8px;padding:10px 6px;cursor:pointer}.term-grid button span,.term-grid button strong{display:block}.term-grid button span{font-size:11px;color:#64748b}.term-grid button strong{font-size:12px;margin-top:4px}.term-grid button.active{border-color:#2457d6;background:#eef4ff;color:#174da8}@media(max-width:768px){.market-heading{align-items:flex-start}.popular-car{min-width:145px}.market-metrics{grid-template-columns:repeat(2,1fr)}.term-grid{grid-template-columns:repeat(2,1fr)}}
+    .market-metrics .risk-pill { color: #334155; }
+    .term-grid button.active span { color: #36506f; }
   </style>
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <a href="#main-content" class="skip-link">Ir para o conteúdo principal</a>
 
   <header class="navbar">
     <div class="logo">
@@ -241,119 +246,150 @@
         <span class="logo-wordmark">Auto<span>Suite</span></span>
       </a>
     </div>
-    <a href="cars.html" class="nav-backlink">&larr; Back to Inventory</a>
+    <a href="cars.html" class="nav-backlink">&larr; Voltar ao estoque</a>
   </header>
 
   <main class="container" id="main-content">
     <div class="calculator-card">
-      <h1>Car Financing Calculator</h1>
+      <h1>Simulador de financiamento</h1>
+      <p class="calculator-intro">Compare entrada, prazo e parcelas antes de falar com a loja. A simulação é uma estimativa e não representa aprovação de crédito.</p>
+
+      <section class="market-panel" aria-labelledby="marketTitle">
+        <div class="market-heading"><div><span>ETAPA 1 DE 2</span><h2 id="marketTitle">Escolha o veículo da simulação</h2></div><span class="market-live"><i></i> FIPE e taxa atualizadas</span></div>
+        <div class="finance-choice">
+          <div class="finance-choice-head"><b>A</b><span><strong>Veículo da sua concessionária</strong><small>Use esta opção quando o carro já estiver cadastrado no estoque.</small></span></div>
+          <label class="market-vehicle-label" for="marketVehicle">Selecione um veículo do estoque</label>
+          <select id="marketVehicle" class="market-select"><option value="">Selecione um veículo…</option></select>
+        </div>
+        <div class="finance-choice">
+          <div class="finance-choice-head"><b>B</b><span><strong>Ou use um modelo popular como referência</strong><small>Clique uma vez no modelo. Não é necessário escolher novamente no campo acima.</small></span></div>
+          <div class="popular-cars" id="popularCars"><span>Carregando modelos populares…</span></div>
+          <p class="popular-reference" id="popularReference">Modelos populares no Brasil com preço FIPE de referência.</p>
+        </div>
+        <div id="selectedChoice" class="selected-choice empty" role="status">Nenhum veículo escolhido. Selecione uma das opções A ou B.</div>
+        <div class="market-metrics">
+          <article><small>Preço anunciado</small><strong id="marketAsking">—</strong></article>
+          <article><small>Valor FIPE</small><strong id="marketFipe">Não associado</strong><span id="marketReference">Associe no estoque</span></article>
+          <article><small>Diferença para FIPE</small><strong id="marketDifference">—</strong></article>
+          <article><small>Taxa média BCB</small><strong id="marketRate">Consultando…</strong><span id="marketRateDate">Aquisição de veículos</span></article>
+          <article><small>LTV sobre a FIPE</small><strong id="marketLtv">—</strong><span id="marketRisk" class="risk-pill">Sem análise</span></article>
+        </div>
+        <p class="market-notice">Referências informativas. A condição final depende do CET, cadastro, entrada, garantias e análise da instituição financeira.</p>
+      </section>
+
+      <h2 class="finance-step-title"><b>2</b>Ajuste entrada, prazo e taxa</h2>
 
       <div class="calc-grid">
         <!-- Vehicle Price -->
         <div class="input-group">
-          <label for="priceSlider">Vehicle Price</label>
-          <div class="value-display" id="priceDisplay">₦45,000,000</div>
-          <input type="range" id="priceSlider" min="5000000" max="200000000" step="500000" value="45000000" class="slider">
-          <div class="is-ce79f797">₦5M – ₦200M</div>
+          <label for="priceSlider">Preço do veículo</label>
+          <div class="value-display" id="priceDisplay">R$ 185.000</div>
+          <input type="range" id="priceSlider" min="3000000" max="80000000" step="100" value="18500000" class="slider">
+          <div class="is-ce79f797">R$ 50 mil – R$ 800 mil</div>
         </div>
 
         <!-- Down Payment -->
         <div class="input-group">
-          <label for="downPaymentSlider">Down Payment</label>
-          <div class="value-display" id="downPaymentDisplay">₦9,000,000</div>
+          <label for="downPaymentSlider">Entrada</label>
+          <div class="value-display" id="downPaymentDisplay">R$ 37.000</div>
           <input type="range" id="downPaymentSlider" min="0" max="100" step="5" value="20" class="slider">
-          <div class="is-ce79f797"><span id="downPaymentPercent">20</span>% of price</div>
+          <div class="is-ce79f797"><span id="downPaymentPercent">20</span>% do preço</div>
         </div>
       </div>
 
       <div class="calc-grid">
         <!-- Loan Term -->
         <div class="input-group">
-          <label for="termSlider">Loan Term</label>
-          <div class="value-display" id="termDisplay">60 months</div>
-          <input type="range" id="termSlider" min="12" max="84" step="12" value="60" class="slider">
-          <div class="is-ce79f797">1–7 years</div>
+          <label for="termSlider">Prazo</label>
+          <div class="value-display" id="termDisplay">60 meses</div>
+          <input type="range" id="termSlider" min="6" max="72" step="6" value="60" class="slider">
+          <div class="is-ce79f797">6–72 meses</div>
         </div>
 
         <!-- Interest Rate -->
         <div class="input-group">
-          <label for="aprSlider">Annual Interest Rate (APR)</label>
-          <div class="value-display" id="aprDisplay">7.5%</div>
-          <input type="range" id="aprSlider" min="3" max="15" step="0.5" value="7.5" class="slider">
-          <div class="is-ce79f797">3% – 15%</div>
+          <label for="aprSlider">Taxa de juros estimada ao ano</label>
+          <div class="value-display" id="aprDisplay">18%</div>
+          <input type="range" id="aprSlider" min="8" max="36" step="0.5" value="18" class="slider">
+          <div class="is-ce79f797">8% – 36% ao ano</div>
         </div>
       </div>
 
       <!-- Summary Section -->
       <div class="summary-section">
-        <div class="summary-title">Loan Summary</div>
+        <div class="summary-title">Resumo da simulação</div>
         <div class="summary-grid">
           <div class="summary-item">
-            <div class="summary-label">Loan Amount</div>
-            <div class="summary-value" id="loanAmount">₦36,000,000</div>
+            <div class="summary-label">Valor financiado</div>
+            <div class="summary-value" id="loanAmount">R$ 148.000</div>
           </div>
           <div class="summary-item">
-            <div class="summary-label">Total Interest</div>
-            <div class="summary-value" id="totalInterest">₦6,840,000</div>
+            <div class="summary-label">Juros estimados</div>
+            <div class="summary-value" id="totalInterest">R$ 0</div>
           </div>
           <div class="summary-item">
-            <div class="summary-label">Total Repayment</div>
-            <div class="summary-value" id="totalRepayment">₦42,840,000</div>
+            <div class="summary-label">Total estimado</div>
+            <div class="summary-value" id="totalRepayment">R$ 0</div>
           </div>
         </div>
       </div>
 
       <!-- Monthly Payment Highlight -->
       <div class="breakdown">
-        <div class="breakdown-title">Monthly Payment</div>
+        <div class="breakdown-title">Parcela mensal estimada</div>
         <div class="is-f42717e9">
-          <div class="monthly-payment" id="monthlyPayment">₦714,000</div>
+          <div class="monthly-payment" id="monthlyPayment">R$ 0</div>
         </div>
+      </div>
+
+      <div class="term-comparison">
+        <div class="breakdown-title">Comparação de prazos</div>
+        <div class="term-grid" id="termComparison"><span>Calculando parcelas…</span></div>
       </div>
 
       <!-- Payment Breakdown -->
       <div class="breakdown">
-        <div class="breakdown-title">Payment Breakdown</div>
+        <div class="breakdown-title">Composição aproximada</div>
         <div class="breakdown-row">
-          <span class="breakdown-label">Principal Per Month</span>
-          <span class="breakdown-value" id="principalMonth">₦600,000</span>
+          <span class="breakdown-label">Principal por mês</span>
+          <span class="breakdown-value" id="principalMonth">R$ 0</span>
         </div>
         <div class="breakdown-row">
-          <span class="breakdown-label">Interest Per Month</span>
-          <span class="breakdown-value" id="interestMonth">₦114,000</span>
+          <span class="breakdown-label">Juros por mês</span>
+          <span class="breakdown-value" id="interestMonth">R$ 0</span>
         </div>
       </div>
 
       <!-- CTA -->
-      <button type="button" class="cta-button" id="applyFinancingBtn">Apply for Financing</button>
+      <button type="button" class="cta-button" id="applyFinancingBtn">Quero falar com a concessionária</button>
     </div>
   </main>
 
   <!-- Financing Application Modal -->
   <div id="financingModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="financingModalTitle">
     <div class="modal-content">
-      <button type="button" class="close" aria-label="Close">&times;</button>
-      <h2 id="financingModalTitle">Apply for Financing</h2>
-      <p class="modal-sub">Share your contact info and a finance specialist will follow up with next steps.</p>
+      <button type="button" class="close" aria-label="Fechar">&times;</button>
+      <h2 id="financingModalTitle">Receber atendimento sobre financiamento</h2>
+      <p class="modal-sub">Envie seus dados de contato. A concessionária confirma as condições e orienta os próximos passos.</p>
       <form id="financingForm" novalidate>
         <div class="field">
-          <label for="fin-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
-          <input type="email" id="fin-email" name="email" placeholder="you@example.com" required>
-          <span class="field-error">Enter a valid email address.</span>
+          <label for="fin-email">E-mail<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="email" id="fin-email" name="email" placeholder="voce@exemplo.com.br" required>
+          <span class="field-error">Digite um e-mail válido.</span>
         </div>
         <div class="field-row">
           <div class="field">
-            <label for="fin-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
-            <input type="text" id="fin-name" name="name" placeholder="Full name" required>
-            <span class="field-error">Enter your name.</span>
+            <label for="fin-name">Seu nome<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="text" id="fin-name" name="name" placeholder="Nome completo" required>
+            <span class="field-error">Digite seu nome.</span>
           </div>
           <div class="field">
-            <label for="fin-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
-            <input type="tel" id="fin-phone" name="phone" placeholder="+234" inputmode="tel" required>
-            <span class="field-error">Enter a phone number.</span>
+            <label for="fin-phone">Telefone<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="tel" id="fin-phone" name="phone" placeholder="(11) 99999-9999" inputmode="tel" required>
+            <span class="field-error">Digite um telefone válido.</span>
           </div>
         </div>
-        <button type="submit" class="cta-button">Submit Application</button>
+        <button type="submit" class="cta-button">Registrar meu interesse</button>
         <p class="form-status" id="fin-status" role="status" aria-live="polite">
           <span class="status-icon" aria-hidden="true">&check;</span>
           <span class="status-text"></span>
@@ -367,9 +403,13 @@
     const downPaymentSlider = document.getElementById('downPaymentSlider');
     const termSlider = document.getElementById('termSlider');
     const aprSlider = document.getElementById('aprSlider');
+    const marketVehicle = document.getElementById('marketVehicle');
+    let marketVehicles = [];
+    let selectedMarketVehicle = null;
+    let selectedPopularCar = null;
 
     function formatCurrency(amount) {
-      return '₦' + Math.round(amount).toLocaleString('en-NG');
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Math.round(amount) / 100);
     }
 
     function calculate() {
@@ -383,7 +423,7 @@
       const loanAmount = price - downPayment;
 
       // Calculate monthly payment using loan amortization formula
-      const monthlyRate = apr / 100 / 12;
+      const monthlyRate = Math.pow(1 + apr / 100, 1 / 12) - 1;
       const numberOfPayments = term;
       const monthlyPayment = loanAmount *
         (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
@@ -398,7 +438,7 @@
       document.getElementById('priceDisplay').textContent = formatCurrency(price);
       document.getElementById('downPaymentDisplay').textContent = formatCurrency(downPayment);
       document.getElementById('downPaymentPercent').textContent = downPaymentPercent;
-      document.getElementById('termDisplay').textContent = term + ' months';
+      document.getElementById('termDisplay').textContent = term + ' meses';
       document.getElementById('aprDisplay').textContent = apr + '%';
 
       document.getElementById('loanAmount').textContent = formatCurrency(loanAmount);
@@ -408,7 +448,90 @@
       document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
       document.getElementById('principalMonth').textContent = formatCurrency(principalPerMonth);
       document.getElementById('interestMonth').textContent = formatCurrency(interestPerMonth);
+
+      const fipePrice = Number(selectedMarketVehicle?.fipePrice || selectedPopularCar?.fipePrice) || 0;
+      const difference = fipePrice ? ((price - fipePrice) / fipePrice) * 100 : null;
+      const ltv = fipePrice ? (loanAmount / fipePrice) * 100 : null;
+      document.getElementById('marketAsking').textContent = (selectedMarketVehicle || selectedPopularCar) ? formatCurrency(price) : '—';
+      document.getElementById('marketFipe').textContent = fipePrice ? formatCurrency(fipePrice) : 'Não associado';
+      document.getElementById('marketReference').textContent = selectedMarketVehicle?.fipeReferenceMonth || (selectedPopularCar ? 'Tabela FIPE · agosto de 2026' : selectedMarketVehicle ? 'Associe a versão FIPE no estoque' : 'Escolha um veículo');
+      document.getElementById('marketDifference').textContent = difference == null ? '—' : `${difference >= 0 ? '+' : ''}${difference.toFixed(1).replace('.', ',')}%`;
+      document.getElementById('marketDifference').className = difference == null ? '' : difference > 10 ? 'negative' : difference < -5 ? 'positive' : '';
+      document.getElementById('marketLtv').textContent = ltv == null ? '—' : `${ltv.toFixed(1).replace('.', ',')}%`;
+      const risk = ltv == null ? 'Sem análise' : ltv <= 80 ? 'Risco baixo' : ltv <= 100 ? 'Risco moderado' : 'Risco alto';
+      const riskElement = document.getElementById('marketRisk');
+      riskElement.textContent = risk;
+      riskElement.className = `risk-pill ${ltv == null ? '' : ltv <= 80 ? 'low' : ltv <= 100 ? 'medium' : 'high'}`;
+
+      document.getElementById('termComparison').innerHTML = [12,24,36,48,60,72].map((months) => {
+        const payment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+        return `<button type="button" data-term="${months}" class="${months === term ? 'active' : ''}"><span>${months} meses</span><strong>${formatCurrency(payment)}</strong></button>`;
+      }).join('');
+      document.querySelectorAll('#termComparison button').forEach((button) => button.addEventListener('click', () => { termSlider.value = button.dataset.term; calculate(); }));
     }
+
+    async function loadMarketData() {
+      try {
+        const [response, popularResponse] = await Promise.all([
+          fetch('/api/market-data'),
+          fetch('/api/market-data?action=popular')
+        ]);
+        if (!response.ok || !popularResponse.ok) throw new Error('Dados de mercado indisponíveis');
+        const [data, popularData] = await Promise.all([response.json(), popularResponse.json()]);
+        renderPopularCars(popularData);
+        marketVehicles = data.vehicles || [];
+        marketVehicle.innerHTML = '<option value="">Selecione um veículo…</option>' + marketVehicles.map((vehicle) => `<option value="${vehicle.id}">${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.fipePrice ? ' · FIPE vinculada' : ' · sem FIPE'}</option>`).join('');
+        document.getElementById('marketRate').textContent = `${Number(data.rate.annualPercent).toFixed(2).replace('.', ',')}% ao ano`;
+        document.getElementById('marketRateDate').textContent = data.rate.referenceDate ? `Referência ${data.rate.referenceDate} · SGS 20749` : data.rate.source;
+        aprSlider.value = Math.min(36, Math.max(8, Number(data.rate.annualPercent)));
+        const requestedId = new URLSearchParams(location.search).get('vehicle');
+        if (requestedId && marketVehicles.some((vehicle) => vehicle.id === requestedId)) { marketVehicle.value = requestedId; selectMarketVehicle(); }
+        else calculate();
+      } catch {
+        document.getElementById('marketRate').textContent = '24% ao ano';
+        document.getElementById('marketRateDate').textContent = 'Taxa de contingência';
+      }
+    }
+
+    function renderPopularCars(data) {
+      const container = document.getElementById('popularCars');
+      container.innerHTML = (data.cars || []).map((car, index) => `<button type="button" class="popular-car" data-index="${index}" aria-pressed="false"><small>${car.rank}º mais emplacado</small><strong>${car.make} ${car.model}</strong><span>${formatCurrency(car.fipePrice)}</span></button>`).join('');
+      document.getElementById('popularReference').textContent = `${data.reference.ranking}. Preços: ${data.reference.prices}.`;
+      container.querySelectorAll('button').forEach((button) => button.addEventListener('click', () => {
+        selectedPopularCar = data.cars[Number(button.dataset.index)];
+        selectedMarketVehicle = null;
+        marketVehicle.value = '';
+        priceSlider.value = selectedPopularCar.fipePrice;
+        container.querySelectorAll('button').forEach((item) => { const active = item === button; item.classList.toggle('active', active); item.setAttribute('aria-pressed', String(active)); });
+        updateSelectedChoice();
+        calculate();
+      }));
+    }
+
+    function updateSelectedChoice() {
+      const target = document.getElementById('selectedChoice');
+      if (selectedMarketVehicle) {
+        target.textContent = `Selecionado do estoque: ${selectedMarketVehicle.year} ${selectedMarketVehicle.make} ${selectedMarketVehicle.model} · ${formatCurrency(selectedMarketVehicle.price)}`;
+        target.classList.remove('empty');
+      } else if (selectedPopularCar) {
+        target.textContent = `Referência escolhida: ${selectedPopularCar.make} ${selectedPopularCar.model} · FIPE ${formatCurrency(selectedPopularCar.fipePrice)}`;
+        target.classList.remove('empty');
+      } else {
+        target.textContent = 'Nenhum veículo escolhido. Selecione uma das opções A ou B.';
+        target.classList.add('empty');
+      }
+    }
+
+    function selectMarketVehicle() {
+      selectedMarketVehicle = marketVehicles.find((vehicle) => vehicle.id === marketVehicle.value) || null;
+      selectedPopularCar = null;
+      document.querySelectorAll('.popular-car').forEach((item) => { item.classList.remove('active'); item.setAttribute('aria-pressed', 'false'); });
+      if (selectedMarketVehicle) priceSlider.value = selectedMarketVehicle.price;
+      updateSelectedChoice();
+      calculate();
+    }
+
+    marketVehicle.addEventListener('change', selectMarketVehicle);
 
     // Add event listeners
     [priceSlider, downPaymentSlider, termSlider, aprSlider].forEach(slider => {
@@ -417,6 +540,7 @@
 
     // Initial calculation
     calculate();
+    loadMarketData();
 
     /* ---------- Financing Application Modal ---------- */
     let lastFocusedBeforeModal = null;
@@ -525,7 +649,7 @@
         const term = parseFloat(termSlider.value);
         const apr = parseFloat(aprSlider.value);
         const monthlyPaymentText = document.getElementById('monthlyPayment').textContent;
-        const monthlyPayment = parseInt(monthlyPaymentText.replace('₦', '').replace(/,/g, ''));
+        const monthlyPayment = Math.round(Number(monthlyPaymentText.replace(/[^\d,]/g, '').replace(',', '.')) * 100);
 
         const submitBtn = form.querySelector('button[type="submit"]');
         submitBtn.disabled = true;
@@ -537,13 +661,15 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               name, email, phone,
-              carName: 'Financing Inquiry',
+              carName: selectedMarketVehicle ? `${selectedMarketVehicle.make} ${selectedMarketVehicle.model}` : selectedPopularCar ? `${selectedPopularCar.make} ${selectedPopularCar.model}` : 'Simulação de financiamento',
+              vehicleId: selectedMarketVehicle?.id || null,
               downPayment, loanTerm: term, apr, monthlyPayment
             })
           });
-          if (!res.ok) throw new Error((await res.json()).error || 'Submission failed');
+          const payload = await res.json();
+          if (!res.ok) throw new Error(payload.error || 'Não foi possível registrar a proposta.');
 
-          if (statusText) statusText.textContent = `Thanks, ${name}! A finance specialist will reach out to ${email} shortly.`;
+          if (statusText) statusText.textContent = payload.message || `Obrigado, ${name}! Um especialista entrará em contato pelo e-mail ${email}.`;
           status?.classList.add('visible');
 
           setTimeout(() => {
@@ -554,7 +680,7 @@
             status?.classList.remove('visible');
           }, 1800);
         } catch (err) {
-          if (statusText) statusText.textContent = 'Could not submit your application right now: ' + err.message;
+          if (statusText) statusText.textContent = 'Não foi possível registrar sua proposta agora: ' + err.message;
           status?.classList.add('visible', 'error');
           submitBtn.disabled = false;
         }

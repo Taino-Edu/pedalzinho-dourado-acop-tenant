@@ -5,9 +5,13 @@ const { broadcast } = require('./_lib/events');
 const VALID_ROUTING = ['round-robin', 'territory', 'skill-based'];
 const HEX_COLOR = /^#[0-9a-f]{6}$/i;
 const BRANDING_FIELDS = new Set([
-  'brandName', 'tagline', 'logoUrl', 'primaryColor', 'accentColor',
-  'whatsapp', 'instagram', 'locale', 'currency'
+  'brandName', 'tagline', 'logoUrl', 'heroImageUrl', 'heroKicker',
+  'heroTitle', 'heroHighlight', 'heroDescription', 'primaryColor', 'accentColor',
+  'heroBackgroundColor', 'heroImagePosition', 'heroOverlay', 'homepageIntroTitle',
+  'homepageIntroText', 'homepageCtaText', 'homepageCtaUrl', 'cardImageFit',
+  'googleMapsUrl', 'whatsapp', 'instagram', 'locale', 'currency'
 ]);
+const IMAGE_FIELDS = new Set(['logoUrl', 'heroImageUrl']);
 
 function sanitizeSettings(settings) {
   const sanitized = {};
@@ -17,12 +21,21 @@ function sanitizeSettings(settings) {
       continue;
     }
     if (typeof value !== 'string') continue;
-    const clean = value.trim().slice(0, 300);
-    if ((key === 'primaryColor' || key === 'accentColor') && !HEX_COLOR.test(clean)) continue;
-    if (key === 'logoUrl' && clean && !/^(https?:\/\/|\/)/i.test(clean)) continue;
-    if (key === 'currency' && clean !== 'BRL') continue;
-    if (key === 'locale' && clean !== 'pt-BR') continue;
-    sanitized[key] = clean;
+    const clean = value.trim();
+    if (IMAGE_FIELDS.has(key)) {
+      const maxLength = key === 'logoUrl' ? 1_500_000 : 2_500_000;
+      if (clean.length > maxLength) continue;
+      if (clean && !/^(data:image\/(png|jpeg|webp);base64,|https?:\/\/|\/)/i.test(clean)) continue;
+      sanitized[key] = clean;
+      continue;
+    }
+    const shortValue = clean.slice(0, 300);
+    if ((key === 'primaryColor' || key === 'accentColor' || key === 'heroBackgroundColor') && !HEX_COLOR.test(shortValue)) continue;
+    if (key === 'heroOverlay' && !['balanced', 'strong', 'soft'].includes(shortValue)) continue;
+    if (key === 'cardImageFit' && !['cover', 'contain'].includes(shortValue)) continue;
+    if (key === 'currency' && shortValue !== 'BRL') continue;
+    if (key === 'locale' && shortValue !== 'pt-BR') continue;
+    sanitized[key] = shortValue;
   }
   return sanitized;
 }

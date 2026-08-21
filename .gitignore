@@ -6,3 +6,5 @@ node_modules/
 .vercel/
 .vercel
 .env*
+deploy/clientes/*.env
+deploy/clientes/*.secret
